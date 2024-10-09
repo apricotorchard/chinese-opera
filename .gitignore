@@ -21,3 +21,24 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Vue specific exclusions
+node_modules/
+/dist/
+/.nuxt/
+/.cache/
+.babelrc
+.postcssrc.js
+.eslintrc.js
+/coverage/
+/yarn.lock
+/package-lock.json
+
+# Python specific exclusions
+__pycache__/
+*.pyc
+*.pyd
+.venv/
+env/
+requirements.txt.lock
+setup.pyc
