@@ -1,0 +1,235 @@
+<template>
+  <div class="head-container">
+    <div class="head-bar">
+       
+        <ul class="left-entry">
+            <li class="left-item">
+                <a href="#">
+                    <span>首页</span>
+                </a>
+            </li>
+            <li class="left-item">
+                <a href="#">
+                    <span>戏曲</span>
+                </a>
+            </li>
+            <li class="left-item">
+                <a href="#">
+                    <span>热榜</span>
+                </a>
+            </li>
+        </ul>
+        
+       
+        <!-- 中心的搜索栏 -->
+        <div class="center-search-container">
+            <form id="nav-searchform">
+                <div class="nav-search-content">
+                    <input class="nav-search-input" placeholder="鬼灭之刃 · 52分钟前更新">
+                </div>
+                <div class="nav-search-btn">
+                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.3451 15.2003C16.6377 15.4915 16.4752 15.772 16.1934 16.0632C16.15 16.1279 16.0958 16.1818 16.0525 16.2249C15.7707 16.473 15.4456 16.624 15.1854 16.3652L11.6848 12.8815C10.4709 13.8198 8.97529 14.3267 7.44714 14.3267C3.62134 14.3267 0.5 11.2314 0.5 7.41337C0.5 3.60616 3.6105 0.5 7.44714 0.5C11.2729 0.5 14.3943 3.59538 14.3943 7.41337C14.3943 8.98802 13.8524 10.5087 12.8661 11.7383L16.3451 15.2003ZM2.13647 7.4026C2.13647 10.3146 4.52083 12.6766 7.43624 12.6766C10.3517 12.6766 12.736 10.3146 12.736 7.4026C12.736 4.49058 10.3517 2.1286 7.43624 2.1286C4.50999 2.1286 2.13647 4.50136 2.13647 7.4026Z" fill="currentColor"></path></svg>
+                </div>
+            </form>
+        </div>
+        <!-- 右侧的人物信息 -->
+        <ul class="right-entry">
+            <li class="head-avatar-wrap right-item">
+                <div class="profile-container" @mouseover="showHeaderDropdown" @mouseleave="hideHeaderDropdown">
+                    <!-- 头像部分 -->
+                    <div class="profile-avatar" >
+                        <img src="@/assets/userAvatar.png" alt="用户头像" class="avatar-img">
+                    </div>
+                    <!-- 下拉菜单  -->
+                    <div class="profile-dropdown" v-if="isDropdownVisible">
+                        <ul>
+                            <li><a href="#">我的主页</a></li>
+                            <li><a href="#">设置</a></li>
+                            <li><a href="#">退出登录</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                
+            </li>
+            <!-- 收藏 -->
+            <li class="right-item">
+                <a>
+                    <span>收藏</span>
+                </a>
+            </li>
+            <!-- 历史记录 -->
+            <li class="right-item">
+                <a>
+                    <span>历史</span>
+                </a>
+            </li>
+            <li class="right-item">
+                <a>
+                    <span>消息</span>
+                </a>
+            </li>
+            <li class="right-item">
+                <a>
+                    <span>动态</span>
+                </a>
+            </li>
+            <li class="right-item">
+                <a>
+                    <span>创作中心</span>
+                </a>
+            </li>
+        </ul>
+       
+    </div>
+    <!-- 存放梨园撷英标志的地方 -->
+    <div class="logo-container">
+        <img src="@/assets/logo.png"  style="margin-left: 20px;">
+    </div>
+
+    
+  </div>
+
+  
+</template>
+
+<script>
+export default {
+    name:'HomeHeader',
+    data(){
+        return{
+            isDropdownVisible:false
+        }
+    },
+    methods:{
+        showHeaderDropdown() {
+            this.isDropdownVisible = true;
+        },
+        hideHeaderDropdown() {
+            this.isDropdownVisible = false;
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+.head-container{
+    background-image: url('@/assets/header-bg.png');
+    background-size: contain; /* 让图片完全显示，宽高比保持不变 */
+    background-repeat: no-repeat; /* 禁止重复背景 */
+    // height: 100vh; /* 容器高度为视口高度 */
+    position: relative;
+    .head-bar{
+        height: 64px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .left-entry{
+            list-style-type:none;/*去掉li前面的黑点*/ 
+            display: flex;
+            width: 370px;
+            .left-item{
+                margin-right: 20px;
+            }
+
+        }
+        .center-search-container{
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            border-radius: 10px; /* 圆角 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            width: 400px; /* 搜索框总宽度 */
+            height: 40px;
+            #nav-searchform{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .nav-search-input {
+                    width: 100%; /* 占据父容器的宽度 */
+                    padding: 0 10px;
+                    border: none; /* 去掉默认边框 */
+                    background-color: transparent;
+                    font-size: 15px;
+                    color: #555; /* 字体颜色 */
+                    outline: none; /* 去掉点击时的高亮边框 */
+                }
+
+                /* 搜索按钮 */
+                .nav-search-btn {
+                    cursor: pointer;
+                    height: 40px;
+                    padding: 0 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: transparent;
+                    border: none;
+                }
+
+                /* 搜索按钮里的 SVG 图标 */
+                .nav-search-btn svg {
+                    fill: #555; /* 灰色图标 */
+                    transition: fill 0.3s ease;
+                }
+
+                /* 鼠标悬停时的图标变色效果 */
+                .nav-search-btn:hover svg {
+                    fill: #007bff; /* 鼠标悬停时变为蓝色 */
+                }
+            }
+            
+        }
+        .right-entry{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style-type:none;/*去掉li前面的黑点*/
+            .right-item{
+                margin-right: 20px;
+
+            }
+            .profile-container{
+                position: relative;
+                display: inline-block;
+                .avatar-img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%; /* 圆形头像 */
+                    border: 2px solid #fff; /* 白色边框 */
+                    transition: transform 0.3s ease;
+                }
+                .profile-avatar:hover .avatar-img{
+                    transform: scale(1.5);
+                }
+                .profile-dropdown{
+                    position: absolute;
+                    top:50px;
+                    right: -80px;
+                    background-color: white;
+                    width:200px;
+                    ul{
+                        list-style: none;
+                        padding: 0;
+                        li{
+                            border-bottom: 1px solid #f0f0f0;
+                            padding: 10px;
+                            text-align: center;
+                            a{
+                                color: #333;
+                                display: block;
+                            }
+                            
+                        }
+                        li:last-child{
+                            border-bottom:none
+                        }
+                       
+                        li:hover{
+                            background-color: rgba(0, 0, 0, 0.1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</style>
