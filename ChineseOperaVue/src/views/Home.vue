@@ -1,14 +1,23 @@
 <template>
   <div >
-    <el-header style="padding:0;height: 100%;">
+    <el-header style="padding:0;height: auto;">
         <HomeHeader></HomeHeader>
-        <!-- 分类列表 -->
+    </el-header>
+    <el-main style="padding: 0 60px;height: 80vh;">
+         <!-- 分类列表 -->
         <div>
             <div class="header-channel">
-                <div class="channel-imgContainer" @click="navigateToHotList">
-                    <img src="@/assets/hot.png" alt="热门照片">
-                    <span>热门</span>
+                <div class="imgContainer">
+                    <div class="mp3-imgContainer" @click="navigateToAudio">
+                        <img src="@/assets/hot.png" alt="热门照片">
+                        <span>MP3</span>
+                    </div>
+                    <div class="hot-imgContainer" @click="navigateToHotList">
+                        <img src="@/assets/hot.png" alt="热门照片">
+                        <span>热门</span>
+                    </div>
                 </div>
+                
                 
                 <ul class="opera-tags">
                     <li v-for="(operaTag,index) in operaTags" :key="index" class="tag-item" @click="navigateToOperaTag(operaTag)">
@@ -17,12 +26,10 @@
                 </ul>
             </div>
         </div>
-    </el-header>
-    <el-main style="padding: 0;margin-top:30px">
         <div class="recommend-container">
             <div class="carousel-container">
-                <el-carousel trigger="click" style="height:370px">
-                    <el-carousel-item style="height:370px" v-for="(opera,index) in carouselItems" :key="index" @click="navigateToOperaPlay(opera)">
+                <el-carousel  height="50vh">
+                    <el-carousel-item  v-for="(opera,index) in carouselItems" :key="index" @click="navigateToOperaPlay(opera)">
                         <img :src="opera.operaPictureUrl" :alt="opera.operaName" class="carousel-img" title="热播榜">
                         <div class="carousel-operaName">
                             <h3>{{ opera.operaName }}</h3>
@@ -32,7 +39,7 @@
             </div>
             
             <div class="right-operas" >
-                <div class="singleOpera-container" v-for="(opera,index) in operas" :key="index" @click="navigateToOperaPlay(opera)">
+                <div class="singleOpera-container" :style="{width:'200px',height:'200px'}" v-for="(opera,index) in operas" :key="index" @click="navigateToOperaPlay(opera)">
                     <SingleOpera :opera="opera"></SingleOpera>
                 </div>
                 
@@ -166,6 +173,11 @@ export default {
                 name:'OperaTagShow',
                 query:{operaTag:operaTag}
             })
+        },
+        navigateToAudio(){
+            this.$router.push({
+                name:'Audio',
+            })
         }
     },
     computed:{
@@ -183,24 +195,33 @@ export default {
 
 .header-channel{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin-top: 20px;
     padding: 0 60px;
-    .channel-imgContainer{
+    .imgContainer{
+        display: flex;
+        width: 120px;
+        justify-content: space-between;
+        .mp3-imgContainer,.hot-imgContainer{
         display: flex;
         flex-direction: column;
-        // margin-right: 20px;
-        // margin-left:50px
         span{
             text-align: center;
         }
+        &>img{
+            height: 50px;
+        }
     }
+    }
+   
     .opera-tags{
+        margin-left: 30px;
         display: grid;
         grid-template-columns: repeat(9,1fr);
         grid-gap: 10px 40px;
         list-style: none;
+        
         padding: 0;
         .tag-item{
             padding: 10px 25px;
@@ -219,35 +240,41 @@ export default {
 }
 
 .recommend-container{
-    padding: 0 60px;
+    margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     .carousel-container{
-        width: 550px;
-        height: 370px;
-        .carousel-img{
-            // height: 100%;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
 
+        width: 30vw;
+        position: relative;
+        margin-left: 20px;
+        margin-top: 20px;
+        .carousel-img{
+            width: 100%; // 或指定具体宽度，如 300px
+            height: 100%; // 保持图片宽高比
+            object-fit: fit; // 填充图片框，裁剪图片以适应容器
+            border-radius: 10px; // 设置圆角
+        }
         .carousel-operaName{
             position: absolute;
             bottom: 20px;
             left: 20px;
             color: white;
             background-color: rgba(0, 0, 0, 0.5);
-            // padding: 10px;
             border-radius: 5px;
         }
     }
     .right-operas{
+        margin-left: 50px;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        width: 750px;
+        white-space: nowrap;
+        width: 50vw;
+        .singleOpera-container{
+            margin-top: 20px;
+            min-width: 15vw;
+        }
     }
-    
 }
 </style>

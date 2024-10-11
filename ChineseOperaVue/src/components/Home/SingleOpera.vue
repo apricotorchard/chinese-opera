@@ -1,10 +1,14 @@
 <template>
-    <div class="opera-card">
+    <!-- {width:width+'px',height:height+'px'} -->
+    <div class="opera-card" :style="style">
         <img class="opera-img" :src="opera.operaPictureUrl" :alt="opera.operaName">
         <div class="opera-info">
             <span class="opera-name">{{ opera.operaName }}</span>
-            <span class="opera-singer">{{ opera.operaSinger }}</span>
-            <span class="opera-tag">{{ opera.operaTag }}</span>
+            <div class="opera-details">
+                <span class="opera-singer">{{ opera.operaSinger }}</span>
+                <span class="opera-tag">{{ opera.operaTag }}</span>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -16,6 +20,18 @@ export default {
         opera:{
             type:Object,
             required:true //表示父组件在向子组件传递的时候，必须传递一个名为opera的属性值给子组件。
+        },
+        width:{
+            type:Number,
+            default:'200'
+        },
+        height:{
+            type:Number,
+            default:'200'
+        },
+        style:{
+            type:Object,
+            default:()=>({})
         }
     },
     name:'SingleOpera',
@@ -24,8 +40,8 @@ export default {
 
 <style lang = "scss" scoped>
 .opera-card{
-    width: 200px;
-    margin: 0 10px 10px 10px;
+    // width: 15vw;
+    color: #6A3D3D;
     .opera-img{
         width: 100%;
         height: auto;
@@ -37,15 +53,36 @@ export default {
         }
     }
     .opera-info{
-        margin-top: 5px;
+        // margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
         .opera-name{
+           display: inline-block;
             font-size: 16px;
             font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .opera-singer,.opera-tag{
-            font-size: 12px;
-            margin-right: 5px;
+        .opera-details{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .opera-singer,.opera-tag{
+            font-size: 14px;
+            margin-left: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+        .opera-singer{
+            max-width: 80%;
+        }
+
+        }
+        
     }
 }
 </style>

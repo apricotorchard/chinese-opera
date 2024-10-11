@@ -1,5 +1,6 @@
 <template>
-  <div class="head-container">
+  <div class="head-container"
+  :class="showBackground?'with-bg':'no-bg'">
     <div class="head-bar">
        
         <ul class="left-entry">
@@ -19,8 +20,6 @@
                 </a>
             </li>
         </ul>
-        
-       
         <!-- 中心的搜索栏 -->
         <div class="center-search-container">
             <form id="nav-searchform">
@@ -49,8 +48,6 @@
                         </ul>
                     </div>
                 </div>
-                
-                
             </li>
             <!-- 收藏 -->
             <li class="right-item">
@@ -83,19 +80,25 @@
        
     </div>
     <!-- 存放梨园撷英标志的地方 -->
-    <div class="logo-container">
+    <div class="logo-container" v-if="showLogo">
         <img src="@/assets/logo.png"  style="margin-left: 20px;">
     </div>
-
-    
   </div>
-
-  
 </template>
 
 <script>
 export default {
     name:'HomeHeader',
+    props:{
+        showBackground:{
+            type:Boolean,
+            default:true
+        },
+        showLogo:{
+            type:Boolean,
+            default:true
+        }
+    },
     data(){
         return{
             isDropdownVisible:false
@@ -113,123 +116,129 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.head-container{
+.head-container {
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &.with-bg {
     background-image: url('@/assets/header-bg.png');
-    background-size: contain; /* 让图片完全显示，宽高比保持不变 */
-    background-repeat: no-repeat; /* 禁止重复背景 */
-    // height: 100vh; /* 容器高度为视口高度 */
-    position: relative;
-    .head-bar{
-        height: 64px;
+  }
+
+  &.no-bg {
+    background-color: rgb(219, 142, 142);
+  }
+}
+
+   
+.head-bar{
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .left-entry{
+        list-style-type:none;/*去掉li前面的黑点*/ 
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .left-entry{
-            list-style-type:none;/*去掉li前面的黑点*/ 
-            display: flex;
-            width: 370px;
-            .left-item{
-                margin-right: 20px;
-            }
-
+        width: 370px;
+        .left-item{
+            margin-right: 20px;
         }
-        .center-search-container{
-            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
-            border-radius: 10px; /* 圆角 */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
-            width: 400px; /* 搜索框总宽度 */
-            height: 40px;
-            #nav-searchform{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                .nav-search-input {
-                    width: 100%; /* 占据父容器的宽度 */
-                    padding: 0 10px;
-                    border: none; /* 去掉默认边框 */
-                    background-color: transparent;
-                    font-size: 15px;
-                    color: #555; /* 字体颜色 */
-                    outline: none; /* 去掉点击时的高亮边框 */
-                }
 
-                /* 搜索按钮 */
-                .nav-search-btn {
-                    cursor: pointer;
-                    height: 40px;
-                    padding: 0 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: transparent;
-                    border: none;
-                }
-
-                /* 搜索按钮里的 SVG 图标 */
-                .nav-search-btn svg {
-                    fill: #555; /* 灰色图标 */
-                    transition: fill 0.3s ease;
-                }
-
-                /* 鼠标悬停时的图标变色效果 */
-                .nav-search-btn:hover svg {
-                    fill: #007bff; /* 鼠标悬停时变为蓝色 */
-                }
-            }
-            
-        }
-        .right-entry{
+    }
+    .center-search-container{
+        background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+        border-radius: 10px; /* 圆角 */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+        width: 400px; /* 搜索框总宽度 */
+        height: 40px;
+        #nav-searchform{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            list-style-type:none;/*去掉li前面的黑点*/
-            .right-item{
-                margin-right: 20px;
-
+            .nav-search-input {
+                width: 100%; /* 占据父容器的宽度 */
+                padding: 0 10px;
+                border: none; /* 去掉默认边框 */
+                background-color: transparent;
+                font-size: 15px;
+                color: #555; /* 字体颜色 */
+                outline: none; /* 去掉点击时的高亮边框 */
             }
-            .profile-container{
-                position: relative;
-                display: inline-block;
-                .avatar-img {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%; /* 圆形头像 */
-                    border: 2px solid #fff; /* 白色边框 */
-                    transition: transform 0.3s ease;
-                }
-                .profile-avatar:hover .avatar-img{
-                    transform: scale(1.5);
-                }
-                .profile-dropdown{
-                    position: absolute;
-                    top:50px;
-                    right: -80px;
-                    background-color: white;
-                    width:200px;
-                    ul{
-                        list-style: none;
-                        padding: 0;
-                        li{
-                            border-bottom: 1px solid #f0f0f0;
-                            padding: 10px;
-                            text-align: center;
-                            a{
-                                color: #333;
-                                display: block;
-                            }
-                            
+
+            /* 搜索按钮 */
+            .nav-search-btn {
+                cursor: pointer;
+                height: 40px;
+                padding: 0 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: transparent;
+                border: none;
+            }
+
+            /* 搜索按钮里的 SVG 图标 */
+            .nav-search-btn svg {
+                fill: #555; /* 灰色图标 */
+                transition: fill 0.3s ease;
+            }
+
+            /* 鼠标悬停时的图标变色效果 */
+            
+        }
+        
+    }
+    .right-entry{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style-type:none;/*去掉li前面的黑点*/
+        .right-item{
+            margin-right: 20px;
+
+        }
+        .profile-container{
+            position: relative;
+            display: inline-block;
+            .avatar-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%; /* 圆形头像 */
+                border: 2px solid #fff; /* 白色边框 */
+                transition: transform 0.3s ease;
+            }
+            .profile-avatar:hover .avatar-img{
+                transform: scale(1.5);
+            }
+            .profile-dropdown{
+                position: absolute;
+                top:50px;
+                right: -80px;
+                background-color: white;
+                width:200px;
+                ul{
+                    list-style: none;
+                    padding: 0;
+                    li{
+                        border-bottom: 1px solid #f0f0f0;
+                        padding: 10px;
+                        text-align: center;
+                        a{
+                            color: #333;
+                            display: block;
                         }
-                        li:last-child{
-                            border-bottom:none
-                        }
-                       
-                        li:hover{
-                            background-color: rgba(0, 0, 0, 0.1);
-                        }
+                        
+                    }
+                    li:last-child{
+                        border-bottom:none
+                    }
+                    
+                    li:hover{
+                        background-color: rgba(0, 0, 0, 0.1);
                     }
                 }
             }
         }
     }
 }
+
 </style>

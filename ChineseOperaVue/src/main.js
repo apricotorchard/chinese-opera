@@ -9,6 +9,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElIconModules from '@element-plus/icons-vue'
 
+
 const app = createApp(App)
 // 统一注册Icon图标
 for (const iconName in ElIconModules) {
@@ -22,4 +23,5 @@ for (const iconName in ElIconModules) {
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
+
 app.mount('#app')

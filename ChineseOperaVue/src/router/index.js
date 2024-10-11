@@ -24,6 +24,11 @@ const router = createRouter({
       name:'OperaTagShow',
       component: () => import('@/views/OperaTagShow.vue')
     },
+    {
+      path:'/audio',
+      name:'Audio',
+      component: () => import('@/views/Audio.vue')
+    },
   ]
 })
 
