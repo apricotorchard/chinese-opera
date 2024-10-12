@@ -1,4 +1,11 @@
-<!-- icon 组件 -->
+<template>
+  <i
+    :class="['iconfont', getIconCls()]"
+    :style="getIconStyle()"
+    @click="onClick"
+  />
+</template>
+
 <script>
 export default {
   name: 'OperaIcon',
@@ -14,29 +21,21 @@ export default {
   },
   methods: {
     getIconCls() {
-      return `icon-${this.type}`
+      return `icon-${this.type}`;
     },
     getIconStyle() {
-      return { fontSize: this.size + 'px' }
+      return {
+        fontSize: this.size + 'px',
+      };
     },
     onClick(e) {
-      this.$emit('click', e)
+      this.$emit('click', e);
     },
   },
-  render() {
-    const Icon = (
-      <i
-        onClick={this.onClick}
-        class={`iconfont ${this.getIconCls()}`}
-        style={this.getIconStyle()}
-      />
-    )
-    return Icon
-  },
-}
+};
 </script>
 
-<style lang="less">
+<style lang="scss" scoped>
 .iconfont {
   display: inline-block;
   font-style: normal;
@@ -45,8 +44,6 @@ export default {
   line-height: 1;
   vertical-align: baseline;
   text-transform: none;
-  speak: none;
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

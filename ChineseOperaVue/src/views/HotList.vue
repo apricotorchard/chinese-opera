@@ -133,7 +133,8 @@
   </script>
   
 <style lang="scss" scoped>
-    .bg {
+// @import '@/styles/mixin.scss';
+.bg {
   background-image: url('@/assets/R (1).jpg');
   background-size: cover;
   background-position: center;
@@ -212,9 +213,10 @@
         font-weight: bold;
         font-size: 1.1rem;
         margin-bottom: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        @include no-wrap;
+        // white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
         color: #B85C5C; /* 暖色调红，与背景图协调 */
       }
 

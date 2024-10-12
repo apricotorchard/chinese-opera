@@ -1,41 +1,28 @@
 <template>
-  
-  <div class="opera-list">
-    <template v-if="operaInfoList.length>0">
-      <div class="list-item list-header">
-        <span class="list-name">戏曲</span>
-        <span class="list-singer">演唱者</span>
-        <span class="list-time">时长</span>
-      </div>
-      <div class="list-content">
-        <!-- 双击实现 -->
-        <div v-for="(opera,index) in operaInfoList" :key="index" class="list-item" @dblclick="selectOpera(opera,index,$evebt)">
-          <span class="list-num">{{ opera.operaId }}</span>
-          <div class="list-name">
-            <span>{{ opera.operaName }}</span>
-            <opera-icon class="hover"  :size="40" @click.stop="selectItem(opera,index)"></opera-icon>
-          </div>
-          <span class="list-singer">{{ opera.operaSinger }}</span>
-          <span class="list-time">
-            {{ opera.operaDuration }}
-            <opera-icon class="hover" type="delete-mini" :size="40" @click.stop="deleteItem(index)"></opera-icon>
-          </span>
-        </div>
+  <div class="audio-container">
+    <Header :showBackground="false" :showLogo="false"></Header>
+    <Channel></Channel>
 
-      </div>
-    </template>
-    <!-- 如果没有显示列表空空如也 -->
+    <div class="content">
+      <AudioList></AudioList>
+      <AudioMp3Player></AudioMp3Player>
+    </div>
   </div>
-  <!-- <AudioMp3Player></AudioMp3Player> -->
 </template>
 
 <script>
 import AudioMp3Player from '@/components/AudioPlay/AudioMp3Player.vue'
-import audio1 from '@/assets/audio1.mp3'
 // 戏曲的不变的信息可以直接从后端获取，对于容易变化到的数据，需要放在vuex里面
+import AudioList from '@/components/AudioPlay/AudioList.vue'
+import Header from '@/components/Home/Header.vue'
+import Channel from '@/components/Home/channel.vue'
+import audio1 from '@/assets/audio1.mp3'
 export default {
   components:{
-    AudioMp3Player
+    AudioMp3Player,
+    AudioList,
+    Header,
+    Channel
   },
   data(){
     return{
@@ -49,15 +36,87 @@ export default {
                 
       },
       {
-                operaId:1,
+                operaId:2,
                 operaName:'《富春令》',
                 operaSinger:'李淑芳',
                 operaTag: '越剧',
                 operaDuration:'20min',
                 operaAudioUrl:  audio1,
                 
-      }
+      },{
+                operaId:3,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:4,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:5,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:6,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:7,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:8,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:9,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
+      {
+                operaId:10,
+                operaName:'《富春令》',
+                operaSinger:'李淑芳',
+                operaTag: '越剧',
+                operaDuration:'20min',
+                operaAudioUrl:  audio1,
+                
+      },
     ],
+    operaTags:['京剧', '秦腔', '曲剧', '晋剧', '黄梅戏', '评剧', '豫剧', '吕剧', '昆曲', '越剧', '潮剧', '川剧', '琼剧', '茂腔', '蒲剧', '越调', '赣剧', '湘剧'],
     }
   },
   methods:{
@@ -68,15 +127,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.opera-list{
-  height: 100%;
-  .list-header{
-    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
-    color: #fff;
-    .list-name {
-      padding-left: 40px;
-    }
-  }
+.audio-container{
+  
 }
-
+.content{
+  @include flex-center();
+  background: rgba(0, 0, 0, 0.5);
+}
 </style>

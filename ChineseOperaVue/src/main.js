@@ -1,5 +1,4 @@
-import './assets/main.css'
-
+import './assets/styles/index.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
@@ -8,6 +7,7 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElIconModules from '@element-plus/icons-vue'
+// import OperaIcon from '@/base/opera-icon/opera-icon.vue';
 
 
 const app = createApp(App)
@@ -18,8 +18,7 @@ for (const iconName in ElIconModules) {
     app.component(iconName, item)
   }
 }
-
-
+// app.component('OperaIcon', OperaIcon)
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)

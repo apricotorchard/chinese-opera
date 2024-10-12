@@ -1,14 +1,20 @@
 <template>
   <div class="audio-player">
-    <h2 v-if="currentTrack">{{ currentTrack.operaName }}</h2>
-    <p v-if="currentTrack">{{ currentTrack.operaSinger }} - {{ currentTrack.operaTag }}</p>
-    <div class="controls" v-if="currentTrack">
-        <button @click="togglePlay">{{ isPlaying ? '暂停' : '播放' }}</button>
-        <button @click="stopTrack">重新播放</button>
-        <button @click="prevTrack">上一首</button>
-        <button @click="nextTrack">下一首</button>
+    <div>
+        <el-image class="slow-rotate" style="width: 200px; height: 200px" :src=url fit="cover">
+        </el-image>
     </div>
-
+    <h2 v-if="currentTrack">{{ currentTrack.operaName }}</h2>
+    <p v-if="currentTrack">{{ currentTrack.operaSinger }}</p>
+    <p v-if="currentTrack">{{ currentTrack.operaTag }}</p>
+    <div class="controls" v-if="currentTrack">
+        <el-icon :size="30" @click="prevTrack"><CaretLeft /></el-icon>
+        <el-icon :size="30" @click="togglePlay">
+            <component :is="isPlaying ? 'VideoPause' : 'VideoPlay'" />
+        </el-icon>
+        <el-icon :size="30" @click="nextTrack"><CaretRight /></el-icon>
+    </div>
+    <span>{{ formatTime(seek) }} / {{ formatTime(duration) }}</span>
     <div class="progress" v-if="currentTrack">
         <input
           type="range"
@@ -18,20 +24,14 @@
           @input="seekTrack"
           step="0.01"
         />
-        <span>{{ formatTime(seek) }} / {{ formatTime(duration) }}</span>
     </div>
   </div>
 </template>
 
 <script>
 import { Howl } from 'howler';
-import audio1 from '@/assets/audio1.mp3'
+import audio1 from '@/assets/audio1.mp3';
 export default {
-    // props:{
-    //     operaInfo:{
-
-    //     }
-    // },
     data(){
         return{
             operaInfoList:[{
@@ -46,6 +46,7 @@ export default {
             isPlaying:false,
             seek:0,
             duration:0,
+            url:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
         };
     },
     mounted(){
@@ -124,14 +125,23 @@ export default {
 </script>
 
 <style scoped>
+.slow-rotate {
+  border-radius: 50%;
+  transform-origin: center;
+  animation: rotate 9s linear infinite;
+}
+.slow-rotate:hover{
+  animation-play-state: paused;
+}
  .audio-player {
-    background-color: #f9f9f9;
-    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin: 0 auto;
+    width: 30vw;
+    height: 80vh;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   h2 {
@@ -140,14 +150,16 @@ export default {
   }
   
   .controls {
+    display: flex;
+    justify-content: space-around;
     margin: 10px 0;
   }
   
   .controls button {
     margin-right: 5px;
     padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
+    /* background-color: #007bff; */
+    /* color: white; */
     border: none;
     border-radius: 5px;
     cursor: pointer;
