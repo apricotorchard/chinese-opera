@@ -1,10 +1,12 @@
 <template>
   <div class="audio-player">
+    <p>{{currentTrackId}}</p>
     <div>
         <el-image class="slow-rotate" style="width: 200px; height: 200px" :src=url fit="cover">
         </el-image>
     </div>
     <h2 v-if="currentTrack">{{ currentTrack.operaName }}</h2>
+    
     <p v-if="currentTrack">{{ currentTrack.operaSinger }}</p>
     <p v-if="currentTrack">{{ currentTrack.operaTag }}</p>
     <div class="controls" v-if="currentTrack">
@@ -31,6 +33,8 @@
 <script>
 import { Howl } from 'howler';
 import audio1 from '@/assets/audio1.mp3';
+import {useTrackStore} from '@/stores/trackStore.js';
+import {mapState,mapActions} from 'pinia';
 export default {
     data(){
         return{
@@ -48,6 +52,11 @@ export default {
             duration:0,
             url:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
         };
+    },
+    computed: {
+      ...mapState(useTrackStore, {
+        currentTrackId:state=>state.currentTrackId
+      })
     },
     mounted(){
         this.loadTrack(this.operaInfoList[0]);
@@ -68,7 +77,6 @@ export default {
                     this.isPlaying = false;
                 }
             });
-            this.playTrack();
         },
         playTrack() {
             this.sound.play();

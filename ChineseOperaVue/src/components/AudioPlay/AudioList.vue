@@ -10,7 +10,7 @@
         </div>
         <div class="list-content" @scroll="listScroll($event)">
           <!-- 双击实现 -->
-          <div v-for="(opera,index) in displayedOperas" :key="index" class="list-item" @dblclick="selectOpera(opera,index,$evebt)">
+          <div v-for="(opera,index) in displayedOperas" :key="index" class="list-item" @dblclick="selectOpera(opera)">
             <span class="list-num">{{ opera.operaId }}</span>
             <span class="list-name">{{ opera.operaName }}</span>
             <span class="list-singer">{{ opera.operaSinger }}</span>
@@ -31,7 +31,8 @@
 </template>
   
   <script>
-  import audio1 from '@/assets/audio1.mp3'
+  import {useTrackStore} from '@/stores/trackStore';
+  import {useOperaListStore} from '@/stores/operaListStore'
   const THRESHOLD = 100
   // 戏曲的不变的信息可以直接从后端获取，对于容易变化到的数据，需要放在vuex里面
   export default {
@@ -41,148 +42,24 @@
         lockUp:false,
         pageSize:10,
         currentPage:1,
-        operaInfoList:[{
-                  operaId:1,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,   
-        },
-        {
-                  operaId:2,
-                  operaName:'《千里寻夫》又名《北国认父》王帅军 杨少彭 杨乃彭 施昊 马杰',
-                  operaSinger:'王帅军 杨少彭 杨乃彭 施昊 马杰',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1, 
-        },{
-                  operaId:3,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:4,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:5,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:6,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:7,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:8,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:9,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:10,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:11,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:12,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:13,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:14,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:15,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:16,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-        {
-                  operaId:17,
-                  operaName:'《富春令》',
-                  operaSinger:'李淑芳',
-                  operaTag: '越剧',
-                  operaDuration:'20min',
-                  operaAudioUrl:  audio1,
-        },
-      ],
+        operaInfoList:[],
       }
     },
+    
     mounted(){
+        const operaStore = useOperaListStore()
+        this.operaInfoList = operaStore.operaInfoList;
         this.loadMore();
     },
     methods:{
+        
+        
+        selectOpera(opera){
+            // 1.先把当前的播放的戏曲id更换
+            // 2.更换播放状态
+            const track = useTrackStore();
+            track.setCurrentTrackId(opera.operaId);
+        },
       //滚动事件
         listScroll(e){
             const { scrollTop, scrollHeight, offsetHeight } = e.target;
@@ -191,16 +68,18 @@
                 this.loadMore(); // 加载更多数据
             }
         },
-      loadMore(){
-            const startIndex = this.pageSize * (this.currentPage - 1);
-            const endIndex = startIndex + this.pageSize;
-            const newItems = this.operaInfoList.slice(startIndex, endIndex);
-            if (newItems.length > 0) {
-                this.displayedOperas = [...this.displayedOperas, ...newItems];
-                this.currentPage += 1;
-            }
-            this.lockUp = false; // 解锁滚动加载
+        loadMore(){
+                const startIndex = this.pageSize * (this.currentPage - 1);
+                const endIndex = startIndex + this.pageSize;
+                const newItems = this.operaInfoList.slice(startIndex, endIndex);
+                if (newItems.length > 0) {
+                    this.displayedOperas = [...this.displayedOperas, ...newItems];
+                    this.currentPage += 1;
+                }
+                this.lockUp = false; // 解锁滚动加载
         },
+        //实现双击播放，将状态传入到另一个组件，然后根据当前的播放状态
+       
     }
   }
   </script>

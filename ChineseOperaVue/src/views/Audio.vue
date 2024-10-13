@@ -1,7 +1,10 @@
 <template>
   <div class="audio-container">
     <Header :showBackground="false" :showLogo="false"></Header>
-    <Channel></Channel>
+    <div class="channel-container">
+      <Channel></Channel>
+    </div>
+    
 
     <div class="content">
       <AudioList></AudioList>
@@ -16,7 +19,6 @@ import AudioMp3Player from '@/components/AudioPlay/AudioMp3Player.vue'
 import AudioList from '@/components/AudioPlay/AudioList.vue'
 import Header from '@/components/Home/Header.vue'
 import Channel from '@/components/Home/channel.vue'
-import audio1 from '@/assets/audio1.mp3'
 export default {
   components:{
     AudioMp3Player,
@@ -26,97 +28,7 @@ export default {
   },
   data(){
     return{
-      operaInfoList:[{
-                operaId:1,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:2,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },{
-                operaId:3,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:4,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:5,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:6,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:7,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:8,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:9,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-      {
-                operaId:10,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaDuration:'20min',
-                operaAudioUrl:  audio1,
-                
-      },
-    ],
-    operaTags:['京剧', '秦腔', '曲剧', '晋剧', '黄梅戏', '评剧', '豫剧', '吕剧', '昆曲', '越剧', '潮剧', '川剧', '琼剧', '茂腔', '蒲剧', '越调', '赣剧', '湘剧'],
+      // operaTags:['京剧', '秦腔', '曲剧', '晋剧', '黄梅戏', '评剧', '豫剧', '吕剧', '昆曲', '越剧', '潮剧', '川剧', '琼剧', '茂腔', '蒲剧', '越调', '赣剧', '湘剧'],
     }
   },
   methods:{
@@ -128,10 +40,14 @@ export default {
 
 <style lang="scss" scoped>
 .audio-container{
-  
+  background: rgba(0, 0, 0, 0.5);
+}
+.channel-container{
+  margin-top: 20px;
 }
 .content{
   @include flex-center();
-  background: rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
+  
 }
 </style>

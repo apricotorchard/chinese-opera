@@ -1,16 +1,19 @@
 import { defineStore } from "pinia";
 export const useTrackStore = defineStore('track',{
     state:()=>({
-        currentTrackId:null,
+        currentTrackId:1,
         isPlaying:false
     }),
     actions:{
-        playTrack(trackId){
+        setCurrentTrackId(trackId){
             this.currentTrackId = trackId;
             this.isPlaying = true;
         },
-        pauseTrack(){
+        pauseStoreTrack(){
             this.isPlaying = false;
+        },
+        playStoreTrack(){
+            this.isPlaying = true;
         }
     }
 })

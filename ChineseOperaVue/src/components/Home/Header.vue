@@ -125,7 +125,8 @@ export default {
   }
 
   &.no-bg {
-    background-color: rgb(219, 142, 142);
+    background: rgba(0, 0, 0, 0.5);
+    // background-color: rgb(219, 142, 142);
   }
 }
 
