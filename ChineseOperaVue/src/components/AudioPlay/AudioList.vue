@@ -18,7 +18,11 @@
               {{ opera.operaDuration }}
             </span>
             <div class="icon-container">
-                <el-icon class="action-icon"><VideoPlay /></el-icon>
+                <el-icon class="action-icon" :size="30">
+                    <VideoPause v-if="track.isPlaying"  @click="cancelOpera(opera)"/>
+                    <VideoPlay v-if="!track.isPlaying" @click="selectOpera(opera)"/>
+                </el-icon>
+                
                 <el-icon class="action-icon"><Delete /></el-icon>
             </div>
             
@@ -43,22 +47,28 @@
         pageSize:10,
         currentPage:1,
         operaInfoList:[],
+        operaStore : useOperaListStore(),
+        track : useTrackStore()
       }
     },
     
     mounted(){
-        const operaStore = useOperaListStore()
-        this.operaInfoList = operaStore.operaInfoList;
+        //我都有全部的戏曲了，还需要滚动事件么？
+        this.operaInfoList = this.operaStore.operaInfoList;
         this.loadMore();
     },
     methods:{
-        
-        
         selectOpera(opera){
             // 1.先把当前的播放的戏曲id更换
             // 2.更换播放状态
-            const track = useTrackStore();
-            track.setCurrentTrackId(opera.operaId);
+            this.track.isPlaying = true;
+            this.track.setCurrentTrackId(opera.operaId);
+            console.log("选择一个戏曲播放")
+        },
+        cancelOpera(opera){
+            this.track.isPlaying = false;
+            this.track.setCurrentTrackId(opera.operaId);
+            console.log("选择一个戏曲取消")
         },
       //滚动事件
         listScroll(e){
@@ -79,7 +89,6 @@
                 this.lockUp = false; // 解锁滚动加载
         },
         //实现双击播放，将状态传入到另一个组件，然后根据当前的播放状态
-       
     }
   }
   </script>
@@ -126,13 +135,10 @@
         flex-basis: 30%;
     }
     .list-header{
-        // border-bottom: 1px solid $list_head_line_color;
         color: $text_color_active;
         font-weight: bold;
         padding-bottom: 20px;
     }
-
-    /* 默认隐藏播放和删除按钮 */
     .action-icon {
       display: none;
       cursor: pointer;

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import audio1 from '@/assets/audio1.mp3'
+import audio2 from '@/assets/audio2.mp3'
 export const useOperaListStore = defineStore('operaList', {
   state: () => ({
     operaInfoList: [
@@ -17,7 +18,7 @@ export const useOperaListStore = defineStore('operaList', {
               operaSinger:'王帅军 杨少彭 杨乃彭 施昊 马杰',
               operaTag: '越剧',
               operaDuration:'20min',
-              operaAudioUrl:  audio1, 
+              operaAudioUrl:  audio2, 
       },{
               operaId:3,
               operaName:'《富春令》',

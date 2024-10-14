@@ -7,7 +7,6 @@ export const useTrackStore = defineStore('track',{
     actions:{
         setCurrentTrackId(trackId){
             this.currentTrackId = trackId;
-            this.isPlaying = true;
         },
         pauseStoreTrack(){
             this.isPlaying = false;

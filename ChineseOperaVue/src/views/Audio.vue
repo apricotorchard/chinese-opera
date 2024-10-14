@@ -4,11 +4,11 @@
     <div class="channel-container">
       <Channel></Channel>
     </div>
-    
-
     <div class="content">
       <AudioList></AudioList>
-      <AudioMp3Player></AudioMp3Player>
+      <keep-alive>
+        <AudioMp3Player></AudioMp3Player>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -28,19 +28,16 @@ export default {
   },
   data(){
     return{
-      // operaTags:['京剧', '秦腔', '曲剧', '晋剧', '黄梅戏', '评剧', '豫剧', '吕剧', '昆曲', '越剧', '潮剧', '川剧', '琼剧', '茂腔', '蒲剧', '越调', '赣剧', '湘剧'],
     }
   },
   methods:{
-    // 获取播放状态 type
-   
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .audio-container{
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(8, 160, 104, 0.651);
 }
 .channel-container{
   margin-top: 20px;

@@ -1,6 +1,5 @@
 <template>
   <div class="audio-player">
-    <p>{{currentTrackId}}</p>
     <div>
         <el-image class="slow-rotate" style="width: 200px; height: 200px" :src=url fit="cover">
         </el-image>
@@ -12,7 +11,8 @@
     <div class="controls" v-if="currentTrack">
         <el-icon :size="30" @click="prevTrack"><CaretLeft /></el-icon>
         <el-icon :size="30" @click="togglePlay">
-            <component :is="isPlaying ? 'VideoPause' : 'VideoPlay'" />
+          <VideoPlay v-if="!isPlaying"/>
+          <VideoPause v-if="isPlaying"/>
         </el-icon>
         <el-icon :size="30" @click="nextTrack"><CaretRight /></el-icon>
     </div>
@@ -32,34 +32,56 @@
 
 <script>
 import { Howl } from 'howler';
-import audio1 from '@/assets/audio1.mp3';
-import {useTrackStore} from '@/stores/trackStore.js';
-import {mapState,mapActions} from 'pinia';
+import { useTrackStore } from '@/stores/trackStore'; 
+import { useOperaListStore } from '@/stores/operaListStore';
+// 有一个bug，就是会重复播放两次。
 export default {
     data(){
         return{
-            operaInfoList:[{
-                operaId:1,
-                operaName:'《富春令》',
-                operaSinger:'李淑芳',
-                operaTag: '越剧',
-                operaAudioUrl:  audio1,
-            },],
             currentTrack:null,
             sound:null,
-            isPlaying:false,
             seek:0,
             duration:0,
             url:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
         };
     },
     computed: {
-      ...mapState(useTrackStore, {
-        currentTrackId:state=>state.currentTrackId
-      })
+      trackStore() {
+        return useTrackStore();
+      },
+      operaListStore() {
+        return useOperaListStore();
+      },
+      currentTrackId() {
+        return this.trackStore.currentTrackId;
+      },
+      isPlaying(){
+        return this.trackStore.isPlaying;
+      }
     },
+    watch: {
+      currentTrackId(newTrackId) {
+        console.log("currentTreackID发生变化....");
+        const newTrack = this.operaListStore.operaInfoList[newTrackId-1];
+        if (newTrack) {
+          this.loadTrack(newTrack);
+          this.playTrack();
+        }
+      },
+      isPlaying(newTrackId){
+        newTrackId ? this.playTrack():this.pauseTrack() ;
+      }
+   },
     mounted(){
-        this.loadTrack(this.operaInfoList[0]);
+      this.currentTrack = this.operaListStore.operaInfoList[this.trackStore.currentTrackId-1];
+      this.loadTrack(this.currentTrack);
+    },
+    deactivated() {
+    // 组件被切换到其他页面时可以暂停播放或处理其他逻辑
+        if (this.sound) {
+            this.trackStore.isPlaying = false;
+            this.sound.unload();
+        }
     },
     methods:{
         loadTrack(track){
@@ -67,32 +89,34 @@ export default {
                 this.sound.unload();
             }
             this.currentTrack = track;
+            
             this.sound = new Howl({
-                src:[track.operaAudioUrl],
-                html5:true,
-                onload:()=>{
-                    this.duration = this.sound.duration();
-                },
-                onend:()=>{
-                    this.isPlaying = false;
-                }
-            });
+              src:[track.operaAudioUrl],
+              html5:true,
+              onload:()=>{
+                  this.duration = this.sound.duration();
+              },
+              onend:()=>{
+                this.trackStore.isPlaying = false;
+            }
+          });
+          console.log(this.sound);
         },
         playTrack() {
             this.sound.play();
-            this.isPlaying = true;
+            this.trackStore.isPlaying = true;
             this.updateSeek();
         },
         pauseTrack() {
             this.sound.pause();
-            this.isPlaying = false;
+            this.trackStore.isPlaying = false;
         },
         togglePlay() {
-            this.isPlaying ? this.pauseTrack() : this.playTrack();
+            this.trackStore.isPlaying ? this.pauseTrack() : this.playTrack();
         },
         stopTrack() {
             this.sound.stop();
-            this.isPlaying = false;
+            this.trackStore.isPlaying = false;
             this.seek = 0;
         },
         prevTrack() {
@@ -112,7 +136,7 @@ export default {
             }
         },
         updateSeek() {
-            if (this.sound && this.isPlaying) {
+            if (this.sound && this.trackStore.isPlaying) {
             this.seek = this.sound.seek();
             requestAnimationFrame(this.updateSeek);
             }
@@ -132,7 +156,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .slow-rotate {
   border-radius: 50%;
   transform-origin: center;
@@ -142,18 +166,17 @@ export default {
   animation-play-state: paused;
 }
  .audio-player {
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 30vw;
+    width: 25vw;
     height: 80vh;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-  
+  h2,p{
+    @include no-wrap;
+  }
   h2 {
-    font-size: 18px;
     margin-bottom: 10px;
   }
   
@@ -166,8 +189,6 @@ export default {
   .controls button {
     margin-right: 5px;
     padding: 5px 10px;
-    /* background-color: #007bff; */
-    /* color: white; */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -185,8 +206,6 @@ export default {
     width: 100%;
   }
   
-  span {
-    font-size: 14px;
-  }
+ 
 
 </style>
