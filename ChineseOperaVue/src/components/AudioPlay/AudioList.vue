@@ -104,17 +104,17 @@
         overflow-y: auto;
     }
     .list-item {
-        color: #fff;
+        color: $text-color;
         @include flex-center();
         padding: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(43, 41, 41, 0.2);
         transition: background-color 0.3s ease;
         &>span{
             text-align: center;
             @include no-wrap;
         }
         &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: #f0f0f0;
         }
 
         /* 鼠标悬停时，显示播放和删除按钮 */
@@ -135,7 +135,7 @@
         flex-basis: 30%;
     }
     .list-header{
-        color: $text_color_active;
+        color: $text_color;
         font-weight: bold;
         padding-bottom: 20px;
     }

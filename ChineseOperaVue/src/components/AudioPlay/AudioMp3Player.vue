@@ -185,19 +185,7 @@ export default {
     justify-content: space-around;
     margin: 10px 0;
   }
-  
-  .controls button {
-    margin-right: 5px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .controls button:hover {
-    background-color: #0056b3;
-  }
-  
+ 
   .progress {
     margin-top: 15px;
   }

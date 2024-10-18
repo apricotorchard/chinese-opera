@@ -17,13 +17,7 @@
                         <span>热门</span>
                     </div>
                 </div>
-                
                 <Channel></Channel>
-                <!-- <ul class="opera-tags">
-                    <li v-for="(operaTag,index) in operaTags" :key="index" class="tag-item" @click="navigateToOperaTag(operaTag)">
-                        {{ operaTag }}
-                    </li>
-                </ul> -->
             </div>
         </div>
         <div class="recommend-container">

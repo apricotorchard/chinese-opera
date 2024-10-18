@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .audio-container{
-  background: rgba(8, 160, 104, 0.651);
+  background:$bg_color;
 }
 .channel-container{
   margin-top: 20px;
@@ -45,6 +45,5 @@ export default {
 .content{
   @include flex-center();
   margin-top: 10px;
-  
 }
 </style>

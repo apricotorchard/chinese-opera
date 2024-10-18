@@ -14,8 +14,8 @@ body {
   color: var(--color-text);
   background: var(--color-background);
   transition:
-    color 0.5s,
-    background-color 0.5s;
+color 0.5s,
+background-color 0.5s;
   line-height: 1.6;
   font-family:
     Arial,
@@ -94,7 +94,7 @@ font-weight: normal;
   
 a,.green {
 text-decoration: none;
-color: #fff;
+color: var($text_color);
 transition: 0.4s;
 padding: 3px;
 }

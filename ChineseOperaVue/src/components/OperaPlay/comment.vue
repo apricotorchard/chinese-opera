@@ -17,15 +17,16 @@
                 <el-avatar class="header-img" :src="comment.headImg" style="width:40px;height:40px"></el-avatar>
                 <span class="author-name">{{ comment.name }}</span>
                 <span class="author-time">{{ comment.time }}</span>
+                <span class="reply-people" @click=getPeoPleInfo(index,comment.name)>回复</span>
             </div>
             <div class="comment-content">{{ comment.comment }}</div>
-  
             <!-- 回复列表 -->
-            <div v-for="(reply, replyIndex) in comment.reply" :key="replyIndex" class="reply-block" @click=getReplyIndex(replyIndex)>
+            <div v-for="(reply, replyIndex) in comment.reply" :key="replyIndex" class="reply-block" >
                     <div class="author-info">
                         <el-avatar class="header-img" :src="reply.fromHeadImg" style="width:40px;height:40px"></el-avatar>
                         <span class="author-name">{{ reply.from }}</span>
                         <span class="author-time">{{ reply.time }}</span>
+                        <span class="reply-people" @click=getPeoPleInfo(index,reply.from)>回复</span>
                     </div>
                     <div class="reply-content">
                         回复 {{ reply.to }}: {{ reply.comment }}
@@ -57,6 +58,7 @@ export default {
         replyComment: "",
         ReplyIndex:-1,
         replyname:'',
+        // 这个是每个戏曲维护着一个戏曲评论列表
         comments: [
           {
             name: "Lana Del Rey",
@@ -115,7 +117,7 @@ export default {
         onDivInput(e) {
             this.replyComment = e.target.innerHTML;
         },
-        sendComment() { //发送的评论
+        sendComment() { 
             if (!this.replyComment.trim()) {
                 alert("评论不能为空");
                 return;
@@ -131,16 +133,16 @@ export default {
             this.replyComment = "";
             document.getElementById("replyInput").innerHTML = "";//清空
       },
-      getReplyIndex(replyIndex){
-            console.log(replyIndex)
+      getPeoPleInfo(replyIndex,replyname){
+            // console.log(replyIndex)
             this.ReplyIndex = replyIndex;
+            this.replyname = replyname;
       },
       inputShow(index){
-        if(this.ReplyIndex===-1){
-            return false;
+        if(this.ReplyIndex === index){
+          return true;
         }
-        this.replyname = this.comments[index].reply[this.ReplyIndex].from;
-        return this.replyname;
+        return false;
       },
       sendCommentReply(index) { //评论回复
         if (!this.replyComment.trim()) {
@@ -150,22 +152,31 @@ export default {
         const newReply = {
           from: "Lana Del Rey",
           fromHeadImg: this.myHeader,
-          to: this.comments[index].name,
+          to: this.replyname,
           comment: this.replyComment,
           time: new Date().toLocaleString(),
         };
         this.comments[index].reply.push(newReply);
         this.replyComment = "";
+        const inputContent = document.querySelectorAll(".reply-comment-input")[index];
+        if(inputContent){
+          inputContent.innerHTML="";
+        }
       },
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.comment-container{
+  border: solid 1px rgba(217, 210, 210, 0.591);
+  border-radius:$border_radius;
+}
 .my-reply {
   display: flex;
   align-items: flex-start;
   margin-bottom: 20px;
+  margin-top: 20px;
   .header-img {
     width: 30px; /* 头像宽度 */
     height: 30px; /* 头像高度 */
@@ -191,7 +202,6 @@ export default {
     margin: 5px 5px 0 5px;
   }
 }
-
 .comment-block {
   margin-bottom: 30px;
   padding-bottom: 15px;
@@ -206,12 +216,16 @@ export default {
         }
         .author-name {
             font-weight: bold;
-            margin-right: 10px;
         }
-        .author-time {
+        .author-time,.reply-people{
             color: #999;
             font-size: 12px;
+            margin-left: 10px;
         }
+        .reply-people:hover{
+          color: rgb(58, 58, 143);
+        }
+       
     }
     .comment-content {
         margin-left: 50px;
@@ -221,7 +235,6 @@ export default {
     }
   }
 }
- /* 回复部分样式 */
  .reply-block {
     margin-left: 50px;
     padding: 10px;
@@ -234,17 +247,13 @@ export default {
       border-radius: 50%;
       margin-right: 10px;
     }
-
     .author-info {
       flex-grow: 1;
       display: flex;
-    //   flex-direction: column;
-
       .author-name {
         font-weight: bold;
         margin-right: 10px;
       }
-
       .author-time {
         color: #999;
         font-size: 12px;
@@ -255,7 +264,6 @@ export default {
       font-size: 14px;
     }
   }
-//   回复的内容的输入框
 .reply-comment {
     display: flex;
     align-items: flex-start;
@@ -266,11 +274,9 @@ export default {
       border-radius: 50%;
       margin-right: 10px;
     }
-
     .reply-info {
         display: flex;
       flex-grow: 1;
-
       .reply-input {
         padding: 10px;
         border: 1px solid #ccc;
@@ -284,7 +290,7 @@ export default {
       }
     }
     .reply-btn-box {
-        margin-top: 5px;
+      margin-top: 5px;
       margin-left: 10px;
     }
 }
