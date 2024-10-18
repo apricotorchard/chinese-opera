@@ -10,6 +10,11 @@ const router = createRouter({
       component: Home
     },
     {
+      path:'/login',
+      name:'Login',
+      component: () => import('@/views/Login.vue')
+    },
+    {
       path:'/operaplay',
       name:'operaPlay',
       component: () => import('@/views/OperaPlay.vue'),
