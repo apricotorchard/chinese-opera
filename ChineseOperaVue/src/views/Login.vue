@@ -1,11 +1,10 @@
 <template> 
     <div ref="vantaBg" class="vanta-container"></div>
     <div class="lr-container">
-        <!-- <LoginRegister></LoginRegister> -->
         <div class="content_body">
         <div class="content_header">
-            <a :class="isActive?['isActive']:[]" @click="login">登录</a>
-            <a :class="isActive?[]:['isActive']" @click="register">注册</a>
+            <a :class="isActive?['isActive']:[]" @click="lr_change">登录</a>
+            <a :class="isActive?[]:['isActive']" @click="lr_change">注册</a>
         </div>
         <!-- 登录 -->
         <div class="login_content" v-if="isActive">
@@ -17,8 +16,16 @@
                     <input type="password" class="ipt" placeholder="密码"  v-model="password" />
                 </div>
                 
+                <div @click="refreshCode" class="identify-code">
+                    <input type="text" class="ipt code-input" placeholder="请输入验证码" v-model="userInputCode" @keyup.enter="login">
+                    <VerificationCode :identifyCode="identifyCode" :refreshCode="refreshCode"></VerificationCode>
+                </div>
+                <div class="rpwd">
+                    <input type="checkbox" v-model="rememberMe"/>
+                    <span>记住密码</span>
+                </div>
             </form>
-            <button class="login_btn" @click="GetLogin">登录</button>
+            <button class="login_btn" @click="login">登录</button>
         </div>
         <!-- 注册 -->
         <div class="register_content" v-else>
@@ -31,8 +38,10 @@
             </div>
             
             </form>
-            <button class="register_btn" @click="goRegister">注册</button>
+            <button class="register_btn" @click="register">注册</button>
         </div>
+
+        
     </div>
     </div>
     
@@ -41,22 +50,42 @@
 <script>
 import * as THREE from 'three'; 
 import BIRDS from 'vanta/dist/vanta.birds.min.js'; 
+import VerificationCode from '@/components/Login/identify.vue'
 export default {
+    components:{
+        VerificationCode
+    },
     data() {
         return {
             antaEffect: null,
             isActive: true,
             username: '',
             password: '',
+            code:'',
+            uuid:'',
+            rememberMe:'',
+            identifyCode:'',
+            userInputCode:''
         };
     },
     methods: {
-        login() {
+        lr_change() {
             this.isActive = !this.isActive
         },
+        login(){
+            // 需要对输入的账号和密码校验
+            // 勾选了需要记住密码需要在cookie中设置记住用户名和密码
+            // 调用userStore 的action的登陆方法
+            // 在后端实现验证码登录的功能
+            window.alert("登录")
+            console.log(this.username+this.password+" "+this.rememberMe+this.userInputCode);
+        },
         register() {
-            this.isActive = !this.isActive
+            
         }, 
+        refreshCode(newIdentifyCode){
+            this.identifyCode = newIdentifyCode
+        }
     },
     mounted() {
         try {
@@ -146,7 +175,7 @@ export default {
             width: 80%;
             height: 50px;
             color: #fff;
-            margin: 20px 0;
+            margin: 10px 0;
             border: none;
             font-size: 14px;
             font-weight: 500;
@@ -157,7 +186,20 @@ export default {
                 background-color: #fea443;
             }
         }
+        .rpwd{
+            display: flex;
+            font-size: 12px;
+            margin-left: 10%;
+        }
     }
+    .identify-code{
+        @include flex-center;
+        .code-input{
+            height: 40px;
+            width: 40%;
+        }
+    }
+    
 }
 </style>
   

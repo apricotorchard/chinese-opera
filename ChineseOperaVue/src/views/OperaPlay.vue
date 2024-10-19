@@ -73,7 +73,6 @@
     span:nth-of-type(2){
       display: inline-block;
       width: 500px;
-      background-color: aqua;
       @include no-wrap;
     }
   }
