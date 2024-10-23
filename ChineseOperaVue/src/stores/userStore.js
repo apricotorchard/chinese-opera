@@ -31,3 +31,4 @@ export const useUserStore = defineStore('user', {
    }
   },
 });
+export default useUserStore
