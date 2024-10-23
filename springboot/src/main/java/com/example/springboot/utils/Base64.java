@@ -1,4 +1,4 @@
-package com.example.springboot.common.utils;
+package com.example.springboot.utils;
 
 /**
  * Base64工具类

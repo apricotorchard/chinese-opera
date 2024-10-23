@@ -56,7 +56,7 @@ import BIRDS from 'vanta/dist/vanta.birds.min.js';
 import VerificationCode from '@/components/Login/identify.vue';
 import {getCodeImg} from "@/api/login";
 import Cookies from "js-cookie";
-import {encrypt,decrypt} from '@utils/jsencrypt';
+import {EncryptedPassword,DecryptPassword} from '@/utils/jsencrypt.js';
 import useUserStore from '@/stores/userStore';
 export default {
     components:{
@@ -68,11 +68,11 @@ export default {
             isActive: true,
             identifyCode:'',
             loginForm:{
-                username: 'admin',
-                password: '123456',
+                username: '',
+                password: '',
                 code:'',
                 uuid:'',
-                rememberMe:false,
+                rememberMe:true,
             },
             codeUrl:"",
             loading:false,
@@ -82,6 +82,7 @@ export default {
     },
     created(){
         this.getCode();
+        this.getCookie();
     },
     computed: {
         userStore() {
@@ -93,7 +94,16 @@ export default {
             this.isActive = !this.isActive
         },
         login(){
-            // 需要对输入的账号和密码校验,还需要添加一些正则表达式
+            if(this.loginForm.rememberMe){
+                Cookies.set("username",this.loginForm.username,{ expires: 30 });//30天
+                Cookies.set("password",EncryptedPassword(this.loginForm.password),{ expires: 30 });
+                Cookies.set("rememberMe",this.loginForm.rememberMe,{ expires: 30 });
+            }else{
+                Cookies.remove("username");
+                Cookies.remove("password");
+                Cookies.remove("rememberMe");
+            }
+            // TODO 需要对输入的账号和密码校验,还需要添加一些正则表达式
             if (!this.loginForm.username) {
                 window.alert("账号不能为空");
                 return;
@@ -132,7 +142,17 @@ export default {
                 this.codeUrl = "data:image/gif;base64," + res.data.data.img;
                 this.loginForm.uuid = res.data.data.uuid;
             });
-        }
+        },
+        getCookie(){
+            const username = Cookies.get("username");
+            const password = Cookies.get("password");
+            const rememberMe = Cookies.get("rememberMe");
+            this.loginForm.value = {
+                username:username === undefined ? this.loginForm.username : username,
+                password: password === undefined ? this.loginForm.password : DecryptPassword(password),
+                rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+            }
+        }   
     },
     mounted() {
         try {

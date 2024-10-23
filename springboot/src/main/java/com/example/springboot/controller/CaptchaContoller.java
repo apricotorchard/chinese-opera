@@ -1,7 +1,7 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.common.constant.HttpStatus;
-import com.example.springboot.common.utils.Base64;
+import com.example.springboot.utils.Base64;
 import com.example.springboot.domain.ResponseResult;
 import com.example.springboot.utils.RedisCache;
 import com.google.code.kaptcha.Producer;
@@ -35,16 +35,11 @@ public class CaptchaContoller {
     public ResponseResult getCode(HttpServletResponse response) throws IOException
     {
         String uuid = UUID.randomUUID().toString();
-
         String verifyKey = Constants.CAPTCHA_CODE_KEY+uuid;
-        String capStr = null, code = null;
-        BufferedImage image = null;
-
-
         String capText = captchaProducerMath.createText();
-        capStr = capText.substring(0, capText.lastIndexOf("@"));
-        code = capText.substring(capText.lastIndexOf("@") + 1);
-        image = captchaProducerMath.createImage(capStr);
+        String capStr = capText.substring(0, capText.lastIndexOf("@"));
+        String code = capText.substring(capText.lastIndexOf("@") + 1);
+        BufferedImage image = captchaProducerMath.createImage(capStr);
         redisCache.setCacheObject(verifyKey,code,Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         //轮转流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();

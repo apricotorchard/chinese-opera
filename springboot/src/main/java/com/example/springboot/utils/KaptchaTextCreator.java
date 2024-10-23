@@ -1,4 +1,4 @@
-package com.example.springboot.common.utils;
+package com.example.springboot.utils;
 
 import com.google.code.kaptcha.text.impl.DefaultTextCreator;
 

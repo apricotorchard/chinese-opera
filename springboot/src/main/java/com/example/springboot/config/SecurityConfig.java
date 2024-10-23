@@ -1,5 +1,6 @@
 package com.example.springboot.config;
 
+import com.example.springboot.common.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration //配置类
 @EnableWebSecurity // 开启Spring Security的功能 代替了 implements WebSecurityConfigurerAdapter
@@ -20,6 +24,8 @@ public class SecurityConfig {
     @Autowired
     AuthenticationConfiguration authenticationConfiguration;//获取AuthenticationManager
 
+    @Autowired
+    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -46,7 +52,8 @@ public class SecurityConfig {
                 // 配置授权规则   指定/login路径.允许匿名访问(未登录可访问已登陆不能访问). 其他路径需要身份认证
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/login","/captchaImage").anonymous().anyRequest().authenticated())
                 //开启跨域访问
-                .cors(AbstractHttpConfigurer::disable);
+                .cors(withDefaults())
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 构建并返回安全过滤链
         return http.build();
