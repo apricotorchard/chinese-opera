@@ -117,19 +117,14 @@ export default {
                 return;
             }
 
-            // 勾选了需要记住密码需要在cookie中设置记住用户名和密码
-
             // 调用userStore 的action的登陆方法
-            this.userStore.login(this.loginForm).then({
+            this.userStore.login(this.loginForm).then(()=>{
                 
-                //实现页面跳转
+                //TODO：实现页面跳转，跳转回原来的界面
+                this.$router.push({
+                    name:'home',
+                })
             })
-
-            // 在后端实现验证码登录的功能
-
-            // window.alert("登录")
-
-            // console.log(this.username+this.password+" "+this.rememberMe+this.userInputCode);
         },
         register() {
             

@@ -4,12 +4,10 @@ import com.example.springboot.domain.ResponseResult;
 import com.example.springboot.domain.model.LoginBody;
 import com.example.springboot.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/user")
 public class LoginController {
     @Autowired
     private LoginService loginService;
@@ -23,5 +21,10 @@ public class LoginController {
     public String hello(){
         System.out.println("111");
         return "hello";
+    }
+
+    @PostMapping ("/logout")
+    public ResponseResult logout(){
+        return loginService.logout();
     }
 }

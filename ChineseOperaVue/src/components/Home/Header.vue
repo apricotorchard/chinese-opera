@@ -43,8 +43,8 @@
                     <div class="profile-dropdown" v-if="isDropdownVisible">
                         <ul>
                             <li><a href="#">我的主页</a></li>
-                            <li><a href="#">设置</a></li>
-                            <li><a href="#">退出登录</a></li>
+                            <li><a href="#" @click="goToLogin">登录</a></li>
+                            <li><a href="#" @click="LoginOut">注销</a></li>
                         </ul>
                     </div>
                 </div>
@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import {logout} from '@/api/login.js'
+import useUserStore from '@/stores/userStore.js'
 export default {
     name:'HomeHeader',
     props:{
@@ -104,13 +106,29 @@ export default {
             isDropdownVisible:false
         }
     },
+    computed:{
+        userStore(){
+            return new useUserStore ();
+        }
+    },
     methods:{
         showHeaderDropdown() {
             this.isDropdownVisible = true;
         },
         hideHeaderDropdown() {
             this.isDropdownVisible = false;
+        },
+        goToLogin(){
+            this.$router.push({
+                name:'Login'
+            })
+        },
+        LoginOut(){//回调应该是一个函数
+            this.userStore.logOut().then(()=>{
+                this.$router.push({name:'Login'})
+            })
         }
+
     }
 }
 </script>

@@ -1,6 +1,6 @@
 // src/stores/userStore.js
 import { defineStore } from 'pinia';
-import {login} from '@/api/login'
+import {login,logout} from '@/api/login'
 import {getToken,setToken,removeToken} from '@/utils/auth'
 
 
@@ -23,6 +23,19 @@ export const useUserStore = defineStore('user', {
       login(username,password,code,uuid).then(res=>{
         setToken(res.data.data.token)
         this.token = res.data.data.token
+        resolve()
+      }).catch(error=>{
+        reject(error)
+      })
+    })
+   },
+   logOut(){
+    return new Promise((resolve,reject)=>{
+      logout(this.token).then(()=>{
+        this.token = '';
+        this.roles = [];
+        this.permissions = [];
+        removeToken()
         resolve()
       }).catch(error=>{
         reject(error)

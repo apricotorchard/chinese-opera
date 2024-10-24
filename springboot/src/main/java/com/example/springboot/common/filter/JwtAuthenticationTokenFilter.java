@@ -1,5 +1,6 @@
 package com.example.springboot.common.filter;
 
+import com.example.springboot.common.constant.Constants;
 import com.example.springboot.domain.LoginUser;
 import com.example.springboot.utils.JwtUtil;
 import com.example.springboot.utils.RedisCache;
@@ -42,7 +43,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("token非法");
         }
         //3.在redis中获取用户信息 注意：redis中的key是login：+userId
-        String redisKey = "login:" + subject;
+        String redisKey = Constants.LOGIN_USER_KEY + subject;
         LoginUser loginUser = redisCache.getCacheObject(redisKey);
 
         //此处需要判断loginUser是否为空

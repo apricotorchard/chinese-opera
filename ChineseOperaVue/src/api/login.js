@@ -5,7 +5,7 @@ export function login(username,password,code,uuid){
         username,password,code,uuid
     }
     return request({
-        url:'login',
+        url:'user/login',
         headers:{
             isToken:false,
             repeatSubmit:false
@@ -20,11 +20,20 @@ export function login(username,password,code,uuid){
 // 获取验证码
 export function getCodeImg() {
     return request({
-      url: '/captchaImage',
+      url: 'user/captchaImage',
       headers: {
         isToken: false
       },
       method: 'get',
       timeout: 20000
     })
-  }
+}
+
+// 退出登录的操作
+
+export function logout(){
+  return request({
+    url:'user/logout',
+    method:'post',
+  })
+}

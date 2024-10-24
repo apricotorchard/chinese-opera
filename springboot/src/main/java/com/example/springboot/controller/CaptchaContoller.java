@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @RestController
+@RequestMapping("/user")
 public class CaptchaContoller {
 
     @Resource(name="captchaProducerMath")
