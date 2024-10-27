@@ -1,4 +1,4 @@
-package com.example.springboot.domain.model;
+package com.example.springboot.domain.DTO;
 
 public class LoginBody {
     private String username;

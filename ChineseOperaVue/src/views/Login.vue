@@ -32,12 +32,12 @@
         </div>
         <!-- 注册 -->
         <div class="register_content" v-else>
-            <form action="">
+            <form>
             <div class="uname">
-                <input type="text" placeholder="请输入需要注册的账号" class="ipt" v-model="username" />
+                <input type="text" placeholder="请输入需要注册的账号" class="ipt" v-model="registerForm.username" />
             </div>
             <div class="psw">
-                <input type="password" placeholder="请输入密码" class="ipt" v-model="password" />
+                <input type="password" placeholder="请输入密码" class="ipt" v-model="registerForm.password" />
             </div>
             
             </form>
@@ -58,6 +58,7 @@ import {getCodeImg} from "@/api/login";
 import Cookies from "js-cookie";
 import {EncryptedPassword,DecryptPassword} from '@/utils/jsencrypt.js';
 import useUserStore from '@/stores/userStore';
+import {register} from '@/api/login'
 export default {
     components:{
         VerificationCode
@@ -73,6 +74,10 @@ export default {
                 code:'',
                 uuid:'',
                 rememberMe:true,
+            },
+            registerForm:{
+                username:'',
+                password:'',
             },
             codeUrl:"",
             loading:false,
@@ -121,13 +126,17 @@ export default {
             this.userStore.login(this.loginForm).then(()=>{
                 
                 //TODO：实现页面跳转，跳转回原来的界面
+
+                // 还需要判断一下时候成功么？
                 this.$router.push({
                     name:'home',
                 })
             })
         },
         register() {
-            
+            register(this.registerForm).then(()=>{
+                
+            })
         }, 
         refreshCode(newIdentifyCode){
             this.identifyCode = newIdentifyCode
@@ -142,7 +151,7 @@ export default {
             const username = Cookies.get("username");
             const password = Cookies.get("password");
             const rememberMe = Cookies.get("rememberMe");
-            this.loginForm.value = {
+            this.loginForm = {
                 username:username === undefined ? this.loginForm.username : username,
                 password: password === undefined ? this.loginForm.password : DecryptPassword(password),
                 rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)

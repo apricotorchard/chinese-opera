@@ -37,3 +37,13 @@ export function logout(){
     method:'post',
   })
 }
+
+//用户注册的操作
+
+export function register(data){
+  return request({
+    url:'user/register',
+    method:'post',
+    data:data
+  })
+}

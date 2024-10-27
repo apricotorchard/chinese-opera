@@ -1,9 +1,13 @@
 package com.example.springboot.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springboot.common.constant.Constants;
 import com.example.springboot.common.constant.HttpStatus;
+import com.example.springboot.domain.DTO.RegisterDto;
 import com.example.springboot.domain.LoginUser;
 import com.example.springboot.domain.ResponseResult;
+import com.example.springboot.domain.User;
+import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.utils.JwtUtil;
 import com.example.springboot.utils.RedisCache;
@@ -12,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -22,6 +27,8 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     RedisCache redisCache;
 
+    @Autowired
+    UserMapper userMapper;
     @Override
     public ResponseResult login(String username,String password,String code,String uuid) {
         validateCaptcha(code, uuid);
@@ -54,7 +61,33 @@ public class LoginServiceImpl implements LoginService {
         redisCache.deleteObject(Constants.LOGIN_USER_KEY+userid);
         return new ResponseResult(HttpStatus.SUCCESS,"注销成功");
     }
-  public void validateCaptcha(String code,String uuid){
+
+    @Override
+    public ResponseResult register(RegisterDto registerDto) {
+        //1.验证用户名和密码是否有效，符合规范
+        loginPreCheck(registerDto.getUsername(), registerDto.getPassword());
+
+        //2.需要根据用户名查询数据库
+        LambdaQueryWrapper wrapper = new LambdaQueryWrapper<User>().eq(User::getUserName,registerDto.getUsername());
+        User user = userMapper.selectOne(wrapper);
+        //3.将用户名和密码插入到数据库当中，中间需要一步加密操作。
+        if(user!=null){
+            throw new RuntimeException("用户名已经被注册");
+        }
+        User newuser = new User();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        newuser.setUserName(registerDto.getUsername());
+        newuser.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        try{
+            userMapper.insert(newuser);
+        }catch (Exception e) {
+            throw new RuntimeException("注册失败，请重试");
+        }
+        return new ResponseResult(HttpStatus.SUCCESS,"注册成功");
+    }
+
+    public void validateCaptcha(String code,String uuid){
         uuid = (uuid != null) ? uuid : "";
         String verifyKey = Constants.CAPTCHA_CODE_KEY+uuid;
         String captcha = redisCache.getCacheObject(verifyKey);

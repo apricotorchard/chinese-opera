@@ -41,7 +41,8 @@ export const useUserStore = defineStore('user', {
         reject(error)
       })
     })
-   }
+   },
+   
   },
 });
 export default useUserStore
