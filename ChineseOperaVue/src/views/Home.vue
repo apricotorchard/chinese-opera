@@ -24,9 +24,9 @@
             <div class="carousel-container">
                 <el-carousel  height="50vh">
                     <el-carousel-item  v-for="(opera,index) in carouselItems" :key="index" @click="navigateToOperaPlay(opera)">
-                        <img :src="opera.operaPictureUrl" :alt="opera.operaName" class="carousel-img  cover-img" title="热播榜">
+                        <img :src="opera.pictureUrl" :alt="opera.name" class="carousel-img  cover-img" title="热播榜">
                         <div class="carousel-operaName">
-                            <h3>{{ opera.operaName }}</h3>
+                            <h3>{{ opera.name }}</h3>
                         </div>
                     </el-carousel-item>
                 </el-carousel>
@@ -48,6 +48,7 @@
 import HomeHeader from "@/components/Home/Header.vue"
 import Channel from "@/components/Home/channel.vue"
 import SingleOpera from "@/components/Home/SingleOpera.vue"
+import {getAlloperaInfo,getOperaPlayUrl} from '@/api/opera.js'
 export default {
     name:'Home',
     components:{
@@ -55,101 +56,12 @@ export default {
         Channel,
         SingleOpera
     },
+    created(){
+        this.getoperaInfo();
+    },
     data(){
         return{
-            operaInfoList:[
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                }
-            ],
-           
+            operaInfoList:[],
         }
     },
     methods:{
@@ -169,7 +81,19 @@ export default {
             this.$router.push({
                 name:'Audio',
             })
-        }
+        },
+        getoperaInfo(){
+            getAlloperaInfo().then(res=>{
+                
+               
+
+                this.operaInfoList = res.data.data.map(opera=>{
+                    opera.playUrl = getOperaPlayUrl(opera);
+                    return opera;
+                })
+                console.log(this.operaInfoList);
+            })
+        },
     },
     computed:{
         carouselItems(){

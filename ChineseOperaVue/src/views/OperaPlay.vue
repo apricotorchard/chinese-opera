@@ -6,19 +6,19 @@
       <el-main style="padding:0 60px;margin-top:30px">
           <div class="opera-info">
             <div class="first-line">
-              <h1>{{ opera.operaName }}</h1>
+              <h1>{{ opera.name }}</h1>
               <el-icon :size="20" color="#409efc" class="star">
                 <Star/>
               </el-icon>
             </div>
             <span>
-              {{ opera.operaTag }}
+              {{ opera.tag }}
             </span>
-            <span>演唱者：{{ opera.operaSinger }}</span>
+            <span>演唱者：{{ opera.singer }}</span>
             
           </div>
         <div class="iframe-container" style="margin-bottom:20px">
-          <iframe :src="opera.operaPlayUrl" frameborder="0" allowfullscreen width="100%" height="500px"></iframe>
+          <iframe :src="opera.playUrl" frameborder="0" allowfullscreen width="50%" height="400px"></iframe>
         </div>
         <commentSection></commentSection>
       </el-main>

@@ -1,12 +1,12 @@
 <template>
     <!-- {width:width+'px',height:height+'px'} -->
     <div class="opera-card" :style="style">
-        <img class="opera-img" :src="opera.operaPictureUrl" :alt="opera.operaName">
+        <img class="opera-img" :src="opera.pictureUrl" :alt="opera.name">
         <div class="opera-info">
-            <span class="opera-name">{{ opera.operaName }}</span>
+            <span class="opera-name">{{ opera.name }}</span>
             <div class="opera-details">
-                <span class="opera-singer">{{ opera.operaSinger }}</span>
-                <span class="opera-tag">{{ opera.operaTag }}</span>
+                <span class="opera-singer">{{ opera.singer }}</span>
+                <span class="opera-tag">{{ opera.tag }}</span>
             </div>
             
         </div>
