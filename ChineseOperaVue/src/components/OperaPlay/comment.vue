@@ -2,7 +2,7 @@
     <!-- 用户输入完之后，无法回复用户 -->
   <div class="comment-container">
     <div class="my-reply">
-        <el-avatar class="header-img" :src="myHeader"></el-avatar>
+        <el-avatar class="header-img" :src="avatar"></el-avatar>
         <div class="reply-info">
             <div tabindex="0" contenteditable="true" id="replyInput" placeholder="输入评论..." class="reply-input" @focus="showReplyBtn" @input="onDivInput($event)"></div>
         </div>
@@ -14,12 +14,12 @@
     <div v-for="(comment, index) in comments" :key="index" class="comment-block">
         <div class="author-gambits">
             <div class="author-info">
-                <el-avatar class="header-img" :src="comment.headImg" style="width:40px;height:40px"></el-avatar>
-                <span class="author-name">{{ comment.name }}</span>
-                <span class="author-time">{{ comment.time }}</span>
+                <el-avatar class="header-img" :src="comment.user.avatar" style="width:40px;height:40px"></el-avatar>
+                <span class="author-name">{{ comment.user.nickName }}</span>
+                <span class="author-time">{{ comment.createdAt }}</span>
                 <span class="reply-people" @click=getPeoPleInfo(index,comment.name)>回复</span>
             </div>
-            <div class="comment-content">{{ comment.comment }}</div>
+            <div class="comment-content">{{ comment.content}}</div>
             <!-- 回复列表 -->
             <div v-for="(reply, replyIndex) in comment.reply" :key="replyIndex" class="reply-block" >
                     <div class="author-info">
@@ -49,75 +49,45 @@
 </template>
 
 <script>
+import {getCommentsByOperaId} from '@/api/opera.js'
 export default {
     name: "CommentSection",
+    props:{
+      operaid:{
+        type:Number,
+        required:true
+      }
+    },
     data() {
       return {
         btnShow: false,
-        myHeader: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+        userId:'',
+        nickName:'发起者1',
+        avatar:'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
         replyComment: "",
         ReplyIndex:-1,
         replyname:'',
         // 这个是每个戏曲维护着一个戏曲评论列表
-        comments: [
-          {
-            name: "Lana Del Rey",
-            headImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
-            comment: "我发布一张新专辑Norman Fucking Rockwell,大家快来听啊",
-            time: "2019年9月16日 18:43",
-            reply: [
-              {
-                from: "Taylor Swift",
-                fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
-                to: "Lana Del Rey",
-                comment: "我很喜欢你的新专辑！！",
-                time: "2019年9月16日 18:43",
-              },
-              {
-                from: "Ariana Grande",
-                fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
-                to: "Lana Del Rey",
-                comment: "别忘记宣传我们的合作单曲啊",
-                time: "2019年9月16日 18:43",
-              },
-            ],
-          },
-          {
-            name: "Lana Del Rey",
-            headImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
-            comment: "这是我第二次发评论",
-            time: "2019年9月16日 18:43",
-            reply: [
-              {
-                from: "Taylor Swift",
-                fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
-                to: "Lana Del Rey",
-                comment: "我很喜欢你的新专辑！！",
-                time: "2019年9月16日 18:43",
-              },
-              {
-                from: "Ariana Grande",
-                fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
-                to: "Lana Del Rey",
-                comment: "别忘记宣传我们的合作单曲啊",
-                time: "2019年9月16日 18:43",
-              },
-            ],
-          },
-        ],
+        comments: [],
       };
     },
     methods:{
-        showReplyBtn() {
-            this.btnShow = true;
-        },
-        hideReplyBtn() {
-            this.btnShow = false;
-        },
-        onDivInput(e) {
-            this.replyComment = e.target.innerHTML;
-        },
-        sendComment() { 
+      getComments(){
+         getCommentsByOperaId(this.operaid).then(res=>{
+          console.log(res.data);
+          this.comments = res.data.data;
+         });
+      },
+      showReplyBtn() {
+          this.btnShow = true;
+      },
+      hideReplyBtn() {
+          this.btnShow = false;
+      },
+      onDivInput(e) {
+          this.replyComment = e.target.innerHTML;
+      },
+      sendComment() { 
             if (!this.replyComment.trim()) {
                 alert("评论不能为空");
                 return;
@@ -163,6 +133,10 @@ export default {
           inputContent.innerHTML="";
         }
       },
+    },
+    created(){
+      console.log(this.operaid)
+      this.getComments();
     }
 }
 </script>
@@ -223,7 +197,7 @@ export default {
             margin-left: 10px;
         }
         .reply-people:hover{
-          color: rgb(58, 58, 143);
+          color: #7FCBF8;
         }
        
     }
@@ -295,3 +269,49 @@ export default {
     }
 }
 </style>
+
+
+<!-- {
+  name: "Lana Del Rey",
+  headImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+  comment: "我发布一张新专辑Norman Fucking Rockwell,大家快来听啊",
+  time: "2019年9月16日 18:43",
+  reply: [
+    {
+      from: "Taylor Swift",
+      fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+      to: "Lana Del Rey",
+      comment: "我很喜欢你的新专辑！！",
+      time: "2019年9月16日 18:43",
+    },
+    {
+      from: "Ariana Grande",
+      fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+      to: "Lana Del Rey",
+      comment: "别忘记宣传我们的合作单曲啊",
+      time: "2019年9月16日 18:43",
+    },
+  ],
+},
+{
+  name: "Lana Del Rey",
+  headImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+  comment: "这是我第二次发评论",
+  time: "2019年9月16日 18:43",
+  reply: [
+    {
+      from: "Taylor Swift",
+      fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+      to: "Lana Del Rey",
+      comment: "我很喜欢你的新专辑！！",
+      time: "2019年9月16日 18:43",
+    },
+    {
+      from: "Ariana Grande",
+      fromHeadImg: "https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg",
+      to: "Lana Del Rey",
+      comment: "别忘记宣传我们的合作单曲啊",
+      time: "2019年9月16日 18:43",
+    },
+  ],
+}, -->
