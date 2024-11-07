@@ -10,134 +10,80 @@
           <el-button @click="sendComment" type="primary">发表评论</el-button>
         </div>
     </div>
-    <!-- 评论区 -->
-    <div v-for="(comment, index) in comments" :key="index" class="comment-block">
-        <div class="author-gambits">
-            <div class="author-info">
-                <el-avatar class="header-img" :src="comment.user.avatar" style="width:40px;height:40px"></el-avatar>
-                <span class="author-name">{{ comment.user.nickName }}</span>
-                <span class="author-time">{{ comment.createdAt }}</span>
-                <span class="reply-people" @click=getPeoPleInfo(index,comment.name)>回复</span>
-            </div>
-            <div class="comment-content">{{ comment.content}}</div>
-            <!-- 回复列表 -->
-            <div v-for="(reply, replyIndex) in comment.reply" :key="replyIndex" class="reply-block" >
-                    <div class="author-info">
-                        <el-avatar class="header-img" :src="reply.fromHeadImg" style="width:40px;height:40px"></el-avatar>
-                        <span class="author-name">{{ reply.from }}</span>
-                        <span class="author-time">{{ reply.time }}</span>
-                        <span class="reply-people" @click=getPeoPleInfo(index,reply.from)>回复</span>
-                    </div>
-                    <div class="reply-content">
-                        回复 {{ reply.to }}: {{ reply.comment }}
-                    </div>
-            </div>
-        </div>
-         <!-- 回复输入框 -->
-        <div v-if=inputShow(index) class="my-reply reply-comment">
-            <el-avatar class="header-img" :src="myHeader"></el-avatar>
-            <div class="reply-info">
-                <div class="replying-to">回复 {{replyname}}:</div>
-                <div tabindex="0" contenteditable="true" placeholder="输入回复..." class="reply-input reply-comment-input" @input="onDivInput($event)"></div>
-            </div>
-            <div class="reply-btn-box">
-                <el-button @click="sendCommentReply(index)" type="primary">回复评论</el-button>
-            </div>
-        </div>
-    </div>
+    <CommentList :comments="comments"></CommentList>
   </div>
 </template>
 
 <script>
 import {getCommentsByOperaId} from '@/api/opera.js'
+import CommentList from '@/components/OperaPlay/CommentList.vue';
 export default {
     name: "CommentSection",
-    props:{
-      operaid:{
-        type:Number,
-        required:true
-      }
+    props: {
+        operaid: {
+            type: Number,
+            required: true
+        }
     },
     data() {
-      return {
-        btnShow: false,
-        userId:'',
-        nickName:'发起者1',
-        avatar:'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
-        replyComment: "",
-        ReplyIndex:-1,
-        replyname:'',
-        // 这个是每个戏曲维护着一个戏曲评论列表
-        comments: [],
-      };
+        return {
+            btnShow: false,
+            userId: '',
+            nickName: '发起者1',
+            avatar: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
+            replyComment: "",
+            ReplyIndex: -1,
+            replyname: '',
+            // 这个是每个戏曲维护着一个戏曲评论列表
+            comments: []
+        };
     },
-    methods:{
-      getComments(){
-         getCommentsByOperaId(this.operaid).then(res=>{
-          console.log(res.data);
-          this.comments = res.data.data;
-         });
-      },
-      showReplyBtn() {
-          this.btnShow = true;
-      },
-      hideReplyBtn() {
-          this.btnShow = false;
-      },
-      onDivInput(e) {
-          this.replyComment = e.target.innerHTML;
-      },
-      sendComment() { 
+    methods: {
+        getComments() {
+            getCommentsByOperaId(this.operaid).then(res => {
+                console.log(res.data);
+                this.comments = res.data.data;
+            });
+        },
+        showReplyBtn() {
+            this.btnShow = true;
+        },
+        hideReplyBtn() {
+            this.btnShow = false;
+        },
+        onDivInput(e) {
+            this.replyComment = e.target.innerHTML;
+        },
+        sendComment() {
             if (!this.replyComment.trim()) {
                 alert("评论不能为空");
                 return;
             }
-            const newComment = {  //这个应该要写入到数据库当中去
+            const newComment = {
                 name: "Lana Del Rey",
                 headImg: this.myHeader,
                 comment: this.replyComment,
                 time: new Date().toLocaleString(),
-                reply: [],
+                reply: []
             };
             this.comments.push(newComment);
             this.replyComment = "";
-            document.getElementById("replyInput").innerHTML = "";//清空
-      },
-      getPeoPleInfo(replyIndex,replyname){
-            // console.log(replyIndex)
-            this.ReplyIndex = replyIndex;
-            this.replyname = replyname;
-      },
-      inputShow(index){
-        if(this.ReplyIndex === index){
-          return true;
-        }
-        return false;
-      },
-      sendCommentReply(index) { //评论回复
-        if (!this.replyComment.trim()) {
-          alert("回复不能为空");
-          return;
-        }
-        const newReply = {
-          from: "Lana Del Rey",
-          fromHeadImg: this.myHeader,
-          to: this.replyname,
-          comment: this.replyComment,
-          time: new Date().toLocaleString(),
-        };
-        this.comments[index].reply.push(newReply);
-        this.replyComment = "";
-        const inputContent = document.querySelectorAll(".reply-comment-input")[index];
-        if(inputContent){
-          inputContent.innerHTML="";
-        }
-      },
+            document.getElementById("replyInput").innerHTML = ""; //清空
+        },
+       
+        inputShow(index) {
+            if (this.ReplyIndex === index) {
+                return true;
+            }
+            return false;
+        },
+        
     },
-    created(){
-      console.log(this.operaid)
-      this.getComments();
-    }
+    created() {
+        console.log(this.operaid);
+        this.getComments();
+    },
+    components: { CommentList }
 }
 </script>
 
@@ -176,98 +122,7 @@ export default {
     margin: 5px 5px 0 5px;
   }
 }
-.comment-block {
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eaeaea;
-  .author-gambits{
-    margin-bottom: 20px;
-    .author-info {
-        margin-bottom: 10px;
-        .header-img {
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .author-name {
-            font-weight: bold;
-        }
-        .author-time,.reply-people{
-            color: #999;
-            font-size: 12px;
-            margin-left: 10px;
-        }
-        .reply-people:hover{
-          color: #7FCBF8;
-        }
-       
-    }
-    .comment-content {
-        margin-left: 50px;
-        margin-bottom: 10px;
-        font-size: 14px;
-        line-height: 1.6;
-    }
-  }
-}
- .reply-block {
-    margin-left: 50px;
-    padding: 10px;
-    border-radius: 5px;
-    background: #f9f9f9;
-    margin-bottom: 10px;
-    .header-img {
-      width: 40px; /* 头像宽度 */
-      height: 40px; /* 头像高度 */
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    .author-info {
-      flex-grow: 1;
-      display: flex;
-      .author-name {
-        font-weight: bold;
-        margin-right: 10px;
-      }
-      .author-time {
-        color: #999;
-        font-size: 12px;
-      }
-    }
-    .reply-content {
-      margin-top: 5px;
-      font-size: 14px;
-    }
-  }
-.reply-comment {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 10px;
-    .header-img {
-      width: 40px; /* 头像宽度 */
-      height: 40px; /* 头像高度 */
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    .reply-info {
-        display: flex;
-      flex-grow: 1;
-      .reply-input {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        min-height: 40px;
-        width: 100%;
-        &:empty:before {
-          content: attr(placeholder);
-          color: #ccc;
-        }
-      }
-    }
-    .reply-btn-box {
-      margin-top: 5px;
-      margin-left: 10px;
-    }
-}
+
 </style>
 
 

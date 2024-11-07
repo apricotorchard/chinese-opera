@@ -23,4 +23,12 @@ public class OperaServiceImpl implements OperaService {
 
         return new ResponseResult<>(HttpStatus.SUCCESS,"成功",operaList);
     }
+
+    @Override
+    public ResponseResult getOperaListByCollectionId(int collectionId) {
+        LambdaQueryWrapper<Opera> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Opera::getCollectionId,collectionId);
+        List<Opera> operaList = operaMapper.selectList(lambdaQueryWrapper);
+        return new ResponseResult<>(HttpStatus.SUCCESS,"成功",operaList);
+    }
 }

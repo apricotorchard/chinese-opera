@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     userId: null, // 用户ID
     userName: '', // 用户名
+    nickName:'',
     token:getToken(),
     avatar:'',
     roles:[],
@@ -21,8 +22,12 @@ export const useUserStore = defineStore('user', {
     const uuid = userInfo.uuid
     return new Promise((resolve,reject)=>{
       login(username,password,code,uuid).then(res=>{
+        console.log(res.data.data)
         setToken(res.data.data.token)
         this.token = res.data.data.token
+        // this.avatar = res.data.data.avatar
+        // this.userId = res.data.data.userId
+        // this.nickName = res.data.data.nickName
         resolve()
       }).catch(error=>{
         reject(error)

@@ -20,3 +20,18 @@ export function getAlloperaInfo(){
         method:'get'
     })
 }
+
+export function getOperaByCollectionId(collectionId){
+    return request({
+        url:`/opera/getoperalistbycollectid?collectionid=${collectionId}`,
+        method:'get'
+    })
+}
+
+
+export function getCommentsByOperaId(operaId){
+    return request({
+        url:`/opera/comments/${operaId}`,
+        method:'get'
+    })
+}

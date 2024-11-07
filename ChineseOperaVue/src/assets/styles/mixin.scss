@@ -12,3 +12,28 @@
     justify-content: center;
     align-items: center;
 }
+
+@mixin two-line{
+    width: 200px;                  /* 设置容器宽度，根据需要调整 */
+    display: -webkit-box;          /* Flex盒模型 */
+    -webkit-box-orient: vertical;  /* 垂直排列 */
+    -webkit-line-clamp: 2;         /* 限制为两行 */
+    overflow: hidden;              /* 超出部分隐藏 */
+    text-overflow: ellipsis;       /* 超出部分显示省略号 */
+}
+
+@mixin graystyle {
+    border:1px solid #ddd;
+    border-radius:5px ;
+    background-color: #ddd;
+}
+
+
+@mixin scrollbarstyle{
+    // 滚动条圆角
+    $scrollbar_border_radius: 10px;
+    // 滚动条大小
+    $scrollbar_size: 20px;
+    $scrollbar_bg: rgba(0, 0, 0, 0.3);
+    $scrollbar_thumb: rgba(255, 255, 255, 0.5);
+}

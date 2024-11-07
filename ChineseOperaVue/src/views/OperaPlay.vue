@@ -5,48 +5,65 @@
       </el-header>
       <el-main style="padding:0 60px;margin-top:30px">
           <div class="opera-info">
-            <div class="first-line">
-              <h1>{{ opera.name }}</h1>
-              <el-icon :size="20" color="#409efc" class="star">
-                <Star/>
-              </el-icon>
-            </div>
+            <h1>{{ opera.name }}</h1>
             <span>
               {{ opera.tag }}
             </span>
             <span>演唱者：{{ opera.singer }}</span>
+           
             
           </div>
-        <div class="iframe-container" style="margin-bottom:20px">
-          <iframe :src="opera.playUrl" frameborder="0" allowfullscreen width="50%" height="400px"></iframe>
+        <div class="iframe-container">
+          <video controls :src="opera.playUrl" width="70%" height="550px"></video>
+          <AsideList :operaList = "operaList"></AsideList>
         </div>
-        <commentSection></commentSection>
+
+        <div class="user-operate">
+            <!-- 点赞 -->
+
+            <!-- 收藏 -->
+            <el-icon :size="20" class="star">
+              <Star/>
+            </el-icon>
+        </div>
+        <CommentSection :operaid="this.opera.id"></CommentSection>
       </el-main>
     </div>
   </template>
   
   <script>
   // import { ElIcon } from 'element-plus';
-  import CommentSection from '@/components/OperaPlay/comment.vue';
+  import CommentSection from '@/components/OperaPlay/Comment.vue'
+  import AsideList from '@/components/OperaPlay/AsideList.vue';
   import Header from '@/components/Home/Header.vue';
+  import {getOperaByCollectionId} from '@/api/opera.js'
   export default {
     name: 'OperaPlay',
     components: {
       Header,
-      // ElIcon,
+      AsideList,
       CommentSection
     },
     data() {
       return {
-        opera:null
+        opera:null,
+        operaList:[],
       };
     },
     created(){
         this.opera = JSON.parse(this.$route.query.opera);
+        //根据collectionId 从数据库当中查询。
+        this.getOperaListByConditionId(this.opera.collectionId);
     },
     methods: {
       collectOpera() {
         // 收藏逻辑
+      },
+      // 根据collectid 获得属于相同组的戏曲
+      getOperaListByConditionId(collectionId){
+        getOperaByCollectionId(collectionId).then(res=>{
+          this.operaList = res.data.data.filter(item => item.id!=this.opera.id);
+        })
       }
     }
   };
@@ -57,26 +74,25 @@
     padding: 0;
   }
   .opera-info{
-    .first-line{
-      display: flex;
-      align-items: center;
-      h1{
-        font-size: 25px;
+    
+    h1{
+      font-size: 25px;
+    }
+    span{
+      width: 50px;
+      @include no-wrap;
+      &:nth-of-type(1){
+        margin-right: 10px;
       }
     }
-    span:nth-of-type(1){
-      display: inline-block;
-      width: 50px;
-      margin-left: 10px;
-      @include no-wrap;
-    }
-    span:nth-of-type(2){
-      display: inline-block;
-      width: 500px;
-      @include no-wrap;
-    }
+    
   }
   .star:hover{
     color: yellow;
+  }
+  .iframe-container{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
   </style>
