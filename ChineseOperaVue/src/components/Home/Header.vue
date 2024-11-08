@@ -37,12 +37,12 @@
                 <div class="profile-container" @mouseover="showHeaderDropdown" @mouseleave="hideHeaderDropdown">
                     <!-- 头像部分 -->
                     <div class="profile-avatar" >
-                        <img src="@/assets/userAvatar.png" alt="用户头像" class="avatar-img">
+                        <img :src=userStore.avatar alt="用户头像" class="avatar-img">
                     </div>
                     <!-- 下拉菜单  -->
                     <div class="profile-dropdown" v-if="isDropdownVisible">
                         <ul>
-                            <li><a href="#">我的主页</a></li>
+                            <li><a href="#">个人信息</a></li>
                             <li><a href="#" @click="goToLogin">登录</a></li>
                             <li><a href="#" @click="LoginOut">注销</a></li>
                         </ul>
@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import {logout} from '@/api/login.js'
 import useUserStore from '@/stores/userStore.js'
 export default {
     name:'HomeHeader',
@@ -108,7 +107,7 @@ export default {
     },
     computed:{
         userStore(){
-            return new useUserStore ();
+            return useUserStore ();
         }
     },
     methods:{

@@ -1,9 +1,9 @@
 // src/stores/userStore.js
 import { defineStore } from 'pinia';
-import {login,logout} from '@/api/login'
+import {login,logout,getInfo} from '@/api/login'
 import {getToken,setToken,removeToken} from '@/utils/auth'
 
-
+// pinia中的数据 在页面刷新的时候会丢失，状态会被重置，所以需要被持久化在本地。
 export const useUserStore = defineStore('user', {
   state: () => ({
     userId: null, // 用户ID
@@ -22,19 +22,15 @@ export const useUserStore = defineStore('user', {
     const uuid = userInfo.uuid
     return new Promise((resolve,reject)=>{
       login(username,password,code,uuid).then(res=>{
-        console.log(res.data.data)
         setToken(res.data.data.token)
         this.token = res.data.data.token
-        // this.avatar = res.data.data.avatar
-        // this.userId = res.data.data.userId
-        // this.nickName = res.data.data.nickName
         resolve()
       }).catch(error=>{
         reject(error)
       })
     })
    },
-   logOut(){
+  logOut(){
     return new Promise((resolve,reject)=>{
       logout(this.token).then(()=>{
         this.token = '';
@@ -46,8 +42,20 @@ export const useUserStore = defineStore('user', {
         reject(error)
       })
     })
-   },
-   
+  },
+  // 获取用户的详细信息。
+  getUserInfo(){
+    return new Promise((resolve,reject)=>{
+        getInfo().then(res=>{
+            // 这里可以添加一些用户权限的东西
+            this.userId = res.data.data.user.id;
+            this.userName  = res.data.data.user.userName;
+            this.nickName = res.data.data.user.nickName;
+            this.avatar = res.data.data.user.avatar
+            resolve(res);
+        }).catch(error=>{reject(error)})
+    })
+  }
   },
 });
 export default useUserStore

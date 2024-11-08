@@ -27,4 +27,9 @@ public class LoginController {
     public ResponseResult register(@RequestBody RegisterDto registerDto){
         return loginService.register(registerDto);
     }
+
+    @GetMapping("/getuserinfo")
+    public ResponseResult getUserInfo(){
+        return loginService.getUserInfo();
+    }
 }

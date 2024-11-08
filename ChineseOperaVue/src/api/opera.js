@@ -28,10 +28,34 @@ export function getOperaByCollectionId(collectionId){
     })
 }
 
-
+// 获取用户评论
 export function getCommentsByOperaId(operaId){
     return request({
         url:`/opera/comments/${operaId}`,
         method:'get'
     })
 }
+
+// 插入用户的评论
+
+export function addComment(comment){
+    return request({
+        url:'/opera/comments/addcomment',
+        method:'post',
+        data:comment
+    })
+}
+
+//递归地去找  回复的是谁的评论,感觉这样效率太低。
+// export function findCommentById(comments, targetId) {
+//     for (const comment of comments) {
+//         if (comment.id === targetId) {
+//             return comment;
+//         }
+//         if (comment.children && comment.children.length) {
+//             const found = findCommentById(comment.children, targetId);
+//             if (found) return found;
+//         }
+//     }
+//     return null; // 如果没有找到，返回 null
+// }

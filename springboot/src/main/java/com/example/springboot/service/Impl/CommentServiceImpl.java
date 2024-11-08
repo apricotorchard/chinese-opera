@@ -37,6 +37,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return new ResponseResult<>(HttpStatus.SUCCESS,"获取戏曲评论成功",rootComments);
     }
 
+    @Override
+    public ResponseResult addComment(Comment comment) {
+        boolean total = commentMapper.insertComment(comment);
+        if(total){
+            return new ResponseResult<>(HttpStatus.SUCCESS, "插入数据成功");
+        }
+        return new ResponseResult<>(HttpStatus.ERROR, "插入数据失败");
+    }
+
 
     private List<Comment> buildCommentsTree(Map<Long, List<Comment>> groupedComments, Long parentId) {
         List<Comment> commentList = groupedComments.get(parentId);
@@ -50,8 +59,5 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return commentList;
     }
 
-    @Override
-    public ResponseResult getReplies(Long parentId) {
-        return null;
-    }
+
 }

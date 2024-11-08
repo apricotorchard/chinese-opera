@@ -47,3 +47,10 @@ export function register(data){
     data:data
   })
 }
+
+export function getInfo(){
+  return request({
+    'url':'user/getuserinfo',
+    'method':'get'
+  })
+}

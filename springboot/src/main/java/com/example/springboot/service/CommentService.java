@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
 public interface CommentService{
     ResponseResult getCommentsByOperaId(long operaId);
 
-    ResponseResult getReplies(Long parentId);
+    ResponseResult addComment(Comment comment);
 }

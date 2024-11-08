@@ -87,6 +87,18 @@ public class LoginServiceImpl implements LoginService {
         return new ResponseResult(HttpStatus.SUCCESS,"注册成功");
     }
 
+    @Override
+    public ResponseResult getUserInfo() {
+
+
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //Todo 角色集合
+        //TODO 权限集合
+        //根据userid查询信息返回给前端
+        return new ResponseResult<>(HttpStatus.SUCCESS,"返回用户信息",loginUser);
+    }
+
     public void validateCaptcha(String code,String uuid){
         uuid = (uuid != null) ? uuid : "";
         String verifyKey = Constants.CAPTCHA_CODE_KEY+uuid;

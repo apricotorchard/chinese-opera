@@ -35,10 +35,10 @@ public class OperaController {
         return commentService.getCommentsByOperaId(operaId);
     }
 
-    //获取某评论的所有回复
-    @GetMapping("/replies/{parentId}")
-    public ResponseResult getReplies(@PathVariable Long parentId){
-        return commentService.getReplies(parentId);
+    //插入评论
+    @PostMapping("/comments/addcomment")
+    public ResponseResult addComment(@RequestBody Comment comment){
+        return commentService.addComment(comment);
     }
-
 }
+

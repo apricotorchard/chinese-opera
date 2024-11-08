@@ -2,12 +2,12 @@
     <!-- 用户输入完之后，无法回复用户 -->
   <div class="comment-container">
     <div class="my-reply">
-        <el-avatar class="header-img" :src="avatar"></el-avatar>
+        <el-avatar class="header-img" :src="userStore.avatar"></el-avatar>
         <div class="reply-info">
             <div tabindex="0" contenteditable="true" id="replyInput" placeholder="输入评论..." class="reply-input" @focus="showReplyBtn" @input="onDivInput($event)"></div>
         </div>
         <div class="reply-btn-box" v-show="btnShow">
-          <el-button @click="sendComment" type="primary">发表评论</el-button>
+          <el-button @click="sendComment" type="primary">发布</el-button>
         </div>
     </div>
     <CommentList :comments="comments"></CommentList>
@@ -15,8 +15,9 @@
 </template>
 
 <script>
-import {getCommentsByOperaId} from '@/api/opera.js'
+import {getCommentsByOperaId,addComment} from '@/api/opera.js'
 import CommentList from '@/components/OperaPlay/CommentList.vue';
+import useUserStore from '@/stores/userStore';
 export default {
     name: "CommentSection",
     props: {
@@ -25,23 +26,23 @@ export default {
             required: true
         }
     },
+    computed:{
+      userStore(){
+        return useUserStore();
+      }
+    },
     data() {
         return {
             btnShow: false,
-            userId: '',
-            nickName: '发起者1',
-            avatar: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
             replyComment: "",
             ReplyIndex: -1,
             replyname: '',
-            // 这个是每个戏曲维护着一个戏曲评论列表
             comments: []
         };
     },
     methods: {
         getComments() {
             getCommentsByOperaId(this.operaid).then(res => {
-                console.log(res.data);
                 this.comments = res.data.data;
             });
         },
@@ -59,16 +60,28 @@ export default {
                 alert("评论不能为空");
                 return;
             }
-            const newComment = {
-                name: "Lana Del Rey",
-                headImg: this.myHeader,
-                comment: this.replyComment,
-                time: new Date().toLocaleString(),
-                reply: []
-            };
-            this.comments.push(newComment);
-            this.replyComment = "";
-            document.getElementById("replyInput").innerHTML = ""; //清空
+            console.log("111");
+            console.log(this.userStore);
+            const insertComment = {
+                userId:this.userStore.userId,
+                operaId:this.comments[0].operaId,
+                content:this.replyComment
+            }
+            // const newComment = {
+            //     name: "Lana Del Rey",
+            //     headImg: this.myHeader,
+            //     comment: this.replyComment,
+            //     time: new Date().toLocaleString(),
+            //     reply: []
+            // };
+            // this.comments.push(newComment);
+            // this.replyComment = "";
+            
+            addComment(insertComment).then(res=>{
+              document.getElementById("replyInput").innerHTML = ""; //清空
+              // window.location.reload();
+            })
+            
         },
        
         inputShow(index) {
@@ -80,7 +93,6 @@ export default {
         
     },
     created() {
-        console.log(this.operaid);
         this.getComments();
     },
     components: { CommentList }

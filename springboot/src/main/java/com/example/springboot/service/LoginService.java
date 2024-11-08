@@ -10,4 +10,6 @@ public interface LoginService {
         ResponseResult logout();
 
         ResponseResult register(RegisterDto registerDto);
+
+        ResponseResult getUserInfo();
 }

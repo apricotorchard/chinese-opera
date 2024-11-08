@@ -7,83 +7,138 @@
                 <span class="author-name" >{{ comment.user.nickName }}</span>
                 <span class="author-name" v-if="father"> 回复给：{{father.user.nickName}}</span>
                 <span class="author-time">{{ comment.createdAt }}</span>
-                <span class="reply-people" @click=getPeoPleInfo(comment)>回复</span>
+                <span class="reply-people" @click=getUserInfo(comment,index)>回复</span>
             </div>
             <div class="comment-content">{{ comment.content}}</div>
         </div>
         <div v-if="comment.children && comment.children.length" class="reply-list">
-          <comment-list :comments="comment.children" :father="comment" @CommentFromSon="setCommentFromSon"/>
+          <comment-list :comments="comment.children" :father="comment" :fatherIndex="index" @CommentFromSon="setCommentFromSon"/>
         </div>
 
         <!-- 回复输入框 -->
-        <div class="my-reply reply-comment" v-if="!father">
-            <el-avatar class="header-img" :src="avatar"></el-avatar>
+        <div class="reply-comment" v-if="!father&&inputIndex(index)">
+            <el-avatar class="header-img" :src="userStore.avatar"></el-avatar>
             <span class="replying-to">回复:{{reply.replyname}}</span>
             <div class="reply-info">
-                
-                <div tabindex="0" contenteditable="true" placeholder="输入回复..." class="reply-input reply-comment-input" @input="onDivInput($event)"></div>
+                <div contenteditable="true" placeholder="输入回复..." :ref="'replyInput' + index" class="reply-input reply-comment-input" @input="onDivInput($event)"></div>
             </div>
             <div class="reply-btn-box">
-                <el-button @click="sendCommentReply(index)" type="primary">回复评论</el-button>
+                <el-button @click="sendCommentReply(index)" type="primary">发布</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {addComment} from '@/api/opera.js';
+import useUserStore from '@/stores/userStore';
 export default {
+    emits: ['commentFromSon'],
     props:{
         comments:{
             type:Array
         },
         father:{
             type:Object,
+        },
+        fatherIndex:{
+            type:Number
         }
+    },
+    computed:{
+      userStore(){
+        return useUserStore();
+      }
     },
     data(){
         return{
-            userId: '',
-            nickName: '发起者1',
-            avatar: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
+            // userId: 1,
+            isShowInput:false,  //用于判断是否展示输入框
+            ischoicedcommentId:'', //用于判断是否连续两次点击相同的comment
+            // nickName: '发起者1',
+            // avatar: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
             reply:{
-                replyindex:'',
-                replyname:'假的',
+                replyindex:-1,
+                replyname:'',
                 replyComment:''
-            }
+            },
         }
     },
     methods:{
+        inputIndex(index){
+            return this.reply.replyindex == index&&this.isShowInput;
+        },
         onDivInput(e) {
             this.reply.replyComment = e.target.innerHTML;
         },
-        getPeoPleInfo(comment) {
-            this.reply.replyname = comment.user.nickName;
-            this.reply.replyindex = index;
-            this.$emit('CommentFromSon',comment);
+        getUserInfo(comment,index) {
+            if(this.father){
+                this.$emit('CommentFromSon',comment,this.fatherIndex);
+            }
+            else{
+                this.reply.replyname = comment.user.nickName;
+                this.reply.replyindex = index;
+                // 为了实现两次点击相同的commentid,评论输入框消失的。
+                if(!this.ischoicedcommentId){
+                    this.ischoicedcommentId=comment.id;
+                    this.isShowInput = this.isShowInput==true ? false:true;
+                }
+                else if(this.ischoicedcommentId == comment.id){
+                    this.isShowInput = this.isShowInput==true ? false:true;
+                }
+                else if(this.ischoicedcommentId&&this.ischoicedcommentId!=comment.id){
+                    this.ischoicedcommentId=comment.id;
+
+                }
+            }
+        },
+        setCommentFromSon(comment,fatherIndex){
+            if(this.father){
+                this.$emit('CommentFromSon',comment,this.fatherIndex);
+            }
+            else{
+                this.reply.replyname = comment.user.nickName;
+                this.reply.replyindex = fatherIndex;
+                if(!this.ischoicedcommentId){
+                    this.ischoicedcommentId=comment.id;
+                    this.isShowInput = this.isShowInput==true ? false:true;
+                }
+                else if(this.ischoicedcommentId == comment.id){
+                    this.isShowInput = this.isShowInput==true ? false:true;
+                }
+                else if(this.ischoicedcommentId&&this.ischoicedcommentId!=comment.id){
+                    this.ischoicedcommentId=comment.id;
+                }
+               
+            }
         },
         sendCommentReply(index) {
-            if (!this.replyComment.trim()) {
+            if (!this.reply.replyComment.trim()) {
                 alert("回复不能为空");
                 return;
             }
-            const newReply = {
-                from: "Lana Del Rey",
-                fromHeadImg: this.myHeader,
-                to: this.replyname,
-                comment: this.replyComment,
-                time: new Date().toLocaleString()
-            };
-            this.comments[index].reply.push(newReply);
-            this.replyComment = "";
-            const inputContent = document.querySelectorAll(".reply-comment-input")[index];
-            if (inputContent) {
-                inputContent.innerHTML = "";
+            // 执行插入评论数据的操作
+            // console.log(this.ischoicedcommentId);
+            // console.log(this.userId);
+            // console.log(this.reply.replyComment);
+            const insertComment = {
+                userId:this.userStore.userId,
+                operaId:this.comments[0].operaId,
+                parentId:this.ischoicedcommentId,
+                content:this.reply.replyComment,
             }
+
+            addComment(insertComment).then(res=>{
+                console.log("发布成功");
+                // 清空输入框操作。
+                const inputContent = this.$refs['replyInput' + index]?.[0]; // .[0] 取第一个匹配的元素
+                if (inputContent) {
+                    inputContent.innerHTML = "";
+                }
+                // window.location.reload();
+            })
+            
         },
-        setCommentFromSon(comment){
-            this.reply.replyname = comment.user.nickName;
-            this.$emit('CommentFromSon',comment);
-        }
     }
 }
 </script>
@@ -131,13 +186,12 @@ export default {
     background: #f9f9f9;
     margin-bottom: 10px;
     .header-img {
-      width: 40px; /* 头像宽度 */
-      height: 40px; /* 头像高度 */
+      width: 30px; /* 头像宽度 */
+      height: 30px; /* 头像高度 */
       border-radius: 50%;
       margin-right: 10px;
     }
     .author-info {
-      flex-grow: 1;
       display: flex;
       .author-name {
         font-weight: bold;
@@ -155,16 +209,19 @@ export default {
   }
 .reply-comment {
     display: flex;
-    align-items: flex-start;
+    // align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     margin-top: 10px;
     margin-left: 30px;
     .header-img {
-      width: 30px; /* 头像宽度 */
-      height: 30px; /* 头像高度 */
+      width: 30px;
+      height: 30px; 
       border-radius: 50%;
       margin-right: 10px;
     }
     .reply-info {
+        margin-left: 20px;
         display: flex;
         flex-grow: 1;
         .reply-input {
@@ -172,7 +229,7 @@ export default {
             border: 1px solid #ccc;
             border-radius: 5px;
             min-height: 40px;
-            width: 50%;
+            width: 90%;
             &:empty:before {
             content: attr(placeholder);
             color: #ccc;
@@ -181,7 +238,7 @@ export default {
     }
     .reply-btn-box {
       margin-top: 5px;
-      margin-left: 10px;
+      margin-right: 100px;
     }
 }
 
@@ -199,3 +256,22 @@ export default {
             回复 {{ reply.to }}: {{ reply.comment }}
         </div>
 </div> -->
+
+
+<!-- //如何做到实时的将要添加的数据显示到前端界面上？
+// const insertCommentVue = {
+//     userId:this.userId,
+//     operaId:this.comments[0].operaId,
+//     parentId:this.ischoicedcommentId,
+//     content:this.reply.replyComment,
+//     createdAt: new Date().toISOString(),
+//     children: [] // 新回复默认为无子评论
+// }
+//1.查找当前要回复的评论，并将新评论插入到其children数据当中
+// const targetComment = findCommentById(this.comments,this.ischoicedcommentId);
+// console.log(targetComment);
+//2.如果children 不存在，初始化为空数组再添加。
+// if (targetComment) {
+//     if (!targetComment.children) {targetComment.children = [];}
+//     targetComment.children.push(insertCommentVue);
+// } -->
