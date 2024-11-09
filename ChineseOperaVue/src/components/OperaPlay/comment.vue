@@ -19,7 +19,7 @@ import {getCommentsByOperaId,addComment} from '@/api/opera.js'
 import CommentList from '@/components/OperaPlay/CommentList.vue';
 import useUserStore from '@/stores/userStore';
 export default {
-    name: "CommentSection",
+    name: "Comment",
     props: {
         operaid: {
             type: Number,
@@ -43,6 +43,7 @@ export default {
     methods: {
         getComments() {
             getCommentsByOperaId(this.operaid).then(res => {
+
                 this.comments = res.data.data;
             });
         },
@@ -60,23 +61,11 @@ export default {
                 alert("评论不能为空");
                 return;
             }
-            console.log("111");
-            console.log(this.userStore);
             const insertComment = {
                 userId:this.userStore.userId,
                 operaId:this.comments[0].operaId,
                 content:this.replyComment
             }
-            // const newComment = {
-            //     name: "Lana Del Rey",
-            //     headImg: this.myHeader,
-            //     comment: this.replyComment,
-            //     time: new Date().toLocaleString(),
-            //     reply: []
-            // };
-            // this.comments.push(newComment);
-            // this.replyComment = "";
-            
             addComment(insertComment).then(res=>{
               document.getElementById("replyInput").innerHTML = ""; //清空
               // window.location.reload();
@@ -90,10 +79,16 @@ export default {
             }
             return false;
         },
-        
     },
     created() {
-        this.getComments();
+      this.getComments();
+    },
+    watch:{
+      operaid(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          this.getComments(); // operaid 变化时重新获取评论
+        }
+      }
     },
     components: { CommentList }
 }

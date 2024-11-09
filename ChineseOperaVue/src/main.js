@@ -1,15 +1,15 @@
 import './assets/styles/index.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElIconModules from '@element-plus/icons-vue'
-// import OperaIcon from '@/base/opera-icon/opera-icon.vue';
 
-
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 const app = createApp(App)
 // 统一注册Icon图标
 for (const iconName in ElIconModules) {
@@ -19,7 +19,8 @@ for (const iconName in ElIconModules) {
   }
 }
 // app.component('OperaIcon', OperaIcon)
-app.use(createPinia())
+
+app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
 

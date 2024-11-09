@@ -3,7 +3,7 @@
     <el-header style="padding:0;height: auto;">
         <HomeHeader></HomeHeader>
     </el-header>
-    <el-main style="padding: 0 60px;height: 80vh;">
+    <el-main style="padding: 0 60px;height: 72vh;">
          <!-- 分类列表 -->
         <div>
             <div class="header-channel">
@@ -40,13 +40,14 @@
             </div>
         </div>
     </el-main>
-    
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import HomeHeader from "@/components/Home/Header.vue"
-import Channel from "@/components/Home/channel.vue"
+import Channel from "@/components/Home/Channel.vue"
+import Footer from "@/components/Home/Footer.vue"
 import SingleOpera from "@/components/Home/SingleOpera.vue"
 import {getAlloperaInfo,getOperaPlayUrl} from '@/api/opera.js'
 export default {
@@ -54,7 +55,8 @@ export default {
     components:{
         HomeHeader,
         Channel,
-        SingleOpera
+        SingleOpera,
+        Footer
     },
     created(){
         this.getoperaInfo();
@@ -132,7 +134,7 @@ export default {
 }
 
 .recommend-container{
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     .carousel-container{
@@ -140,7 +142,7 @@ export default {
         width: 30vw;
         position: relative;
         margin-left: 20px;
-        margin-top: 20px;
+        margin-top: 10px;
         .carousel-img{
             border-radius: 10px; // 设置圆角
         }
@@ -161,7 +163,7 @@ export default {
         white-space: nowrap;
         width: 50vw;
         .singleOpera-container{
-            margin-top: 20px;
+            margin-top: 10px;
             min-width: 15vw;
         }
     }

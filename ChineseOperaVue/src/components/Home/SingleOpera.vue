@@ -1,6 +1,5 @@
 <template>
-    <!-- {width:width+'px',height:height+'px'} -->
-    <div class="opera-card" :style="style">
+    <div class="opera-card" :style="style" @click="navigateToOperaPlay">
         <img class="opera-img" :src="opera.pictureUrl" :alt="opera.name">
         <div class="opera-info">
             <span class="opera-name">{{ opera.name }}</span>
@@ -23,11 +22,11 @@ export default {
         },
         width:{
             type:Number,
-            default:'200'
+            default:200
         },
         height:{
             type:Number,
-            default:'200'
+            default:200
         },
         style:{
             type:Object,
@@ -35,13 +34,20 @@ export default {
         }
     },
     name:'SingleOpera',
+
+    methods:{
+        navigateToOperaPlay(){
+            this.$router.push({
+                name: 'operaPlay',
+                query: { opera: JSON.stringify(this.opera) } 
+            })
+        },
+    }
 }
 </script>
 
 <style lang = "scss" scoped>
 .opera-card{
-    // width: 15vw;
-    color: #6A3D3D;
     .opera-img{
         width: 100%;
         height: auto;
@@ -53,29 +59,26 @@ export default {
         }
     }
     .opera-info{
-        // margin-top: 5px;
+        margin-top: 0px;
+        padding: 0px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         
         .opera-name{
            display: inline-block;
-            font-size: 16px;
+            font-size: 12px;
             font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            text-align: center;
+            @include no-wrap;
         }
         .opera-details{
             display: flex;
             justify-content: space-between;
             align-items: center;
             .opera-singer,.opera-tag{
-            font-size: 14px;
-            margin-left: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 12px;
+            @include no-wrap;
         }
         .opera-singer{
             max-width: 80%;

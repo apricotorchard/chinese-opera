@@ -1,7 +1,7 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.domain.DTO.RegisterDto;
-import com.example.springboot.domain.ResponseResult;
+import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.domain.DTO.LoginBody;
 import com.example.springboot.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;

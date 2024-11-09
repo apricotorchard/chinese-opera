@@ -5,7 +5,6 @@
     overflow: hidden;
     white-space: nowrap;
 }
-  
 @mixin flex-center($direction: row) {
     display: flex;
     flex-direction: $direction;

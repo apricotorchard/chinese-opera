@@ -1,14 +1,14 @@
 package com.example.springboot.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springboot.domain.Comment;
 import com.example.springboot.domain.Opera;
-import com.example.springboot.domain.ResponseResult;
+import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.service.CommentService;
 import com.example.springboot.service.OperaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/opera")
@@ -29,6 +29,13 @@ public class OperaController {
     public ResponseResult getOperaListByCollectionId(@RequestParam int collectionid){
         return operaService.getOperaListByCollectionId(collectionid);
     }
+    //根据戏曲的类型进行查询，这个要做一个分页的操作。
+    @GetMapping("/getlistbyoperatag")
+    public Page<Opera> getOperaListByTag(@RequestParam String operaTag,
+                                         @RequestParam int pageNum, @RequestParam int pageSize){
+        //开启分页
+        return operaService.getOperaListByTag(operaTag,pageNum,pageSize);
+    }
     //获取戏曲下的所有评论
     @GetMapping("/comments/{operaId}")
     public ResponseResult getCommentsByOperaId(@PathVariable long operaId){
@@ -40,5 +47,7 @@ public class OperaController {
     public ResponseResult addComment(@RequestBody Comment comment){
         return commentService.addComment(comment);
     }
+
+
 }
 

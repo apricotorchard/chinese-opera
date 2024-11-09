@@ -55,7 +55,20 @@ export const useUserStore = defineStore('user', {
             resolve(res);
         }).catch(error=>{reject(error)})
     })
-  }
   },
+
+ 
+  },
+  persist: {
+    enabled: true, // 启用持久化
+    strategies: localStorage
+    // [
+    //   {
+    //     key: 'userStore',          // 存储的 key 名称
+    //     storage: localStorage,     // 存储方式
+    //     // paths: ['token', 'userId', 'userName', 'roles'], // 可以选择存储的字段
+    //   }
+    // ]
+  }
 });
 export default useUserStore

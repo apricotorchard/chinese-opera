@@ -1,10 +1,7 @@
 package com.example.springboot.service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.domain.Comment;
-import com.example.springboot.domain.ResponseResult;
-import com.example.springboot.mapper.CommentMapper;
-import org.springframework.stereotype.Service;
+import com.example.springboot.utils.ResponseResult;
 
 
 public interface CommentService{

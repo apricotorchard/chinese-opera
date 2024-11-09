@@ -107,7 +107,7 @@ export default {
     },
     computed:{
         userStore(){
-            return useUserStore ();
+            return useUserStore();
         }
     },
     methods:{

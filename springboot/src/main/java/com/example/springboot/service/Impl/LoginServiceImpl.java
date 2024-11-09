@@ -5,7 +5,7 @@ import com.example.springboot.common.constant.Constants;
 import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.DTO.RegisterDto;
 import com.example.springboot.domain.LoginUser;
-import com.example.springboot.domain.ResponseResult;
+import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.domain.User;
 import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.service.LoginService;

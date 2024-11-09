@@ -2,7 +2,7 @@ package com.example.springboot.controller;
 
 import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.utils.Base64;
-import com.example.springboot.domain.ResponseResult;
+import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.utils.RedisCache;
 import com.google.code.kaptcha.Producer;
 import com.example.springboot.common.constant.Constants;

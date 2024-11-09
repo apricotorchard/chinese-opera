@@ -4,15 +4,19 @@
     <Header :showBackground="false" :showLogo="false"></Header>
     <div class="opera-container">
         <div v-for="(opera,index) in operaInfoList" :key="index" class="single-opera">
-            <!-- :width="230" :height="220" -->
             <SingleOpera :opera="opera" :style="{width:'230px',height:'230px'}"></SingleOpera>
         </div>
+        <!-- :hide-on-single-page="value"   这个可以决定是否隐藏分页，因为只有一页的时候 -->
+        <el-pagination @current-change="handlePageChange" @size-change="handleSizeChange" 
+        :hide-on-single-page="total<=pageSize?true:false"  background layout="prev, pager, next"
+        :total="total" :current-page="pageNum" :page-size="pageSize"/>
     </div>
 </template>
 
 <script>
 import SingleOpera from '@/components/Home/SingleOpera.vue';
 import Header from '@/components/Home/Header.vue';
+import {getOperaListByTag} from '@/api/opera.js'
 export default {
    components:{
         SingleOpera,
@@ -20,194 +24,34 @@ export default {
    },
     data(){
         return{
+            pageNum:1,
+            pageSize:15,
+            total:0,
             operaTag:'',
-            operaInfoList:[
-                {
-                    operaId:1,
-                    operaName:'《千里寻夫》又名《北国认父》',
-                    operaSinger:'王帅军 杨少彭 杨乃彭 施昊 马杰',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                },
-                {
-                    operaId:1,
-                    operaName:'《富春令》',
-                    operaSinger:'李淑芳',
-                    operaTag:'越剧',
-                    operaTime:'2022/6/16',
-                    operaPictureUrl:'http://xiqu.99uz.com/uploads/allimg/220616/d4fbdd87b02f36a2.gif',
-                    operaPlayUrl:'https://player.youku.com/embed/XNDE0NTU2NzAzMg==?client_id=23d6a7035d8bd579&amp;autoplay=true',
-                }
-            ],
+            operaInfoList:[],
         }
     },
     created(){
         this.operaTag = this.$route.query.operaTag;
-        console.log(this.operaTag)
+        this.getOperaList();
+    },
+    methods:{
+        getOperaList(){
+            const operaParam = {
+                pageNum: this.pageNum,
+                pageSize: this.pageSize,
+                operaTag:this.operaTag
+            }
+            getOperaListByTag(operaParam).then(res=>{
+                // console.log(res);
+                this.total = res.data.total;
+                this.operaInfoList = res.data.records;
+            })
+        },
+        handlePageChange(newPageNum){
+            this.pageNum = newPageNum;
+            this.getOperaList();
+        }
     }
 }
 </script>

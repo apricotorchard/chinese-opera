@@ -32,11 +32,9 @@ export default {
         grid-template-columns: repeat(9,1fr);
         grid-gap: 10px 40px;
         list-style: none;
-        
-        padding: 0;
         .tag-item{
-            padding: 10px 25px;
-            background-color: #f0f0f0;
+            padding: 10px 20px;
+            background-color: #ddd;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
@@ -45,7 +43,7 @@ export default {
                 background-color: #ccc;
             }
             font-size: 12px;
-            color: #333;
+            @include no-wrap;
         }
     }
 

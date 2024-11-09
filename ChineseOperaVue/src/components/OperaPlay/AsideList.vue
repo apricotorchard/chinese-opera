@@ -2,14 +2,14 @@
     
     <div class="aside-container">
         <!-- 如果说有视频合集 -->
-        <div v-if="operaList.length!=0" class="opera-list">
+        <div v-if="operaList.length!=0" class="opera-list" >
             <div class="list-header"><span>视频选集：</span></div>
             <div class="list-container">
-                <div v-for="(opera,index) in operaList" :key="index" class="list-item">
+                <div v-for="(opera,index) in operaList" :key="index" class="list-item" @click="navigateToOperaPlay(opera)">
                     <span>{{ opera.name }}</span>
                 </div>
             </div>
-            <div v-for="(opera,index) in operaList.slice(0,2)" :key="index" class="opera-info">
+            <div v-for="(opera,index) in operaList.slice(0,2)" :key="index" class="opera-info"  @click="navigateToOperaPlay(opera)">
                 <div class="img-container">
                     <img :src="opera.pictureUrl">
                 </div>
@@ -37,6 +37,7 @@
 <script>
 
 export default {
+    emits:["getChoicedOpera"],
     props:{
         operaList:{
             type:Object,
@@ -48,8 +49,15 @@ export default {
 
         }
     },
-    method:{
-     
+    methods:{
+        navigateToOperaPlay(opera){
+            this.$emit("getChoicedOpera",opera);
+            // this.$router.push({
+            //     name: 'operaPlay',
+            //     query: { opera: JSON.stringify(opera) } 
+            // })
+            // window.location.reload();
+        },
     }
 }
 </script>

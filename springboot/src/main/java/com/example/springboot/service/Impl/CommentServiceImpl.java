@@ -3,7 +3,7 @@ package com.example.springboot.service.Impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.Comment;
-import com.example.springboot.domain.ResponseResult;
+import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.domain.User;
 import com.example.springboot.mapper.CommentMapper;
 import com.example.springboot.mapper.UserMapper;

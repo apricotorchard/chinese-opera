@@ -28,6 +28,14 @@ export function getOperaByCollectionId(collectionId){
     })
 }
 
+
+export function getOperaListByTag(params){
+    return request({
+        url:'/opera/getlistbyoperatag',
+        method:'get',
+        params:params
+    })
+}
 // 获取用户评论
 export function getCommentsByOperaId(operaId){
     return request({

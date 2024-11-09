@@ -1,4 +1,4 @@
-package com.example.springboot.domain;
+package com.example.springboot.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
