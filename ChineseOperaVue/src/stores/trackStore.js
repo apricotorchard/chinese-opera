@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 export const useTrackStore = defineStore('track',{
     state:()=>({
-        currentTrackId:1,
-        isPlaying:false
+        currentTag:'京剧',
+        currentTrackId:0,
+        isPlaying:false,
+        isfinishGetData:false,
+        audioList:[]
     }),
     actions:{
         setCurrentTrackId(trackId){
@@ -13,6 +16,11 @@ export const useTrackStore = defineStore('track',{
         },
         playStoreTrack(){
             this.isPlaying = true;
+        },
+        addAudioList(audioList) {
+            this.audioList = [...this.audioList, ...audioList];
+            this.isfinishGetData = true;
+            console.log("数据执行完成");
         }
     }
 })

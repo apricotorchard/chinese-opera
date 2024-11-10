@@ -4,15 +4,14 @@
         <el-image class="slow-rotate" style="width: 200px; height: 200px" :src=url fit="cover">
         </el-image>
     </div>
-    <h2 v-if="currentTrack">{{ currentTrack.operaName }}</h2>
-    
-    <p v-if="currentTrack">{{ currentTrack.operaSinger }}</p>
-    <p v-if="currentTrack">{{ currentTrack.operaTag }}</p>
+    <h2 v-if="currentTrack">{{ currentTrack.name }}</h2>
+  
+    <p v-if="currentTrack">{{ currentTrack.tag }}</p>
     <div class="controls" v-if="currentTrack">
         <el-icon :size="30" @click="prevTrack"><CaretLeft /></el-icon>
         <el-icon :size="30" @click="togglePlay">
-          <VideoPlay v-if="!isPlaying"/>
-          <VideoPause v-if="isPlaying"/>
+          <VideoPlay v-if="!trackStore.isPlaying"/>
+          <VideoPause v-if="trackStore.isPlaying"/>
         </el-icon>
         <el-icon :size="30" @click="nextTrack"><CaretRight /></el-icon>
     </div>
@@ -33,8 +32,6 @@
 <script>
 import { Howl } from 'howler';
 import { useTrackStore } from '@/stores/trackStore'; 
-import { useOperaListStore } from '@/stores/operaListStore';
-// 有一个bug，就是会重复播放两次。
 export default {
     data(){
         return{
@@ -42,44 +39,45 @@ export default {
             sound:null,
             seek:0,
             duration:0,
-            url:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+            url:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            trackStore: useTrackStore(),
         };
     },
-    computed: {
-      trackStore() {
-        return useTrackStore();
-      },
-      operaListStore() {
-        return useOperaListStore();
-      },
-      currentTrackId() {
-        return this.trackStore.currentTrackId;
-      },
-      isPlaying(){
-        return this.trackStore.isPlaying;
-      }
-    },
     watch: {
-      currentTrackId(newTrackId) {
-        console.log("currentTreackID发生变化....");
-        const newTrack = this.operaListStore.operaInfoList[newTrackId-1];
-        if (newTrack) {
-          this.loadTrack(newTrack);
-          this.playTrack();
+      'trackStore.currentTrackId': function (newTrackId) {
+        if (this.trackStore.isfinishGetData) {
+          const newTrack = this.trackStore.audioList[newTrackId];
+          if (newTrack) {
+            this.loadTrack(newTrack);
+            this.playTrack();
+          }
         }
       },
-      isPlaying(newTrackId){
-        newTrackId ? this.playTrack():this.pauseTrack() ;
+
+      // 监听 isPlaying 变化
+      'trackStore.isPlaying': function (isPlaying) {
+        isPlaying ? this.playTrack() : this.pauseTrack();
+      },
+
+      // 监听 isfinishGetData，加载完成时进行初始化
+      'trackStore.isfinishGetData': function (newVal) {
+        console.log("当前列表数据加载完毕");
+        if (newVal) {
+          this.currentTrack = this.trackStore.audioList[this.trackStore.currentTrackId];
+          console.log(this.currentTrack);
+          this.loadTrack(this.currentTrack);
+        }
+        immediate: true // 确保组件初始化时立即执行一次
       }
-   },
-    mounted(){
-      this.currentTrack = this.operaListStore.operaInfoList[this.trackStore.currentTrackId-1];
-      this.loadTrack(this.currentTrack);
     },
+    // activated(){
+    //   this.trackStore.isfinishGetData = false; //先执行这个，然后audioList组件 会重新将this.trackStore.isfinishGetData赋值为false
+    // },
     deactivated() {
     // 组件被切换到其他页面时可以暂停播放或处理其他逻辑
         if (this.sound) {
             this.trackStore.isPlaying = false;
+            this.trackStore.isfinishGetData = false;
             this.sound.unload();
         }
     },
@@ -91,7 +89,7 @@ export default {
             this.currentTrack = track;
             
             this.sound = new Howl({
-              src:[track.operaAudioUrl],
+              src:[track.audioUrl],
               html5:true,
               onload:()=>{
                   this.duration = this.sound.duration();
@@ -100,7 +98,6 @@ export default {
                 this.trackStore.isPlaying = false;
             }
           });
-          console.log(this.sound);
         },
         playTrack() {
             this.sound.play();
@@ -108,32 +105,30 @@ export default {
             this.updateSeek();
         },
         pauseTrack() {
-            this.sound.pause();
-            this.trackStore.isPlaying = false;
+            if(this.sound){
+              this.sound.pause();
+              this.trackStore.isPlaying = false;
+            } 
         },
         togglePlay() {
             this.trackStore.isPlaying ? this.pauseTrack() : this.playTrack();
         },
-        stopTrack() {
-            this.sound.stop();
-            this.trackStore.isPlaying = false;
-            this.seek = 0;
-        },
         prevTrack() {
-            const currentIndex = this.operaInfoList.findIndex(
-            (track) => track.operaId === this.currentTrack.operaId
+            const currentIndex = this.trackStore.audioList.findIndex(
+            (track) => track.id === this.currentTrack.id
             );
             if (currentIndex > 0) {
-            this.loadTrack(this.operaInfoList[currentIndex - 1]);
+              this.trackStore.currentTrackId = currentIndex-1;
             }
         },
         nextTrack() {
-            const currentIndex = this.operaInfoList.findIndex(
-            (track) => track.operaId === this.currentTrack.operaId
-            );
-            if (currentIndex < this.operaInfoList.length - 1) {
-            this.loadTrack(this.operaInfoList[currentIndex + 1]);
-            }
+          const currentIndex = this.trackStore.audioList.findIndex(
+          (track) => track.id === this.currentTrack.id
+          );
+        
+          if (currentIndex < this.trackStore.audioList.length - 1) {
+            this.trackStore.currentTrackId = currentIndex+1;
+          }
         },
         updateSeek() {
             if (this.sound && this.trackStore.isPlaying) {

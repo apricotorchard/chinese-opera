@@ -1,26 +1,18 @@
 <template>
     <div class="opera-list flex-col">
-      <template v-if="operaInfoList.length>0">
         <div class="list-item list-header">
-          <span class="list-num">戏曲ID</span>
-          <span class="list-name">戏曲</span>
-          <span class="list-singer">演唱者</span>
-          <span class="list-time">时长</span>
+          <span class="list-name">戏曲名称</span>
           <span class="list-operation"></span>
         </div>
         <div class="list-content" @scroll="listScroll($event)">
           <!-- 双击实现 -->
-          <div v-for="(opera,index) in displayedOperas" :key="index" class="list-item" @dblclick="selectOpera(opera)">
-            <span class="list-num">{{ opera.operaId }}</span>
-            <span class="list-name">{{ opera.operaName }}</span>
-            <span class="list-singer">{{ opera.operaSinger }}</span>
-            <span class="list-time">
-              {{ opera.operaDuration }}
-            </span>
+          <div v-for="(audio,index) in track.audioList" :key="index" class="list-item" @dblclick="selectAudio(audio)">
+            <span class="list-name">{{ audio.name }}</span>
+
             <div class="icon-container">
                 <el-icon class="action-icon" :size="30">
-                    <VideoPause v-if="track.isPlaying"  @click="cancelOpera(opera)"/>
-                    <VideoPlay v-if="!track.isPlaying" @click="selectOpera(opera)"/>
+                    <VideoPause v-if="track.isPlaying"  @click="cancelAudio(audio)"/>
+                    <VideoPlay v-if="!track.isPlaying" @click="selectAudio(audio)"/>
                 </el-icon>
                 
                 <el-icon class="action-icon"><Delete /></el-icon>
@@ -29,67 +21,83 @@
           </div>
   
         </div>
-      </template>
+      <!-- </template> -->
       <!-- 如果没有显示列表空空如也 -->
     </div>
 </template>
   
-  <script>
+<script>
   import {useTrackStore} from '@/stores/trackStore';
-  import {useOperaListStore} from '@/stores/operaListStore'
+  import {getAudioListByTag,getAudioPlayUrl} from '@/api/audio.js';
   const THRESHOLD = 100
   // 戏曲的不变的信息可以直接从后端获取，对于容易变化到的数据，需要放在vuex里面
   export default {
+    // props:{
+    //   audioTag:{
+    //     type:String,
+    //     required:true
+    //   }
+    // },
     data(){
       return{
-        displayedOperas:[],
+        displayedAudios:[],
         lockUp:false,
+        pageNum:1,
         pageSize:10,
-        currentPage:1,
-        operaInfoList:[],
-        operaStore : useOperaListStore(),
-        track : useTrackStore()
+        tag:'京剧',
+        track:useTrackStore()
       }
     },
-    
+    created(){
+        
+    },
     mounted(){
-        //我都有全部的戏曲了，还需要滚动事件么？
-        this.operaInfoList = this.operaStore.operaInfoList;
-        this.loadMore();
+
+
+      this.getAudioList();
     },
     methods:{
-        selectOpera(opera){
+        selectAudio(audio){
             // 1.先把当前的播放的戏曲id更换
             // 2.更换播放状态
             this.track.isPlaying = true;
-            this.track.setCurrentTrackId(opera.operaId);
-            console.log("选择一个戏曲播放")
+            this.track.setCurrentTrackId(audio.id-1);
         },
-        cancelOpera(opera){
+        cancelAudio(audio){
             this.track.isPlaying = false;
-            this.track.setCurrentTrackId(opera.operaId);
-            console.log("选择一个戏曲取消")
+            this.track.setCurrentTrackId(audio.id-1);
         },
       //滚动事件
         listScroll(e){
             const { scrollTop, scrollHeight, offsetHeight } = e.target;
-            if (scrollTop + offsetHeight >= scrollHeight - THRESHOLD && !this.lockUp) {
-                this.lockUp = true; // 锁定滚动加载
-                this.loadMore(); // 加载更多数据
-            }
+            // if (scrollTop + offsetHeight >= scrollHeight - THRESHOLD && !this.lockUp) {
+            //     this.lockUp = true; // 锁定滚动加载
+            //     this.loadMore(); // 加载更多数据
+            // }
         },
         loadMore(){
-                const startIndex = this.pageSize * (this.currentPage - 1);
-                const endIndex = startIndex + this.pageSize;
-                const newItems = this.operaInfoList.slice(startIndex, endIndex);
-                if (newItems.length > 0) {
-                    this.displayedOperas = [...this.displayedOperas, ...newItems];
-                    this.currentPage += 1;
-                }
+                this.pageNum+=1;
+                // 向后端发送请求加载更多的数据
+                this.getAudioList();
                 this.lockUp = false; // 解锁滚动加载
         },
-        //实现双击播放，将状态传入到另一个组件，然后根据当前的播放状态
-    }
+        getAudioList(){
+            const params={
+              pageNum:this.pageNum,
+              pageSize:this.pageSize,
+              tag:this.tag,
+            }
+            getAudioListByTag(params).then(res=>{
+
+              const audioList = res.data.records.map(item=>{
+                item.audioUrl = getAudioPlayUrl(item)
+                return item;
+              })
+              console.log("audiolist 数据开始执行......")
+              this.track.addAudioList(audioList);
+          })
+        }
+      }
   }
   </script>
   

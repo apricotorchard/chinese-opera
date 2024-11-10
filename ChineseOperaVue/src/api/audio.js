@@ -1,0 +1,29 @@
+import request from '@/utils/request.js'
+
+
+
+
+// 动态获得服务器上的戏曲音频播放地址
+export function getAudioPlayUrl(audio){
+    const audioPathMap= {
+        "京剧": "jingju",
+        "黄梅戏": "huangmeixi",
+        "豫剧": "yuju",
+    };
+    
+    const serverAddress = "http://8.130.36.156:8080/chineseopera/";
+    const path = audioPathMap[audio.tag];
+    const dir = "audio/"
+    const suffix = ".wav";
+    const playUrl = `${serverAddress}${dir}${path}/${audio.id}${suffix}`;
+    return playUrl;
+}
+
+
+export function getAudioListByTag(params){
+    return request({
+        url:'/audio/getaudiobytag',
+        method:'get',
+        params:params
+    })
+}

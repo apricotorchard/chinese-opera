@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
-import audio1 from '@/assets/audio1.mp3'
+
+
+// 这个是不需要的吧。
+import audio1 from '@/assets/01. 卧龙吊孝.wav'
 import audio2 from '@/assets/audio2.mp3'
 export const useOperaListStore = defineStore('operaList', {
   state: () => ({

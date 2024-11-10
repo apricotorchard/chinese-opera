@@ -9,7 +9,4 @@ import java.util.List;
 
 @Mapper
 public interface OperaMapper extends BaseMapper<Opera> {
-
-//    @Select("select * from opera_info where tag = #{operaTag}")
-//    List<Opera> selectOperaListByTag(String operaTag);
 }

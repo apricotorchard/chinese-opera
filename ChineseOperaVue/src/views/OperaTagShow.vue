@@ -4,13 +4,15 @@
     <Header :showBackground="false" :showLogo="false"></Header>
     <div class="opera-container">
         <div v-for="(opera,index) in operaInfoList" :key="index" class="single-opera">
-            <SingleOpera :opera="opera" :style="{width:'230px',height:'230px'}"></SingleOpera>
+            <SingleOpera :opera="opera" :style="{width:'230px',height:'220px'}"></SingleOpera>
         </div>
         <!-- :hide-on-single-page="value"   这个可以决定是否隐藏分页，因为只有一页的时候 -->
-        <el-pagination @current-change="handlePageChange" @size-change="handleSizeChange" 
-        :hide-on-single-page="total<=pageSize?true:false"  background layout="prev, pager, next"
-        :total="total" :current-page="pageNum" :page-size="pageSize"/>
     </div>
+    <div class="page-container">
+            <el-pagination @current-change="handlePageChange" @size-change="handleSizeChange" 
+            :hide-on-single-page="total<=pageSize?true:false"  background layout="prev, pager, next"
+            :total="total" :current-page="pageNum" :page-size="pageSize"/>
+        </div>
 </template>
 
 <script>
@@ -60,9 +62,18 @@ export default {
 .opera-container{
     display: grid;
     padding: 0 60px;
-    margin-top: 15px;
+    margin-top: 10px;
     grid-template-columns: repeat(5,1fr);
-    grid-gap: 8px;
+    // grid-gap: 5px;
     
+}
+.page-container{
+    width: 100%;
+    // margin-top: 5px;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
 }
 </style>

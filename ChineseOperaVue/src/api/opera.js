@@ -1,6 +1,6 @@
 import request from '@/utils/request.js'
 
-// 动态获得服务器上的播放地址
+// 动态获得服务器上的戏曲视频播放地址
 export function getOperaPlayUrl(opera){
     const operaPathMap= {
         "京剧": "jingju",
@@ -10,8 +10,9 @@ export function getOperaPlayUrl(opera){
     
     const serverAddress = "http://8.130.36.156:8080/chineseopera/";
     const path = operaPathMap[opera.tag];
+    const dir = "video/"
     const suffix = ".mp4";
-    const playUrl = `${serverAddress}${path}/c${opera.collectionId}/${opera.id}${suffix}`;
+    const playUrl = `${serverAddress}${dir}${path}/c${opera.collectionId}/${opera.id}${suffix}`;
     return playUrl;
 }
 export function getAlloperaInfo(){
