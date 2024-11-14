@@ -1,7 +1,6 @@
 <template>
   <div class="foorter-container">
-    内蒙古大学<br>
-    QQ:2016410498 微信:19553500806 
+     QQ:2016410498
   </div>
 </template>
 
@@ -13,13 +12,14 @@ export default {
 
 <style scoped lang="scss">
 .foorter-container{
+    background:url();
     position: fixed;
     bottom: 0px;
     width: 100%;
-    height: 5vh;
-    background-color: black;
+    height: 6vh;
+    background-color: #fff;
     text-align: center;
-    color: white;
-    font-size: 12px;
+    color: black;
+    font-size: 16px;
 }
 </style>

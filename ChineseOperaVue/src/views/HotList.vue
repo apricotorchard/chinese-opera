@@ -144,7 +144,8 @@
 }
 
 .container {
-  max-width: 1200px;
+  width: 1200px;
+  // width: 1000px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
@@ -168,10 +169,10 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    width: 48%;
+    width: 38%;
     padding: 10px;
     
-    background-color: rgba(255, 255, 255, 0.8);
+    // background-color: rgba(255, 255, 255, 0.8);
     transition: background-color 0.3s ease, transform 0.3s ease;
 
     &:hover {
@@ -181,7 +182,7 @@
 
     .index {
       font-size: 2rem;
-      margin-right: 40px;
+      margin-right: 20px;
       font-weight: bold;
       color: #B85C5C; /* 暖色调红，与背景图协调 */
       &.first {
@@ -200,12 +201,12 @@
 
     .image {
       width: 150px;
-      margin-right: 20px;
+      margin-right: 0px;
     }
 
     .info {
       text-align: center;
-      margin-right: 50px;
+      // margin-right: 50px;
       width: 150px;
 
       .title {

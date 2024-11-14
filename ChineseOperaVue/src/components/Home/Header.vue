@@ -40,7 +40,7 @@
                         <img :src=userStore.avatar alt="用户头像" class="avatar-img">
                     </div>
                     <!-- 下拉菜单  -->
-                    <div class="profile-dropdown" v-if="isDropdownVisible">
+                    <div class="profile-dropdown"  v-if="isDropdownVisible">
                         <ul>
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#" @click="goToLogin">登录</a></li>
@@ -216,43 +216,58 @@ export default {
             position: relative;
             display: inline-block;
             .avatar-img {
+                position: absolute;
+                top: -25px;
+                right: 0px;
                 width: 40px;
                 height: 40px;
                 border-radius: 50%; /* 圆形头像 */
                 border: 2px solid #fff; /* 白色边框 */
                 transition: transform 0.3s ease;
             }
-            .profile-avatar:hover .avatar-img{
+             .profile-avatar:hover .avatar-img{
                 transform: scale(1.5);
+                z-index: 1001; 
+               
             }
-            .profile-dropdown{
+           
+            .profile-dropdown {
                 position: absolute;
-                top:50px;
+                top: 10px;
                 right: -80px;
                 background-color: white;
-                width:200px;
-                ul{
+                width: 200px;
+                z-index: 1000; 
+                border-radius: 8px; 
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+
+                ul {
                     list-style: none;
                     padding: 0;
-                    li{
+                    margin: 0;
+
+                    li {
                         border-bottom: 1px solid #f0f0f0;
                         padding: 10px;
                         text-align: center;
-                        a{
+                        transition: background-color 0.2s ease; // 添加过渡效果
+                        a {
                             color: #333;
                             display: block;
+                            text-decoration: none; 
                         }
-                        
                     }
-                    li:last-child{
-                        border-bottom:none
+
+                    li:last-child {
+                        border-bottom: none;
                     }
-                    
-                    li:hover{
-                        background-color: rgba(0, 0, 0, 0.1);
+
+                    li:hover {
+                        background-color: rgba(0, 0, 0, 0.05); 
                     }
                 }
             }
+           
         }
     }
 }

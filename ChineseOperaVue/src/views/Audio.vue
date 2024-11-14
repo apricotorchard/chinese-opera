@@ -2,13 +2,14 @@
   <div class="audio-container">
     <Header :showBackground="false" :showLogo="false"></Header>
     <div class="channel-container">
-      <Channel></Channel>
+      <Channel :isAudio=true></Channel>
     </div>
     <div class="content">
-      <AudioList></AudioList>
       <keep-alive>
         <AudioMp3Player></AudioMp3Player>
       </keep-alive>
+      <AudioList></AudioList>
+      
     </div>
   </div>
 </template>
@@ -45,6 +46,6 @@ export default {
 }
 .content{
   @include flex-center();
-  margin-top: 10px;
+  margin-top: 10px; 
 }
 </style>

@@ -6,7 +6,7 @@
         </div>
         <div class="list-content" @scroll="listScroll($event)">
           <!-- 双击实现 -->
-          <div v-for="(audio,index) in track.audioList" :key="index" class="list-item" @dblclick="selectAudio(audio)">
+          <div v-for="(audio,index) in track.audioList" :class="{'active':index==isChoicedAudioIndex}" :key="index" class="list-item" @dblclick="selectAudio(audio)">
             <span class="list-name">{{ audio.name }}</span>
 
             <div class="icon-container">
@@ -29,7 +29,7 @@
 <script>
   import {useTrackStore} from '@/stores/trackStore';
   import {getAudioListByTag,getAudioPlayUrl} from '@/api/audio.js';
-  const THRESHOLD = 100
+  const THRESHOLD = 20
   // 戏曲的不变的信息可以直接从后端获取，对于容易变化到的数据，需要放在vuex里面
   export default {
     // props:{
@@ -40,62 +40,92 @@
     // },
     data(){
       return{
-        displayedAudios:[],
         lockUp:false,
         pageNum:1,
         pageSize:10,
         tag:'京剧',
-        track:useTrackStore()
+        track:useTrackStore(),
+        total:'',
+        isChoicedAudioIndex:0
       }
     },
     created(){
         
     },
     mounted(){
-
-
       this.getAudioList();
+    },
+    watch:{
+      'track.currentTrackId': function (newTrackId) {
+        const currentIndex = this.track.audioList.findIndex(
+              (track) => track.id === newTrackId
+        );
+        this.isChoicedAudioIndex = currentIndex;
+      },
+      'track.currentTag': function (newTag){
+        this.track.clearAudioList();
+        this.tag = newTag;
+        // this.getAudioList();
+      }
     },
     methods:{
         selectAudio(audio){
             // 1.先把当前的播放的戏曲id更换
             // 2.更换播放状态
             this.track.isPlaying = true;
-            this.track.setCurrentTrackId(audio.id-1);
+            
+            const currentIndex = this.track.audioList.findIndex(
+              (track) => track.id === audio.id
+            );
+            this.isChoicedAudioIndex = currentIndex;
+            this.track.setCurrentTrackId(audio.id);
         },
         cancelAudio(audio){
             this.track.isPlaying = false;
-            this.track.setCurrentTrackId(audio.id-1);
+            const currentIndex = this.track.audioList.findIndex(
+              (track) => track.id === audio.id
+            );
+            this.isChoicedAudioIndex = currentIndex;
+            this.track.setCurrentTrackId(audio.id);
         },
       //滚动事件
         listScroll(e){
             const { scrollTop, scrollHeight, offsetHeight } = e.target;
-            // if (scrollTop + offsetHeight >= scrollHeight - THRESHOLD && !this.lockUp) {
-            //     this.lockUp = true; // 锁定滚动加载
-            //     this.loadMore(); // 加载更多数据
-            // }
+            if (scrollTop + offsetHeight >= scrollHeight - THRESHOLD && !this.lockUp && this.total>this.track.audioList.length) {
+                // console.log("滚动数据开始加载")
+                this.lockUp = true; 
+                this.loadMore(); 
+            }else if(this.total == this.track.audioList.length){
+              // console.log("数据加载完毕...")
+            }
         },
         loadMore(){
                 this.pageNum+=1;
-                // 向后端发送请求加载更多的数据
                 this.getAudioList();
-                this.lockUp = false; // 解锁滚动加载
+                // this.lockUp = false;
         },
-        getAudioList(){
+        async getAudioList(){
             const params={
               pageNum:this.pageNum,
               pageSize:this.pageSize,
               tag:this.tag,
             }
-            getAudioListByTag(params).then(res=>{
-
+            try{
+              const res = await getAudioListByTag(params); 
               const audioList = res.data.records.map(item=>{
                 item.audioUrl = getAudioPlayUrl(item)
                 return item;
               })
-              console.log("audiolist 数据开始执行......")
+              this.total = res.data.total;
+              // console.log(audioList);
+              console.log("333");
               this.track.addAudioList(audioList);
-          })
+            }
+            catch (error) {
+                console.error("数据加载失败", error);
+            } finally {
+                this.lockUp = false;  // 无论如何都要解锁
+            }
         }
       }
   }
@@ -103,11 +133,10 @@
   
   <style lang="scss" scoped>
   .opera-list {
-    width: 100%;
-    height: 80vh;
+    width: 30vw;
+    height: 75vh;
     padding: 10px;
     .list-content{
-       
         overflow-x: hidden;
         overflow-y: auto;
     }
@@ -135,22 +164,30 @@
             cursor: pointer;
             font-size: 24px; /* 调整图标大小 */
         }
+        
     }
-    .list-num,.list-time, .icon-container,.list-operation{
-      flex-basis: 10%;
+    .active{
+      background: linear-gradient(145deg, #e2e2e2, #d0d0d0); /* 选中后的蓝色背景 */
+      color: white;
+      transform: scale(1.1); /* 选中后稍微放大 */
+      // box-shadow: 0 0 15px rgba(249, 179, 4, 0.7); 
     }
-    .list-name, .list-singer{
-        flex-basis: 30%;
+    .icon-container,.list-operation{
+      flex-basis: 20%;
+    }
+    .list-name{
+        flex-basis: 80%;
     }
     .list-header{
         color: $text_color;
         font-weight: bold;
-        padding-bottom: 20px;
+        padding: 20px 0px;
     }
     .action-icon {
       display: none;
       cursor: pointer;
     }
+    
   }
   
   

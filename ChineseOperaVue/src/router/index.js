@@ -5,14 +5,14 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path:'/login',
+      path:'/',
       name:'Login',
       component: () => import('@/views/Login.vue')
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: Home
     },
     {
       path:'/operaplay',

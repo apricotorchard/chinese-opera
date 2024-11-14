@@ -18,7 +18,21 @@ export function getAudioPlayUrl(audio){
     const playUrl = `${serverAddress}${dir}${path}/${audio.id}${suffix}`;
     return playUrl;
 }
-
+// 获取音频播放器图片的函数
+export function getAudioPictureUrl(tag){
+    const audioPathMap= {
+        "京剧": "jingju",
+        "黄梅戏": "huangmeixi",
+        "豫剧": "yuju",
+    };
+    
+    const serverAddress = "http://8.130.36.156:8080/chineseopera/";
+    const path = audioPathMap[tag];
+    const dir = "picture/"
+    const suffix = ".png";
+    const pictureUrl = `${serverAddress}${dir}${path}${suffix}`;
+    return pictureUrl;
+}
 
 export function getAudioListByTag(params){
     return request({

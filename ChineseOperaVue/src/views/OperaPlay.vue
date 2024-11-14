@@ -5,7 +5,7 @@
       </el-header>
       <el-main style="padding:0 60px;margin-top:30px">
           <div class="opera-info">
-            <h1>{{ opera.name }}</h1>
+            <h1>{{ nameShow }}</h1>
             <span>
               {{ opera.tag }}
             </span>
@@ -45,6 +45,8 @@
       return {
         opera:null,
         operaList:[],
+        collection:'',
+        nameShow:''
       };
     },
     created(){
@@ -62,7 +64,14 @@
       // 根据collectid 获得属于相同组的戏曲
       getOperaListByConditionId(collectionId){
         getOperaByCollectionId(collectionId).then(res=>{
-          this.operaList = res.data.data;
+          this.operaList = res.data.data.operaList;
+          this.collection = res.data.data.collection;
+          if(this.collection){
+            this.nameShow = this.collection.title;
+          }else{
+            this.nameShow = this.opera.name;
+          }
+          console.log(res);
         })
       },
       changeCurrentOpera(opera){

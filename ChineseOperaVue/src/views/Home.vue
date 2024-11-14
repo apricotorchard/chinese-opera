@@ -3,17 +3,17 @@
     <el-header style="padding:0;height: auto;">
         <HomeHeader></HomeHeader>
     </el-header>
-    <el-main style="padding: 0 60px;height: 72vh;">
+    <el-main style="padding: 0 60px;height: 75vh;">
          <!-- 分类列表 -->
         <div>
             <div class="header-channel">
                 <div class="imgContainer">
                     <div class="mp3-imgContainer" @click="navigateToAudio">
-                        <img src="@/assets/hot.png" alt="热门照片">
+                        <img src="@/assets/mp36.webp" alt="热门照片">
                         <span>MP3</span>
                     </div>
                     <div class="hot-imgContainer" @click="navigateToHotList">
-                        <img src="@/assets/hot.png" alt="热门照片">
+                        <img src="@/assets/hot1.webp" alt="热门照片">
                         <span>热门</span>
                     </div>
                 </div>
@@ -111,19 +111,23 @@ export default {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    
     padding: 0 60px;
+    
     .imgContainer{
         display: flex;
         width: 120px;
         justify-content: space-between;
         .mp3-imgContainer,.hot-imgContainer{
         display: flex;
+        // margin-right: 20px;
         flex-direction: column;
         span{
             text-align: center;
         }
         &>img{
             height: 50px;
+            border-radius: 50px;
         }
     }
     }

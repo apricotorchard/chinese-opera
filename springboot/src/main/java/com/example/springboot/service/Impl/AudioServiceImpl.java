@@ -21,6 +21,7 @@ public class AudioServiceImpl implements AudioService {
         Page<Audio> page = new Page<>(pageNum, pageSize); // 创建分页对象
         QueryWrapper<Audio> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("tag", tag); // 设置查询条件
+        queryWrapper.orderByAsc("id");
         return audioMapper.selectPage(page, queryWrapper); // 返回分页结果
     }
 

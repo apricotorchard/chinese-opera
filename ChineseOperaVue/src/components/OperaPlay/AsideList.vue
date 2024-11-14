@@ -5,7 +5,7 @@
         <div v-if="operaList.length!=0" class="opera-list" >
             <div class="list-header"><span>视频选集：</span></div>
             <div class="list-container">
-                <div v-for="(opera,index) in operaList" :key="index" class="list-item" @click="navigateToOperaPlay(opera)">
+                <div v-for="(opera,index) in operaList" :class="{'active':index==isChoidcedOperaIndex}" :key="index" class="list-item" @click="navigateToOperaPlay(opera)">
                     <span>{{ opera.name }}</span>
                 </div>
             </div>
@@ -46,11 +46,17 @@ export default {
     },
     data(){
         return{
-
+            isChoidcedOperaIndex:0,
         }
     },
     methods:{
         navigateToOperaPlay(opera){
+            console.log(opera);
+            const currentIndex = this.operaList.findIndex(
+                (item)=>item.id === opera.id
+            )
+            this.isChoidcedOperaIndex = currentIndex;
+            console.log(this.isChoidcedOperaIndex);
             this.$emit("getChoicedOpera",opera);
             // this.$router.push({
             //     name: 'operaPlay',
@@ -88,8 +94,13 @@ export default {
                     background-color: white;
                     color: #7FCBF8;
                 }
+               
             }
         }
+    }
+    .active{
+        background-color: white;
+        color: #7FCBF8;
     }
     .opera-container{
         display: flex;
