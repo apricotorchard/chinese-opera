@@ -23,7 +23,7 @@ stages:
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
           - ''
-          - cd ~/gitee_go/ChineseOperaVue
+          - cd /root/workspace/wang-guang-an/chinese-opera/ChineseOperaVue
           - '# 执行编译命令'
           - npm install && npm run build
         artifacts:
