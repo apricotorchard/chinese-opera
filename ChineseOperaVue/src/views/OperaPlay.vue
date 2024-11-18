@@ -30,7 +30,7 @@
   </template>
   
   <script>
-  import Comment from '@/components/OperaPlay/Comment.vue'
+  import Comment from '@/components/OperaPlay/CommentVue.vue'
   import AsideList from '@/components/OperaPlay/AsideList.vue';
   import Header from '@/components/Home/Header.vue';
   import {getOperaByCollectionId,getOperaPlayUrl} from '@/api/opera.js'
