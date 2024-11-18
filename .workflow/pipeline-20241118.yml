@@ -34,7 +34,7 @@ stages:
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ./dist
+              - /root/workspace/wang-guang-an/chinese-opera/ChineseOperaVue/dist
         caches:
           - ~/.npm
           - ~/.yarn
@@ -54,7 +54,7 @@ stages:
         jdkVersion: '17'
         mavenVersion: 3.8.8
         commands:
-          - cd ~/gitee_go/springboot
+          - cd /root/workspace/wang-guang-an/chinese-opera/springboot
           - '# 功能：打包'
           - '# 参数说明：'
           - '#    -Dmaven.test.skip=true：跳过单元测试'
@@ -72,7 +72,7 @@ stages:
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ./target
+              - /root/workspace/wang-guang-an/chinese-opera/springboot/target
         settings: []
         caches:
           - ~/.m2
@@ -93,17 +93,17 @@ stages:
         deployArtifact:
           - source: artifact
             name: output
-            target: ~/gitee_go/deploy
+            target: root/workspace/wang-guang-an/chinese-opera/deploy
             artifactRepository: default
             artifactName: output
             artifactVersion: latest
         script:
           - echo "开始部署前端应用..."
-          - scp -r ~/gitee_go/deploy/dist/* user@8.130.36.156:/home/chineseopera/vue/
+          - scp -r /root/workspace/wang-guang-an/chinese-opera/ChineseOperaVue/dist/* user@8.130.36.156:/home/chineseopera/vue/
           - ssh user@8.130.36.156 "sudo systemctl restart nginx"
           - echo "前端应用部署完成！"
           - echo "开始部署后端应用..."
-          - scp ~/gitee_go/deploy/target/*.jar user@8.130.36.156:/home/chineseopera/springboot/
+          - scp /root/workspace/wang-guang-an/chinese-opera/springboot/target/*.jar user@8.130.36.156:/home/chineseopera/springboot/
           - ssh user@8.130.36.156 "cd /home/chineseopera/springboot && nohup java -jar your-backend.jar --server.port=8091 > /dev/null 2>&1 &"
           - echo "后端应用部署完成！"
         notify: []
