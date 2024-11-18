@@ -20,6 +20,7 @@
   import {useTrackStore} from '@/stores/trackStore';
   import {getAudioListByTag,getAudioPlayUrl} from '@/api/audio.js';
   export default {
+    name:'Channel',
     props:{   
         isAudio:{
             type:Boolean,

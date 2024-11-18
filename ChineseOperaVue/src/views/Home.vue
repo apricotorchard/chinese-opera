@@ -46,7 +46,7 @@
 
 <script>
 import HomeHeader from "@/components/Home/Header.vue"
-import Channel from "@/components/Home/Channel.vue"
+import Channel from "@/components/Home/ChannelVue.vue"
 import Footer from "@/components/Home/Footer.vue"
 import SingleOpera from "@/components/Home/SingleOpera.vue"
 import {getAlloperaInfo,getOperaPlayUrl} from '@/api/opera.js'
