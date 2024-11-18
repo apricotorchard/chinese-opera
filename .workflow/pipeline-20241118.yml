@@ -1,0 +1,111 @@
+version: '1.0'
+name: pipeline-20241118
+displayName: opera-deploy
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+        - ''
+stages:
+  - name: stage-b85a4420
+    displayName: 前端构建
+    strategy: naturally
+    trigger: auto
+    executor:
+      - wang-guang-an
+    steps:
+      - step: build@nodejs
+        name: build_nodejs
+        displayName: vue构建
+        nodeVersion: 21.5.0
+        commands:
+          - '# 设置NPM源，提升安装速度'
+          - ''
+          - npm config set registry https://registry.npmmirror.com
+          - ''
+          - ''
+          - ''
+          - cd /root/workspace/wang-guang-an/chinese-opera/ChineseOperaVue
+          - ''
+          - '# 执行编译命令'
+          - ''
+          - npm install && npm run build
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./dist
+        caches:
+          - ~/.npm
+          - ~/.yarn
+        notify: []
+        strategy:
+          retry: '0'
+  - name: stage-10c50f77
+    displayName: 后端构建
+    strategy: naturally
+    trigger: auto
+    executor:
+      - wang-guang-an
+    steps:
+      - step: build@maven
+        name: build_maven
+        displayName: 构建springboot
+        jdkVersion: '17'
+        mavenVersion: 3.8.8
+        commands:
+          - cd ~/gitee_go/springboot
+          - '# 功能：打包'
+          - '# 参数说明：'
+          - '#    -Dmaven.test.skip=true：跳过单元测试'
+          - '#    -U：每次构建检查依赖更新，可避免缓存中快照版本依赖不更新问题，但会牺牲部分性能'
+          - '#    -e -X ：打印调试信息，定位疑难构建问题时建议使用此参数构建'
+          - '#    -B：以batch模式运行，可避免日志打印时出现ArrayIndexOutOfBoundsException异常'
+          - '# 使用场景：打包项目且不需要执行单元测试时使用'
+          - mvn clean package -Dmaven.test.skip=true -U -e -X -B
+          - ''
+          - '# 功能：自定义settings配置'
+          - '# 使用场景：如需手工指定settings.xml，可使用如下方式'
+          - '# 注意事项：如无需自定义settings配置且需要私有依赖仓库，可在该任务配置《私有仓库》处添加私有依赖'
+          - '# mvn -U clean package -s ./settings.xml'
+          - ''
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./target
+        settings: []
+        caches:
+          - ~/.m2
+        notify: []
+        strategy:
+          retry: '0'
+  - name: stage-32e446e7
+    displayName: 部署阶段
+    strategy: naturally
+    trigger: auto
+    executor:
+      - wang-guang-an
+    steps:
+      - step: deploy@agent
+        name: deploy_agent
+        displayName: 主机部署
+        hostGroupID: ''
+        deployArtifact:
+          - source: artifact
+            name: output
+            target: ~/gitee_go/deploy
+            artifactRepository: default
+            artifactName: output
+            artifactVersion: latest
+        script:
+          - echo "开始部署前端应用..."
+          - scp -r ~/gitee_go/deploy/dist/* user@8.130.36.156:/home/chineseopera/vue/
+          - ssh user@8.130.36.156 "sudo systemctl restart nginx"
+          - echo "前端应用部署完成！"
+          - echo "开始部署后端应用..."
+          - scp ~/gitee_go/deploy/target/*.jar user@8.130.36.156:/home/chineseopera/springboot/
+          - ssh user@8.130.36.156 "cd /home/chineseopera/springboot && nohup java -jar your-backend.jar --server.port=8091 > /dev/null 2>&1 &"
+          - echo "后端应用部署完成！"
+        notify: []
+        strategy:
+          retry: '0'
