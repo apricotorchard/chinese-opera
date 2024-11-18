@@ -89,14 +89,15 @@ stages:
       - step: deploy@agent
         name: deploy_agent
         displayName: 主机部署
-        hostGroupID: ''
+        hostGroupID:
+          ID: opera
+          hostID:
+            - 31f2fe70-011e-4f94-97ad-4642ceec14a6
         deployArtifact:
-          - source: artifact
+          - source: build
             name: output
             target: root/workspace/wang-guang-an/chinese-opera/deploy
-            artifactRepository: default
-            artifactName: output
-            artifactVersion: latest
+            dependArtifact: BUILD_ARTIFACT
         script:
           - echo "开始部署前端应用..."
           - scp -r /root/workspace/wang-guang-an/chinese-opera/ChineseOperaVue/dist/* user@8.130.36.156:/home/chineseopera/vue/
