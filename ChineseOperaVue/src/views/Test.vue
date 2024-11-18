@@ -1,11 +1,11 @@
-<template>
+<!-- <template>
   <div>
     <canvas ref="canvas"></canvas>
   </div>
 </template>
 
 <script>
-import Tiff from 'tiff.js';
+// import Tiff from 'tiff.js';
 
 export default {
   data() {
@@ -46,4 +46,4 @@ canvas {
   max-width: 100%; /* 适应容器大小 */
   height: auto;    /* 自适应高度 */
 }
-</style>
+</style> -->
