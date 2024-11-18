@@ -23,6 +23,7 @@ stages:
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
           - ''
+          - cd ~/gitee_go/ChineseOperaVue
           - '# 执行编译命令'
           - npm install && npm run build
         artifacts:
@@ -48,6 +49,7 @@ stages:
         jdkVersion: '17'
         mavenVersion: 3.8.8
         commands:
+          - cd ~/gitee_go/springboot
           - '# 功能：打包'
           - '# 参数说明：'
           - '#    -Dmaven.test.skip=true：跳过单元测试'
@@ -78,44 +80,27 @@ stages:
     trigger: auto
     executor:
       - wang-guang-an
-   
-
     steps:
-    - step: deploy@agent
-      name: deploy_agent
-      displayName: 主机部署
-      hostGroupID: ''
-      deployArtifact:
-        - source: artifact
-          name: output
-          target: ~/gitee_go/deploy
-          artifactRepository: default
-          artifactName: output
-          artifactVersion: latest
-      script:
-        - echo "开始部署前端应用..."
-        
-        # 前端部署 - 将构建的静态文件上传到目标服务器
-        - scp -r ~/gitee_go/deploy/dist/* user@8.130.36.156:/home/chineseopera/vue/  # 将前端文件上传到服务器
-
-        # 上传 nginx 配置文件（如果需要更新 nginx.conf）
-        # - scp ~/gitee_go/deploy/nginx.conf user@8.130.36.156:/home/chineseopera/vue/nginx.conf
-
-        # 重启 Nginx 服务以使新的前端配置生效
-        - ssh user@8.130.36.156 "sudo systemctl restart nginx"  # 重启 Nginx
-
-        - echo "前端应用部署完成！"
-
-        - echo "开始部署后端应用..."
-        
-        # 后端部署 - 上传后端 JAR 包并启动服务
-        - scp ~/gitee_go/deploy/target/*.jar user@8.130.36.156:/home/chineseopera/springboot/  # 将后端 JAR 包上传到服务器
-
-        # 启动后端服务
-        - ssh user@8.130.36.156 "cd /home/chineseopera/springboot && nohup java -jar your-backend.jar --server.port=8091 > /dev/null 2>&1 &"  # 启动后端服务，监听 8091 端口
-
-        - echo "后端应用部署完成！"
-        
-      notify: []
-      strategy:
-        retry: '0'
+      - step: deploy@agent
+        name: deploy_agent
+        displayName: 主机部署
+        hostGroupID: ''
+        deployArtifact:
+          - source: artifact
+            name: output
+            target: ~/gitee_go/deploy
+            artifactRepository: default
+            artifactName: output
+            artifactVersion: latest
+        script:
+          - echo "开始部署前端应用..."
+          - scp -r ~/gitee_go/deploy/dist/* user@8.130.36.156:/home/chineseopera/vue/
+          - ssh user@8.130.36.156 "sudo systemctl restart nginx"
+          - echo "前端应用部署完成！"
+          - echo "开始部署后端应用..."
+          - scp ~/gitee_go/deploy/target/*.jar user@8.130.36.156:/home/chineseopera/springboot/
+          - ssh user@8.130.36.156 "cd /home/chineseopera/springboot && nohup java -jar your-backend.jar --server.port=8091 > /dev/null 2>&1 &"
+          - echo "后端应用部署完成！"
+        notify: []
+        strategy:
+          retry: '0'
