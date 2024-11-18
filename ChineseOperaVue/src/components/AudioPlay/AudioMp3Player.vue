@@ -66,7 +66,6 @@ export default {
       
       'track.currentTag': function (newTag) {
         if (this.sound) {
-            console.log("111");
             this.track.isPlaying = false;
             this.track.isfinishGetData = false;
             this.sound.unload();
@@ -81,12 +80,13 @@ export default {
       },
       // 监听 isfinishGetData，加载完成时进行初始化
       'track.isfinishGetData': function (newVal) {
-        console.log("444");
         if (newVal) {
           const currentIndex = this.track.audioList.findIndex(
             (track) => track.id === this.track.currentTrackId
           );
+          console.log(currentIndex);
           this.currentTrack = this.track.audioList[currentIndex];
+          console.log(this.currentTrack);
           this.loadTrack(this.currentTrack);
         }
         immediate: true // 确保组件初始化时立即执行一次
@@ -106,6 +106,7 @@ export default {
                 this.sound.unload();
             }
             // this.currentTrack = track;
+            console.log(track);
             this.url = getAudioPictureUrl(track.tag);
             this.sound = new Howl({
               src:[track.audioUrl],

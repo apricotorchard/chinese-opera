@@ -1,5 +1,6 @@
 package com.example.springboot.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -9,11 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("opera_audio_info")
+@TableName("audio")
 public class Audio {
-
-
-    private int id;
+    @TableId(value = "id",type = IdType.AUTO)
+    private Integer id;
     private String name;
     private String audioUrl;
     private String tag;

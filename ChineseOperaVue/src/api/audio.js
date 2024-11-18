@@ -41,3 +41,11 @@ export function getAudioListByTag(params){
         params:params
     })
 }
+
+export function addAudio(data){
+    return request({
+        url:'/audio/addaudio',
+        method:'post',
+        data:data
+    })
+}

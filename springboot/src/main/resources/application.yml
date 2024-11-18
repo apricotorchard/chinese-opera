@@ -2,4 +2,14 @@ spring:
   profiles:
     active: dev
   application:
-    name:springboot
+    name: springboot
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 1024MB
+aliyun:
+  oss:
+    endpoint: "oss-cn-wulanchabu.aliyuncs.com"
+    access-key-id: "LTAI5tRrhXuq3zR7ucHAJYuu"
+    access-key-secret: "kmViskJnMni3LuIgNggneYoYYxhdB4"
+    bucket-name: "chineseopera"
