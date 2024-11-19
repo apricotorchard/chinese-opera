@@ -7,9 +7,6 @@ triggers:
     branches:
       prefix:
         - ''
-    paths:
-      precise:
-        - ChineseOperaVue/**
 stages:
   - name: build-stage
     displayName: 构建 ChineseOperaVue
