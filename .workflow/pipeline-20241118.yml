@@ -2,7 +2,7 @@ version: '1.0'
 name: pipeline-20241118
 displayName: opera-deploy
 triggers:
-  trigger: auto
+  trigger: manual
   push:
     branches:
       prefix:
