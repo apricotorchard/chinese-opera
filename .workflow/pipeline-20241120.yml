@@ -25,24 +25,6 @@ stages:
           - name: backend_artifact
             path:
               - springboot/target/*.jar
-        strategy: {}
-
-  - name: stage-57966089
-    displayName: 上传
-    strategy: naturally
-    trigger: auto
-    executor:
-      - wang-guang-an
-    steps:
-      - step: publish@general_artifacts
-        name: publish_general_artifacts
-        displayName: 上传制品
-        dependArtifact: backend_artifact
-        artifactName: springboot-output
-        notify: []
-        strategy:
-          retry: '0'
-
   - name: deploy-stage
     displayName: 部署到服务器
     strategy: naturally
@@ -54,20 +36,18 @@ stages:
         hostGroupID:
           ID: opera
           hostID:
-            - 7ee39a7c-33c3-4686-bfd9-62c9cdf1e0f8  # 替换为实际的目标服务器ID
+            - 7ee39a7c-33c3-4686-bfd9-62c9cdf1e0f8
         deployArtifact:
           - source: build
-            name: springboot-output
-            target: /home/chineseopera/springboot  # 目标路径，确认服务器上的路径
+            name: backend_artifact
+            target: /home/chineseopera/springboot
             dependArtifact: backend_artifact
         script:
           - echo "开始部署后端应用到服务器..."
           - mkdir -p /home/chineseopera/springboot
-          - ls -l /home/chineseopera/springboot/*.jar  # 检查文件是否传输成功
-          - mv /home/chineseopera/springboot/*.jar /home/chineseopera/springboot/backup/ || true  # 备份原有 JAR 文件
-          - mv /home/chineseopera/springboot/springboot-output.jar /home/chineseopera/springboot/app.jar  # 替换为新的 JAR 文件
-          - echo "部署完成，启动应用..."
-          - sudo systemctl restart springboot  # 重启 Spring Boot 应用
-          - echo "部署完成！"
+          - ls -l /home/chineseopera/springboot/*.jar
+          - mv /home/chineseopera/springboot/*.jar /home/chineseopera/springboot/backup/ || true
+          - mv /home/chineseopera/springboot/backend_artifact.jar /home/chineseopera/springboot/app.jar
+          - echo "部署完成"
         strategy:
           retry: '0'
