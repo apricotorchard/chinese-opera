@@ -42,7 +42,7 @@ stages:
           - source: build
             name: backend_artifact
             target: /home/chineseopera/springboot
-            dependArtifact: output
+            dependArtifact: backend_artifact
         script:
           - echo "开始部署后端应用到服务器..."
           - mkdir -p /home/chineseopera/springboot
