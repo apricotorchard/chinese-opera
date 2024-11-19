@@ -1,0 +1,55 @@
+version: '1.0'
+name: pipeline-20241120
+displayName: pipeline-20241120
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+        - ''
+stages:
+  - name: build-stage
+    displayName: 构建后端项目
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: build@maven
+        name: build_backend
+        displayName: 构建
+        jdkVersion: '17'
+        mavenVersion: 3.8.8
+        commands:
+          - cd springboot
+          - mvn clean package -DskipTests
+        artifacts:
+          - name: backend_artifact
+            path:
+              - springboot/target/*.jar
+        strategy: {}
+  - name: deploy-stage
+    displayName: 部署到服务器
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: deploy@agent
+        name: deploy_backend
+        displayName: 部署到远程服务器
+        hostGroupID:
+          ID: opera
+          hostID:
+            - 7ee39a7c-33c3-4686-bfd9-62c9cdf1e0f8
+        deployArtifact:
+          - source: build
+            name: backend_artifact
+            target: /home/chineseopera/springboot
+            dependArtifact: output
+        script:
+          - echo "开始部署后端应用到服务器..."
+          - mkdir -p /home/chineseopera/springboot
+          - mv /home/chineseopera/springboot/*.jar /home/chineseopera/springboot/backup/ || true
+          - mv /home/chineseopera/springboot/backend_artifact.jar /home/chineseopera/springboot/app.jar
+          - echo "部署完成，启动应用..."
+          - sudo systemctl restart springboot
+          - echo "部署完成！"
+        strategy:
+          retry: '0'
