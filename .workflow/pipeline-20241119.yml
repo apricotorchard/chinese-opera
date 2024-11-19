@@ -64,6 +64,7 @@ stages:
           - tar -zxvf /home/chineseopera/vue/vue-output.tar.gz -C /home/chineseopera/vue
           - echo "部署完成，启动应用..."
           - sudo systemctl restart nginx
+          - bash /home/chineseopera/vue/deploy.sh
           - echo "部署完成！"
         strategy:
           retry: '0'
