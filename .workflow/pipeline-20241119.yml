@@ -1,0 +1,69 @@
+version: '1.0'
+name: pipeline-20241119
+displayName: pipeline-20241119
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+        - ''
+    paths:
+      precise:
+        - ChineseOperaVue/**
+stages:
+  - name: build-stage
+    displayName: 构建 ChineseOperaVue
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: build@nodejs
+        name: build_vue
+        displayName: 构建 Vue 项目
+        nodeVersion: 20.10.0
+        commands:
+          - cd ChineseOperaVue
+          - yarn install
+          - yarn build
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ChineseOperaVue/dist
+        strategy: {}
+  - name: stage-upload-artifacts
+    displayName: 上传制品
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: publish@general_artifacts
+        name: publish_vue_artifacts
+        displayName: 上传 Vue 构建制品
+        dependArtifact: BUILD_ARTIFACT
+        artifactName: vue-output
+        strategy:
+          retry: '0'
+  - name: stage-deploy
+    displayName: 部署到服务器
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: deploy@agent
+        name: deploy_agent
+        displayName: 部署到远程服务器
+        hostGroupID:
+          ID: opera
+          hostID:
+            - 7ee39a7c-33c3-4686-bfd9-62c9cdf1e0f8
+        deployArtifact:
+          - source: build
+            name: vue-output
+            target: /home/chineseopera/vue
+            dependArtifact: BUILD_ARTIFACT
+        script:
+          - echo "开始部署应用到服务器..."
+          - mkdir -p /home/chineseopera/vue
+          - tar -zxvf /home/chineseopera/vue/vue-output.tar.gz -C /home/chineseopera/vue
+          - echo "部署完成，启动应用..."
+          - sudo systemctl restart nginx
+          - echo "部署完成！"
+        strategy:
+          retry: '0'
