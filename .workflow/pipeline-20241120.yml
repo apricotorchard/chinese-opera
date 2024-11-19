@@ -45,9 +45,10 @@ stages:
         script:
           - echo "开始部署后端应用到服务器..."
           - mkdir -p /home/chineseopera/springboot
-          - ls -l /home/chineseopera/springboot/*.jar
           - mv /home/chineseopera/springboot/*.jar /home/chineseopera/springboot/backup/ || true
-          - mv /home/chineseopera/springboot/backend_artifact.jar /home/chineseopera/springboot/app.jar
+          - tar -zxvf /home/chineseopera/springboot/backend_artifact.tar.gz -C /home/chineseopera/springboot
+          - ls -l /home/chineseopera/springboot/*.jar
+          - bash /home/chineseopera/springboot/deploy-springboot.sh
           - echo "部署完成"
         strategy:
           retry: '0'
