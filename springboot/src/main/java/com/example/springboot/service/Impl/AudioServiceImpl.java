@@ -1,7 +1,10 @@
 package com.example.springboot.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.Audio;
 import com.example.springboot.mapper.AudioMapper;
@@ -10,8 +13,10 @@ import com.example.springboot.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class AudioServiceImpl implements AudioService {
+public class AudioServiceImpl extends ServiceImpl<AudioMapper,Audio> implements AudioService {
 
     @Autowired
     private AudioMapper audioMapper;
@@ -34,6 +39,17 @@ public class AudioServiceImpl implements AudioService {
         }
         return new ResponseResult<>(HttpStatus.ERROR, "插入失败");
 
+    }
+
+    @Override
+    public ResponseResult addAudioBatch(List<Audio> audioList) {
+
+        boolean isSuccess = this.saveBatch(audioList);
+        if (isSuccess) {
+            return new ResponseResult(HttpStatus.SUCCESS, "批量插入成功");
+        } else {
+            return new ResponseResult(HttpStatus.ERROR, "批量插入失败");
+        }
     }
 
 }

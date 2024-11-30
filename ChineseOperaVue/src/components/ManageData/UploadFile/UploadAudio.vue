@@ -18,43 +18,64 @@
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">
-          <em>拖拽 或 点击 上传文件</em>
+          <em>拖拽 或 点击 上传音频文件</em>
         </div>
       </el-upload>
-      <div class="custom-file-list">
-        <el-scrollbar style="max-height: 150px;">
-          <ul>
-            <li v-for="(file, index) in fileList" :key="index">
-              <el-icon><upload-filled /></el-icon>
-              {{ file.name }}
-            </li>
-          </ul>
-        </el-scrollbar>
-      </div>
       <div>
             单个文件最大为500MB,总文件最大为1GB
       </div>
-    </div>
       
-    <div class="base-info">
-      <el-form :model = audioList >
-
-      </el-form>
-        <span>名称</span>
-        <!-- <span>类型</span> -->
-        <el-dropdown @command="handleCommand" label-width="auto" style="max-width: 600px">
-          <span class="el-dropdown-link" >
-            * 类型<el-icon class="el-icon--right"><arrow-down /></el-icon>
-          </span>
-          <template #dropdown >
-            <el-scrollbar style="height:200px">
-                <el-dropdown-item v-for="(tag,index) in operaTags" :key="index" :command="tag">{{ tag }}</el-dropdown-item>
-            </el-scrollbar>
-          </template>
-        </el-dropdown>
-        <el-button type="success" @click="submitUpload">上传</el-button>
+      
     </div>
-    
+    <div class="custom-file-list">
+          <el-table :data="fileList" style="width:100%" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55" />
+
+            <el-table-column label="名称" width="250">
+              <template #default="scope">
+                <el-input v-model="scope.row.name"
+                placeholder="请输入文件名称"
+                @blur="handleNameChange(scope.row)"
+                size="small"
+                />
+              </template>
+              
+            </el-table-column>
+            <el-table-column label="类型" width="200">
+              <template #default="scope">
+                <el-dropdown @command="handleTypeChange(scope.row, $event)" label-width="auto" style="max-width: 600px">
+                  <span class="el-dropdown-link" >
+                    {{scope.row.tag}}
+                    <el-icon class="el-icon--right">
+                      <arrow-down />
+                    </el-icon>
+                  </span>
+                  <template #dropdown >
+                    <el-scrollbar style="height:200px">
+                        <el-dropdown-item v-for="(tag,index) in operaTags" :key="index" :command="tag">{{ tag }}</el-dropdown-item>
+                    </el-scrollbar>
+                  </template>
+                </el-dropdown>
+              </template>
+             
+            </el-table-column>
+            <el-table-column label="操作">
+              <template #default="scope">
+                <el-button
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)"
+                >
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          
+      </div>
+      <div style="margin-top: 16px;width:800px">
+        <el-button style="width:100%" type="primary" @click="uploadSelectedFiles">上传选中的文件</el-button>
+      </div>
   </div>
   
 </template>
@@ -62,17 +83,29 @@
 <script setup>
     import { ref } from 'vue';
     import { UploadFilled } from '@element-plus/icons-vue'
-    import { addAudio } from '@/api/audio.js'
+    import { uploadFile } from "@/api/audio.js";
+    import { addAudioBatch} from '@/api/audio.js'
     const upload = ref(null);
     const fileList = ref([]);
     const uploadData = ref({});
     const operaTags = ['京剧', '黄梅戏', '秦腔', '曲剧', '晋剧', '评剧', '豫剧', '吕剧', '昆曲', '越剧', '潮剧', '川剧', '琼剧', '茂腔', '蒲剧', '越调', '赣剧', '湘剧'];
-    const selectedTag = ref('')
+    const selectedFiles = ref([]);
+    
+    const handleNameChange = (row)=> {
+      console.log('文件名称已修改:', row.name);
+    };
+    
+    const handleTypeChange = (row, newType) =>{
+      row.tag = newType;
+    };
 
-    const handleCommand = (command) => {
-      selectedTag.value = command
-      console.log("选中的戏曲类型为:", selectedTag.value)
-    }
+    const handleSelectionChange = (selected)=> {
+      selectedFiles.value = selected;
+    };
+
+    const handleDelete = (index) => {
+      fileList.value.splice(index, 1);
+    };
 
     const beforeUpload = (file) => {
       const isAudio = file.type.startsWith('audio/');
@@ -85,45 +118,60 @@
     };
 
     const handleFileChange = (file, fileListNew) => {
-      console.log(fileListNew)
-      const allAreAudio = fileListNew.every(f => f.raw.type.startsWith('audio/'));
-      if (!allAreAudio) {
-        alert('所有文件都必须是音频文件!');
-        fileList.value = fileListNew.filter(f => f.raw.type.startsWith('audio/')); // 只保留音频文件
+      const taggedFile = {
+        ...file,
+        tag:'京剧'
+      }
+      // 检查文件是否是音频文件
+      if (taggedFile.raw.type.startsWith('audio/')) {
+        // 如果是音频文件，加入到 fileList
+        fileList.value = [...fileList.value, taggedFile];
       } else {
-        fileList.value = fileListNew; // 更新 fileList
+        // 如果不是音频文件，弹出提示
+        alert('文件必须是音频文件!');
       }
     }
 
-
-    const submitUpload = () =>{
-      // 在这个里面检查需要的字段。
-      if (fileList.value.length === 0) {
-        alert('请选择需要上传的文件!');
-      } else if (upload.value) {
-        upload.value.submit();
+    // 上传选中的文件
+    async function uploadSelectedFiles(){
+      if (selectedFiles.value.length === 0) {
+        alert("请选择需要上传的文件!");
+        return;
       }
-    }
-
-    // 上传成功后的处理
-    const handleUploadSuccess = (response, file, fileList) => {
-        console.log(response);
-        const AudioInfo = {
-          name: file.name,
-          // description: '视频描述',
-          audioUrl: file.response.data,
-          tag:'京剧'
-          // 可以根据需求添加更多字段
-        };
-        // 上传视频的相关信息到数据库
-        saveAudioInfo(AudioInfo);
+      console.log("开始上传文件:", selectedFiles.value);
+      // 这里可以调用 API 进行文件上传
+      // 同步上传改为并发上传，🐂
+      const uploadPromises = selectedFiles.value.map(file => {
+        const formData = new FormData();
+        formData.append("file", file.raw);
+        return uploadFile(formData)
+          .then(response => {
+            file.url = response.data; // 更新文件的 URL
+            console.log("文件上传成功:", response.data);
+          })
+          .catch(error => {
+            console.error("文件上传失败:", error);
+          });
+      });
+      await Promise.all(uploadPromises);
+      saveAudioInfo(selectedFiles);
     };
     // 保存视频信息到数据库
-    const saveAudioInfo =  (AudioInfo) => {
-     
-      addAudio(AudioInfo).then(res=>{
-        console.log("插入成功");
+    const saveAudioInfo =  async (selectedFiles) => {
+      const audioInfos = selectedFiles.value.map(audio=>{
+        return {
+          name:audio.name,
+          audioUrl:audio.url.data,
+          tag:audio.tag
+        }
       })
+      console.log(audioInfos);
+      try{
+        await addAudioBatch(audioInfos);
+        console.log("批量插入成功")
+      }catch(error){
+        console.error("批量插入失败", error);
+      }
     };
     
 </script>
@@ -132,59 +180,28 @@
 .container{
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
 }
 .upload-area{
-  background-color: aqua;
+  // background-color: aqua;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 800px;
-  height: 40vh;
+  height: 30vh;
   .upload{
-    width: 600px;
-    // height: 500px;
+    width: 800px;
   }
-  .custom-file-list {
-      width: 600px;
-      margin-top: 10px;
+}
+.custom-file-list {
+      width: 800px;
+      // margin-top: 10px;
       padding: 10px;
       border: 1px solid #dcdfe6;
       border-radius: 5px;
       background-color: #f5f7fa;
-      max-height: 100px;
-      overflow: auto;
-    }
-
-    .custom-file-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .custom-file-list li {
-      display: flex;
-      align-items: center;
-      padding: 5px 0;
-    }
-
-    .custom-file-list li + li {
-      border-top: 1px solid #ebeef5;
-    }
-
-    .custom-file-list el-icon {
-      margin-right: 10px;
-      color: #409EFF;
-    }
-
-    .upload-note {
-      margin-top: 10px;
-      color: #909399;
-      font-size: 12px;
-    }
 }
 
 .base-info{

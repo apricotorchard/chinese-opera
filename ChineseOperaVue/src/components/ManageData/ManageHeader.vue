@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>数据中心</h1>
+        <!-- <h1>数据中心</h1> -->
     </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
 
 <style lang="scss" scoped>
 .container{
-    background-color: aqua;
+    // background-color: aqua;
     width: 100%;
     height: 8vh;
 }

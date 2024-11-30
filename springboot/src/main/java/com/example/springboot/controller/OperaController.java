@@ -1,6 +1,7 @@
 package com.example.springboot.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.springboot.domain.Audio;
 import com.example.springboot.domain.Comment;
 import com.example.springboot.domain.Opera;
 import com.example.springboot.utils.ResponseResult;
@@ -50,6 +51,10 @@ public class OperaController {
         return commentService.addComment(comment);
     }
 
+    @PostMapping("/addopera")
+    public ResponseResult addOpera(@RequestBody Opera opera){
+        return operaService.addOpera(opera);
+    }
 
 }
 

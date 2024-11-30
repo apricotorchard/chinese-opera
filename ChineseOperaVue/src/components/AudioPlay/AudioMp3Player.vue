@@ -72,22 +72,28 @@ export default {
         }
         
         this.url = getAudioPictureUrl(newTag);
-        // 重新获取当前的列表
-        // console.log(this.url);
-        // this.loadTrack(this.track.audioList[0]);
-        // 给当前的
-        this.track.currentTrackId = 1;
+        if(this.track.audioList.length!==0){
+          this.track.currentTrackId = this.track.audioList[0].id;
+        }
+        
       },
       // 监听 isfinishGetData，加载完成时进行初始化
       'track.isfinishGetData': function (newVal) {
+        if(this.track.audioList.length!==0){
+          this.track.currentTrackId = this.track.audioList[0].id;
+        }
+        
         if (newVal) {
+          
           const currentIndex = this.track.audioList.findIndex(
             (track) => track.id === this.track.currentTrackId
           );
-          console.log(currentIndex);
-          this.currentTrack = this.track.audioList[currentIndex];
-          console.log(this.currentTrack);
-          this.loadTrack(this.currentTrack);
+          if(currentIndex!=-1){
+            this.currentTrack = this.track.audioList[currentIndex];
+            console.log(this.currentTrack);
+            this.loadTrack(this.currentTrack);
+          }
+          
         }
         immediate: true // 确保组件初始化时立即执行一次
       }

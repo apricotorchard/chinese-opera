@@ -52,42 +52,4 @@ public class FileUploadController {
             return new ResponseResult(HttpStatus.ERROR,"失败");
         }
     }
-//        1.需要根据文件类型做判断
-
-        //如果是单个文件
-//        String picture = "chineseopera/picture/";
-//        String audio = "chineseopera/audio/";
-//        String video = "chineseopera/video/";
-        //2.如果是文件夹
-        //需要对里面的每个文件都进行导入
-
-
-
-
-
-//        try {
-//            ObjectMetadata metadata = new ObjectMetadata();
-//            metadata.setContentType("audio/mpeg");
-//            metadata.setContentDisposition("inline");
-//
-//
-//            // 关闭OSSClient
-//
-//
-//            return new ResponseResult<>(HttpStatus.SUCCESS,fileUrl);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return new ResponseResult<>(HttpStatus.ERROR,"失败");
-//        }
-
-        //1.先判断上传过来的文件格式
-        //            1)是不是一个文件夹
-        //                文件夹的话：合集的id
-        //
-        //            2)单个文件，判断上传的是mp3，还是图片，还是单个的视频
-//                        如果是视频，需要看视频的类型，不同的类型分配到不同的文件夹下
-        //2.生成文件名
-        //3.上传文件
-        //4.获取文件url
-
 }

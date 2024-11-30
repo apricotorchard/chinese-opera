@@ -12,4 +12,6 @@ public interface OperaService {
     ResponseResult getOperaListByCollectionId(int collectionId);
 
     Page<Opera> getOperaListByTag(String operaTag, int pageNum, int pageSize);
+
+    ResponseResult addOpera(Opera opera);
 }

@@ -18,7 +18,7 @@
   
   <script>
   import {useTrackStore} from '@/stores/trackStore';
-  import {getAudioListByTag,getAudioPlayUrl} from '@/api/audio.js';
+  import {getAudioListByTag} from '@/api/audio.js';
   export default {
     name:'Channel',
     props:{   
@@ -65,10 +65,8 @@
             }
             try{
               const res = await getAudioListByTag(params); 
-              const audioList = res.data.records.map(item=>{
-                item.audioUrl = getAudioPlayUrl(item)
-                return item;
-              })
+              const audioList = res.data.records;
+              console.log(audioList);
               this.total = res.data.total;
               console.log(audioList);
               console.log(this.total);

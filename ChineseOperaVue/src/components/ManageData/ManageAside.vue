@@ -1,9 +1,5 @@
 <template>
     <div class="container">
-        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-            <el-radio-button :value="false">expand</el-radio-button>
-            <el-radio-button :value="true">collapse</el-radio-button>
-        </el-radio-group> -->
         <el-menu
         default-active="1"
         class="el-menu-vertical"
@@ -30,11 +26,11 @@
             <el-menu-item index="1-4-1">item one</el-menu-item>
             </el-sub-menu>
         </el-sub-menu>
-        <el-menu-item index="UploadFile">
+        <el-menu-item index="UploadAudioFile">
             <el-icon><icon-menu /></el-icon>
             <template #title>上传音频</template>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="UploadVideoFile">
             <el-icon><document /></el-icon>
             <template #title>上传视频</template>
         </el-menu-item>

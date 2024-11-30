@@ -3,6 +3,8 @@ package com.example.springboot.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.Collection;
 import com.example.springboot.domain.Opera;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class OperaServiceImpl implements OperaService {
+public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements OperaService {
 
     @Autowired
     OperaMapper operaMapper;
@@ -69,5 +71,14 @@ public class OperaServiceImpl implements OperaService {
 //        tableDataInfo.setTotal(operaPageInfo.getTotal());
 //        tableDataInfo.setRows(operaPageInfo.getList());
 //        return new PageInfo<>(operaList);
+    }
+
+    @Override
+    public ResponseResult addOpera(Opera opera) {
+        boolean isSuccess = this.save(opera);
+        if(isSuccess){
+            return new ResponseResult<>(HttpStatus.SUCCESS,"新增成功");
+        }
+        return new ResponseResult<>(HttpStatus.ERROR,"失败");
     }
 }

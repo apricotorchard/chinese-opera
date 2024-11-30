@@ -18,6 +18,7 @@ public class Opera {
     private String name;
     private String singer;
     private String tag;
+    private String des;
     private String pictureUrl;
     private String playUrl;
     private Integer collectionId;

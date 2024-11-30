@@ -40,9 +40,14 @@ const router = createRouter({
       component: () => import('@/views/ManageData.vue'),
       children:[
         {
-          path:'/uploadfile',
-          name:'UploadFile',
+          path:'/uploadaudiofile',
+          name:'UploadAudioFile',
           component: () => import('@/components/ManageData/UploadFile/UploadAudio.vue')
+        },
+        {
+          path:'/uploadvideofile',
+          name:'UploadVideoFile',
+          component: () => import('@/components/ManageData/UploadFile/UploadVideo.vue')
         },
       ]
     },

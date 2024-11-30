@@ -28,7 +28,7 @@
   
 <script>
   import {useTrackStore} from '@/stores/trackStore';
-  import {getAudioListByTag,getAudioPlayUrl} from '@/api/audio.js';
+  import {getAudioListByTag} from '@/api/audio.js';
   const THRESHOLD = 20
   // 戏曲的不变的信息可以直接从后端获取，对于容易变化到的数据，需要放在vuex里面
   export default {
