@@ -86,10 +86,11 @@ export default {
         },
         getoperaInfo(){
             getAlloperaInfo().then(res=>{
-                this.operaInfoList = res.data.data.map(opera=>{
-                    opera.playUrl = getOperaPlayUrl(opera);
-                    return opera;
-                })
+                this.operaInfoList = res.data.data;
+                // this.operaInfoList = res.data.data.map(opera=>{
+                //     opera.playUrl = getOperaPlayUrl(opera);
+                //     return opera;
+                // })
             })
         },
     },

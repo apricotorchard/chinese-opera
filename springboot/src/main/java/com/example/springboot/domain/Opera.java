@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("opera_info")
+@TableName("opera")
 public class Opera {
 
     @TableId(value = "id",type = IdType.AUTO)

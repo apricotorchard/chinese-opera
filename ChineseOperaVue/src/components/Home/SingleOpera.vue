@@ -48,9 +48,11 @@ export default {
 
 <style lang = "scss" scoped>
 .opera-card{
+    
+    // width: 200px;
     .opera-img{
         width: 100%;
-        height: auto;
+        height:150px;
         object-fit: cover;
         border-radius: 12px;
         cursor: pointer;

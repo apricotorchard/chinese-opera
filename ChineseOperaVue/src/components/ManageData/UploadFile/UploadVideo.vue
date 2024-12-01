@@ -48,7 +48,9 @@
               <el-button size="small" type="primary">上传封面</el-button>
             </el-upload>
           </el-form-item>
-  
+          <el-form-item label="作者">
+            <el-input v-model="fileInfo.singer" placeholder="请输入作者名称"></el-input>
+          </el-form-item>
           <el-form-item label="视频描述">
             <el-input v-model="fileInfo.description" placeholder="请输入视频描述"></el-input>
           </el-form-item>
@@ -87,14 +89,16 @@
         name: '',
         description: '',
         playUrl:'',
+        singer:'',
         coverUrl: '',
         tag: '京剧', // 默认视频种类
     });
     const videoInfo =  {
         name: '',
-        description: '',
+        des: '',
         playUrl:'',
-        coverUrl: '',
+        singer:'',
+        pictureUrl: '',
         tag: '京剧', 
     }
     const uploadRef = ref();
@@ -120,14 +124,10 @@
     };
 
     const handleCoverSuccess = (response) => {
-        videoInfo.coverUrl = response.data; // 保存封面 URL
-        console.log("1111231312321");
-        console.log("封面上传成功:", response.data);
+        videoInfo.pictureUrl = response.data; // 保存封面 URL
     };
     const handleVideoSuccess = (response) => {
         videoInfo.playUrl = response.data;
-        console.log("1111231312321");
-        console.log("视频上传成功:", response.data);
         saveVideoInfo();
     }
     const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
@@ -138,19 +138,25 @@
         console.log(file)
     }
     const handleFileChange = (file) => {
-        if (file.raw.type.startsWith('video/')) {
-            fileInfo.value.name = file.name; // 设置文件名
-        } else {
-            alert('只能上传视频文件!');
-            uploadRef.value.clearFiles()
+      console.log("12131321");
+      if (file.raw.type.startsWith('video/')) {
+        if(fileInfo.value.name!=''){
+          fileInfo.value.name = '';
+        }else{
+          fileInfo.value.name = file.name;
         }
+           // 设置文件名
+      } else if(!file.raw.type.startsWith('video/')){
+          alert('只能上传视频文件!');
+          uploadRef.value.clearFiles()
+      }
     };
     const handlePicChange = (file) =>{
         console.log("现在上传的是",file);
         if (!file.raw.type.startsWith('image/')) {
             alert('文件必须是图片格式!')
             uploadPic.value!.clearFiles()
-        } else if (file.size / 1024 / 1024 > 2) {
+        } else if (file.size / 1024 / 1024 > 5) {
             alert('文件大小不能超过 2MB!')
             uploadPic.value!.clearFiles()
         }else{
@@ -183,11 +189,19 @@
 
     const saveVideoInfo = () => {
         videoInfo.name = fileInfo.value.name;
-        videoInfo.description = fileInfo.value.description;
+        videoInfo.des = fileInfo.value.description;
         videoInfo.tag = fileInfo.value.tag;
+        videoInfo.singer= fileInfo.value.singer;
         try {
             addVideo(videoInfo);
             alert("视频信息保存成功");
+            // 然后把表单信息清除掉
+            
+            fileInfo.value.description = '';
+            fileInfo.value.singer = '';
+            fileInfo.value.tag = '京剧';
+            uploadPic.value!.clearFiles();
+            uploadRef.value.clearFiles();
         } catch (error) {
             console.error("视频信息保存失败", error);
         }

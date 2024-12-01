@@ -49,6 +49,11 @@ const router = createRouter({
           name:'UploadVideoFile',
           component: () => import('@/components/ManageData/UploadFile/UploadVideo.vue')
         },
+        {
+          path:'/managevideo',
+          name:'ManageVideo',
+          component: () => import('@/components/ManageData/ManageVideo/ManageVideo.vue')
+        },
       ]
     },
    

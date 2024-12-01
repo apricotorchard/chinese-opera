@@ -53,7 +53,7 @@
         //从别的界面跳转过来的 
         this.opera = JSON.parse(this.$route.query.opera);
         // 处理路径
-        this.opera.playUrl = getOperaPlayUrl(this.opera);
+        // this.opera.playUrl = getOperaPlayUrl(this.opera);
         //根据collectionId 从数据库当中查询。
         this.getOperaListByConditionId(this.opera.collectionId);
     },
@@ -76,7 +76,7 @@
       },
       changeCurrentOpera(opera){
         this.opera = opera;
-        this.opera.playUrl = getOperaPlayUrl(opera);
+        // this.opera.playUrl = getOperaPlayUrl(opera);
       }
     }
   };

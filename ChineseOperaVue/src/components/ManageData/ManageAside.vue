@@ -10,21 +10,16 @@
         >
         <el-sub-menu index="1">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>数据中心</span>
+              <el-icon><location /></el-icon>
+              <span>数据中心</span>
             </template>
-            <el-menu-item-group>
-            <template #title><span>Group One</span></template>
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
+            <el-menu-item-group title="视频数据">
             </el-menu-item-group>
-            <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
+            <el-menu-item-group title="音频数据">
             </el-menu-item-group>
-            <el-sub-menu index="1-4">
-            <template #title><span>item four</span></template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-sub-menu>
+            <el-menu-item-group title="用户数据">
+
+            </el-menu-item-group>
         </el-sub-menu>
         <el-menu-item index="UploadAudioFile">
             <el-icon><icon-menu /></el-icon>
@@ -34,11 +29,7 @@
             <el-icon><document /></el-icon>
             <template #title>上传视频</template>
         </el-menu-item>
-        <el-menu-item index="4">
-            <el-icon><setting /></el-icon>
-            <template #title>创建合集</template>
-        </el-menu-item>
-        <el-menu-item index="5">
+        <el-menu-item index="ManageVideo">
             <el-icon><setting /></el-icon>
             <template #title>视频管理</template>
         </el-menu-item>
@@ -46,6 +37,11 @@
             <el-icon><setting /></el-icon>
             <template #title>音频管理</template>
         </el-menu-item>
+        <el-menu-item index="5">
+            <el-icon><setting /></el-icon>
+            <template #title>用户管理</template>
+        </el-menu-item>
+        
         </el-menu>
     </div>
     

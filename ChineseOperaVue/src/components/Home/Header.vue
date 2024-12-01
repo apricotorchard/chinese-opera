@@ -37,7 +37,7 @@
                 <div class="profile-container" @mouseover="showHeaderDropdown" @mouseleave="hideHeaderDropdown">
                     <!-- 头像部分 -->
                     <div class="profile-avatar" >
-                        <img :src=userStore.avatar alt="用户头像" class="avatar-img">
+                        <img :src=sungif alt="用户头像" class="avatar-img">
                     </div>
                     <!-- 下拉菜单  -->
                     <div class="profile-dropdown"  v-if="isDropdownVisible">
@@ -71,10 +71,8 @@
                     <span>动态</span>
                 </a>
             </li>
-            <li class="right-item">
-                <a>
-                    <span>创作中心</span>
-                </a>
+            <li class="right-item" @click="navigateToManage">
+                    <el-button type="danger">作品管理</el-button>
             </li>
         </ul>
        
@@ -88,6 +86,7 @@
 
 <script>
 import useUserStore from '@/stores/userStore.js'
+import sunGif from '@/assets/sun.gif';
 export default {
     name:'HomeHeader',
     props:{
@@ -102,7 +101,8 @@ export default {
     },
     data(){
         return{
-            isDropdownVisible:false
+            isDropdownVisible:false,
+            sungif:sunGif
         }
     },
     computed:{
@@ -125,6 +125,11 @@ export default {
         LoginOut(){//回调应该是一个函数
             this.userStore.logOut().then(()=>{
                 this.$router.push({name:'Login'})
+            })
+        },
+        navigateToManage(){
+            this.$router.push({
+                name:'ManageData'
             })
         }
 
