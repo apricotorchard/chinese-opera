@@ -15,10 +15,27 @@ export function getOperaPlayUrl(opera){
     const playUrl = `${serverAddress}${dir}${path}/c${opera.collectionId}/${opera.id}${suffix}`;
     return playUrl;
 }
-export function getAlloperaInfo(){
+export function getAlloperaInfo(params){
     return request({
         url:'/opera',
-        method:'get'
+        method:'get',
+        params:params
+    })
+}
+
+export function addOpera(data){
+    return request({
+        url:'/opera/addopera',
+        method:'post',
+        data:data
+    })
+}
+
+export function updateOpera(data){
+    return request({
+        url:'/opera/updateopera',
+        method:'post',
+        data:data
     })
 }
 
@@ -54,6 +71,27 @@ export function addComment(comment){
         data:comment
     })
 }
+
+//查询合集信息
+export function getCollectionInfo(){
+    return request({
+        url:'/opera/collect/getcollectinfo',
+        method:'get'
+    })
+}
+
+// 新增合集信息
+export function addCollection(data){
+    return request({
+        url:'/opera/collect/addcollect',
+        method:'post',
+        data:data
+    })
+}
+
+// 编辑分组信息
+
+
 
 //递归地去找  回复的是谁的评论,感觉这样效率太低。
 // export function findCommentById(comments, targetId) {

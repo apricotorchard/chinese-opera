@@ -56,26 +56,22 @@
       },
       
     // 向后端发送请求，更改store里面的值。
-        async getAudioList(){
-            const params={
-              pageNum:this.pageNum,
-              pageSize:this.pageSize,
-              tag:this.selectedTag,
-            }
-            try{
-              const res = await getAudioListByTag(params); 
-              const audioList = res.data.records;
-              console.log(audioList);
-              this.total = res.data.total;
-              console.log(audioList);
-              console.log(this.total);
-              // console.log("audiolist 数据开始执行......")
-              this.track.addAudioList(audioList);
-            }
-            catch (error) {
-                console.error("数据加载失败", error);
-            } 
-        }  
+      async getAudioList(){
+        const params={
+          pageNum:this.pageNum,
+          pageSize:this.pageSize,
+          tag:this.selectedTag,
+        }
+        try{
+          const res = await getAudioListByTag(params); 
+          const audioList = res.data.records;
+          this.total = res.data.total;
+          this.track.addAudioList(audioList);
+        }
+        catch (error) {
+            console.error("数据加载失败", error);
+        } 
+      }  
     }
   };
   </script>

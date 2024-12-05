@@ -8,6 +8,8 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 const service = axios.create({
     baseURL:'http://localhost:8080',
 })
+
+
 // 1.请求拦截器
 service.interceptors.request.use(config=>{
     const isToken = (config.headers || {}).isToken === false

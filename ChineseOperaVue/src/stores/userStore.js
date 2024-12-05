@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', {
     nickName:'',
     token:getToken(),
     avatar:'',
-    roles:[],
+    roles:'',
     permissions:[]
   }),
   actions: {
@@ -51,7 +51,8 @@ export const useUserStore = defineStore('user', {
             this.userId = res.data.data.user.id;
             this.userName  = res.data.data.user.userName;
             this.nickName = res.data.data.user.nickName;
-            this.avatar = res.data.data.user.avatar
+            this.avatar = res.data.data.user.avatar;
+            this.roles = res.data.data.user.type;
             resolve(res);
         }).catch(error=>{reject(error)})
     })
@@ -62,13 +63,6 @@ export const useUserStore = defineStore('user', {
   persist: {
     enabled: true, // 启用持久化
     strategies: localStorage
-    // [
-    //   {
-    //     key: 'userStore',          // 存储的 key 名称
-    //     storage: localStorage,     // 存储方式
-    //     // paths: ['token', 'userId', 'userName', 'roles'], // 可以选择存储的字段
-    //   }
-    // ]
   }
 });
 export default useUserStore

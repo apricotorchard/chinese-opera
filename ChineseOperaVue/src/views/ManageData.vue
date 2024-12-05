@@ -6,7 +6,7 @@
         </el-aside>
         
         <el-container style="padding:0 60px">
-            <el-header style="padding:0px;">
+            <el-header style="padding:0px;height: 5vh;">
                 <ManageHeader/>
             </el-header>
             <el-main style="padding:0px;">
@@ -27,7 +27,4 @@
 </script>
 
 <style scoped lang="scss">
-.container{
-    // height: 100vh;
-}
 </style>

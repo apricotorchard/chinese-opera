@@ -63,6 +63,8 @@ export default {
     },
     data(){
         return{
+            pageNum:1,
+            pageSize:10,
             operaInfoList:[],
         }
     },
@@ -85,8 +87,12 @@ export default {
             })
         },
         getoperaInfo(){
-            getAlloperaInfo().then(res=>{
-                this.operaInfoList = res.data.data;
+            const params  = {
+                pageNum:this.pageNum,
+                pageSize:this.pageSize
+            }
+            getAlloperaInfo(params).then(res=>{
+                this.operaInfoList = res.data.data.records;
                 // this.operaInfoList = res.data.data.map(opera=>{
                 //     opera.playUrl = getOperaPlayUrl(opera);
                 //     return opera;

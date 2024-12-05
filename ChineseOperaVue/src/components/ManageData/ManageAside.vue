@@ -22,23 +22,29 @@
             </el-menu-item-group>
         </el-sub-menu>
         <el-menu-item index="UploadAudioFile">
-            <el-icon><icon-menu /></el-icon>
+            <!-- <el-icon><icon-menu /></el-icon>
+             -->
+             <el-icon><Promotion /></el-icon>
             <template #title>上传音频</template>
         </el-menu-item>
         <el-menu-item index="UploadVideoFile">
-            <el-icon><document /></el-icon>
+            <!-- <el-icon><document /></el-icon>
+             -->
+             <el-icon><UploadFilled /></el-icon>
             <template #title>上传视频</template>
         </el-menu-item>
         <el-menu-item index="ManageVideo">
-            <el-icon><setting /></el-icon>
+            
+            <el-icon><Tickets /></el-icon>
             <template #title>视频管理</template>
         </el-menu-item>
-        <el-menu-item index="6">
-            <el-icon><setting /></el-icon>
-            <template #title>音频管理</template>
+        <el-menu-item index="ManageCollection">
+            <el-icon><Notebook /></el-icon>
+            <template #title>合集管理</template>
         </el-menu-item>
         <el-menu-item index="5">
-            <el-icon><setting /></el-icon>
+            <!-- <el-icon><setting /></el-icon> -->
+            <el-icon><User /></el-icon>
             <template #title>用户管理</template>
         </el-menu-item>
         

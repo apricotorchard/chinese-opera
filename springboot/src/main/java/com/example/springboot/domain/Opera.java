@@ -1,6 +1,7 @@
 package com.example.springboot.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -22,4 +23,6 @@ public class Opera {
     private String pictureUrl;
     private String playUrl;
     private Integer collectionId;
+    @TableField(exist = false)
+    private String collectName;
 }

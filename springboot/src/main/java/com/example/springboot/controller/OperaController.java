@@ -2,8 +2,10 @@ package com.example.springboot.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springboot.domain.Audio;
+import com.example.springboot.domain.Collection;
 import com.example.springboot.domain.Comment;
 import com.example.springboot.domain.Opera;
+import com.example.springboot.service.CollectionService;
 import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.service.CommentService;
 import com.example.springboot.service.OperaService;
@@ -21,14 +23,29 @@ public class OperaController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private CollectionService collectionService;
+
     @GetMapping
-    public ResponseResult getOpera(){
-        return operaService.getOpera();
+    public ResponseResult getOpera(@RequestParam int pageNum,@RequestParam int  pageSize){
+        return operaService.getOpera(pageNum,pageSize);
     }
 
+//    @PostMapping("/addopera")
+//    public ResponseResult addOpera(@RequestBody Opera opera){
+//        return operaService.addOpera(opera);
+//    }
     @GetMapping("/getoperalistbycollectid")
     public ResponseResult getOperaListByCollectionId(@RequestParam int collectionid){
         return operaService.getOperaListByCollectionId(collectionid);
+    }
+    @PostMapping("/addopera")
+    public ResponseResult addOpera(@RequestBody Opera opera){
+        return operaService.addOpera(opera);
+    }
+    @PostMapping("/updateopera")
+    public ResponseResult updateOpera(@RequestBody Opera opera){
+        return operaService.updateOpera(opera);
     }
     //根据戏曲的类型进行查询，这个要做一个分页的操作。
     @GetMapping("/getlistbyoperatag")
@@ -51,10 +68,17 @@ public class OperaController {
         return commentService.addComment(comment);
     }
 
-    @PostMapping("/addopera")
-    public ResponseResult addOpera(@RequestBody Opera opera){
-        return operaService.addOpera(opera);
+
+
+
+    @GetMapping("/collect/getcollectinfo")
+    public ResponseResult getCollectInfo(){
+        return collectionService.getCollectInfo();
     }
 
+    @PostMapping("/collect/addcollect")
+    public ResponseResult addCollection(@RequestBody Collection collection){
+        return collectionService.addCollection(collection);
+    }
 }
 

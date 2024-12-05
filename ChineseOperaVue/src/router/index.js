@@ -40,12 +40,12 @@ const router = createRouter({
       component: () => import('@/views/ManageData.vue'),
       children:[
         {
-          path:'/uploadaudiofile',
+          path:'/manageUploadaudiofile',
           name:'UploadAudioFile',
           component: () => import('@/components/ManageData/UploadFile/UploadAudio.vue')
         },
         {
-          path:'/uploadvideofile',
+          path:'/manageUploadvideofile',
           name:'UploadVideoFile',
           component: () => import('@/components/ManageData/UploadFile/UploadVideo.vue')
         },
@@ -54,15 +54,31 @@ const router = createRouter({
           name:'ManageVideo',
           component: () => import('@/components/ManageData/ManageVideo/ManageVideo.vue')
         },
+        {
+          path:'/manageCollection',
+          name:'ManageCollection',
+          component: () => import('@/components/ManageData/ManageCollection/ManageCollection.vue')
+        },
       ]
     },
-   
-    // {
-    //   path:'/test',
-    //   name:'test',
-    //   component: () => import('@/views/Test.vue')
-    // },
   ]
 })
 
+//添加一个路由守卫：检查用户是否有权限访问某个路由
+router.beforeEach((to,from,next)=>{
+  const user = JSON.parse(localStorage.getItem('user'));
+  
+  // 如果是需要鉴权的
+  if(to.path.startsWith('/manage')){
+    if(user.token && user.roles=="1"){
+      next();
+    }else{
+      next('/');
+    }
+  }
+  else{
+      next();
+  }
+  
+})
 export default router

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements OperaService {
@@ -28,11 +30,23 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
     @Autowired
     CollectionMapper collectionMapper;
     @Override
-    public ResponseResult getOpera() {
+    public ResponseResult getOpera(int pageNum,int pageSize) {
+        Page<Opera> page= new Page<>(pageNum,pageSize);
         LambdaQueryWrapper<Opera> queryWrapper = new LambdaQueryWrapper<>();
-        List<Opera> operaList = operaMapper.selectList(queryWrapper);
-
-        return new ResponseResult<>(HttpStatus.SUCCESS,"成功",operaList);
+        Page<Opera> operaPage = operaMapper.selectPage(page, queryWrapper);
+        List<Opera> operaList = operaPage.getRecords();
+        for (Opera opera : operaList) {
+            Integer collectionId = opera.getCollectionId();
+            String collectionName;
+            if(Objects.isNull(collectionId)){
+                collectionName = "未分组";
+            }else{
+                Collection collection = collectionMapper.selectById(collectionId); // 你需要定义一个 collectionMapper 用来查询 collection
+                collectionName = collection.getTitle();
+            }
+            opera.setCollectName(collectionName); // 将 collection 信息设到 opera 中
+        }
+        return new ResponseResult<>(HttpStatus.SUCCESS,"戏曲数据加载成功",operaPage);
     }
 
     @Override
@@ -59,18 +73,7 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
         Page<Opera> page = new Page<>(pageNum, pageSize);
         QueryWrapper<Opera> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("tag", operaTag);
-
-
         return operaMapper.selectPage(page, queryWrapper);
-//        QueryWrapper<Opera> queryWrapper
-//        List<Opera> operaList = operaMapper.selectOperaListByTag(operaTag);
-
-//        TableDataInfo tableDataInfo = new TableDataInfo();
-//        tableDataInfo.setCode(HttpStatus.SUCCESS);
-//        tableDataInfo.setMsg("查询成功");
-//        tableDataInfo.setTotal(operaPageInfo.getTotal());
-//        tableDataInfo.setRows(operaPageInfo.getList());
-//        return new PageInfo<>(operaList);
     }
 
     @Override
@@ -81,4 +84,17 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
         }
         return new ResponseResult<>(HttpStatus.ERROR,"失败");
     }
+
+    @Override
+    public ResponseResult updateOpera(Opera opera) {
+
+        boolean isSuccess = this.updateById(opera);
+        if(isSuccess){
+            return new ResponseResult<>(HttpStatus.SUCCESS,"更新成功");
+        }
+        return new ResponseResult<>(HttpStatus.ERROR,"失败");
+
+    }
+
+
 }
