@@ -1,0 +1,30 @@
+<configuration>
+    <property name="log.path" value="D:\code\ChineseOpera\logs" />
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/application.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/application-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="async_file" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 直接引用文件 Appender -->
+        <appender-ref ref="file" />
+    </appender>
+
+    <root level="warn">
+        <appender-ref ref="console" />
+        <appender-ref ref="async_file" />
+    </root>
+</configuration>

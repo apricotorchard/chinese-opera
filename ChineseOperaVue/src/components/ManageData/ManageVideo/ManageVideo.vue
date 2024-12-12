@@ -36,7 +36,7 @@
         <el-button link type="primary" size="small" @click="handleDeleteClick">
           删除
         </el-button>
-        <el-button link type="primary" size="small" @click="handleEditClick(scope.row)">
+        <el-button link type="primary" v-hasPermi="['manage:edit']" size="small" @click="handleEditClick(scope.row)">
           编辑
         </el-button>
       </template>

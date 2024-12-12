@@ -4,7 +4,7 @@
     <div class="head-bar">
        
         <ul class="left-entry">
-            <li class="left-item">
+            <li class="left-item" @click="navigateToHome">
                 <a href="#">
                     <span>首页</span>
                 </a>
@@ -72,7 +72,7 @@
                 </a>
             </li>
             <li class="right-item" @click="navigateToManage">
-                    <el-button type="danger">作品管理</el-button>
+                    <el-button type="danger" v-hasPermi="['manage:edit']">作品管理</el-button>
             </li>
         </ul>
        
@@ -130,6 +130,11 @@ export default {
         navigateToManage(){
             this.$router.push({
                 name:'ManageData'
+            })
+        },
+        navigateToHome(){
+            this.$router.push({
+                name:'home'
             })
         }
 

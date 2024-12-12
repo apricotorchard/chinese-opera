@@ -4,6 +4,7 @@ package com.example.springboot.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springboot.domain.LoginUser;
 import com.example.springboot.domain.User;
+import com.example.springboot.mapper.MenuMapper;
 import com.example.springboot.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,12 +12,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    MenuMapper menuMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -30,9 +38,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //TODO: 查询权限信息封装到LoginUser中
+        List<String> permissions = menuMapper.selectPermsByUserId(user.getId());
 
 
         // 将用户信息封装到UserDetails实现类中
-        return new LoginUser(user);
+        return new LoginUser(user,permissions);
     }
 }

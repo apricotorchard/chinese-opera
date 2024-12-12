@@ -13,3 +13,7 @@ aliyun:
     access-key-id: "LTAI5tRrhXuq3zR7ucHAJYuu"
     access-key-secret: "kmViskJnMni3LuIgNggneYoYYxhdB4"
     bucket-name: "chineseopera"
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+

@@ -125,15 +125,17 @@ export default {
             // 调用userStore 的action的登陆方法
             this.userStore.login(this.loginForm).then(()=>{
                 // 登陆成功之后，调用 userstore 设置用户信息
+                
                 this.userStore.getUserInfo().then(res=>{
+                    this.$router.push({
+                        name:'home',
+                    })
                     console.log("获取用户信息成功");
                 })
                 //TODO：实现页面跳转，跳转回原来的界面
 
                 // 还需要判断一下时候成功么？
-                this.$router.push({
-                    name:'home',
-                })
+                
             })
         },
         register() {

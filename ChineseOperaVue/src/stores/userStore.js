@@ -20,6 +20,7 @@ export const useUserStore = defineStore('user', {
     const password = userInfo.password
     const code = userInfo.code
     const uuid = userInfo.uuid
+    localStorage.removeItem('user');
     return new Promise((resolve,reject)=>{
       login(username,password,code,uuid).then(res=>{
         setToken(res.data.data.token)
@@ -52,7 +53,21 @@ export const useUserStore = defineStore('user', {
             this.userName  = res.data.data.user.userName;
             this.nickName = res.data.data.user.nickName;
             this.avatar = res.data.data.user.avatar;
-            this.roles = res.data.data.user.type;
+            this.roles = res.data.data.user.type==0?'user':'admin';
+            if(this.roles=='user'){
+              this.permissions = ['manage:manageUploadaudiofile', 'manage:manageUploadvideofile','manage:managevideo']
+            }else{
+              this.permissions = [
+                'manage:manageUploadaudiofile', 
+                'manage:manageUploadvideofile', 
+                'manage:managevideo',
+                'manage:managecollection',
+                'manage:manageuser',
+                'manage:managerole',
+                'manage:managemenu',
+                'manage:edit'
+              ]; 
+            }
             resolve(res);
         }).catch(error=>{reject(error)})
     })

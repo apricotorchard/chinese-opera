@@ -11,6 +11,7 @@ import com.example.springboot.service.CommentService;
 import com.example.springboot.service.OperaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +36,7 @@ public class OperaController {
 //    public ResponseResult addOpera(@RequestBody Opera opera){
 //        return operaService.addOpera(opera);
 //    }
+    @PreAuthorize("hasAnyAuthority('system:test:list')")
     @GetMapping("/getoperalistbycollectid")
     public ResponseResult getOperaListByCollectionId(@RequestParam int collectionid){
         return operaService.getOperaListByCollectionId(collectionid);

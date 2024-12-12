@@ -1,4 +1,5 @@
 import './assets/styles/index.scss'
+import directive from "./diretive"
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
@@ -23,5 +24,5 @@ for (const iconName in ElIconModules) {
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
-
+directive(app)
 app.mount('#app')

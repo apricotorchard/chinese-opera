@@ -1,24 +1,43 @@
 package com.example.springboot.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
 
     private User user;//封装用户信息
 
+    private List<String> userPermissions;
+
+    public LoginUser(User user,List<String> userPermissions){
+        this.user = user;
+        this.userPermissions = userPermissions;
+    }
+
+    @JSONField(serialize = false)
+    private List<SimpleGrantedAuthority> authorities;
+
+
     //获取权限
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if(authorities!=null){
+            return authorities;
+        }
+        authorities = userPermissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return authorities;
     }
 
     //获取密码

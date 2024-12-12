@@ -25,7 +25,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     RedisCache redisCache;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println(request);
         String token = request.getHeader("authorization");
         //此处判断token是否为空
 
@@ -51,7 +50,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("用户未登录");
         }
         //4.将获取到的用户信息存入SecurityContextHolder 参数（用户信息，，权限信息）
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, null);
+
+        //获取权限信息封装到Authentication当中，添加到UsernamePasswordAuthenticationToken的第三个参数里面
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         //5.放行
