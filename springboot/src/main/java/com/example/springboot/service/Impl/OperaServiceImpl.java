@@ -14,6 +14,7 @@ import com.example.springboot.mapper.OperaMapper;
 import com.example.springboot.service.OperaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
     }
 
     @Override
-    public ResponseResult getOperaListByCollectionId(int collectionId) {
+    public ResponseResult getOperaListByCollectionId(Integer collectionId) {
         LambdaQueryWrapper<Opera> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Opera::getCollectionId,collectionId);
         List<Opera> operaList = operaMapper.selectList(lambdaQueryWrapper);

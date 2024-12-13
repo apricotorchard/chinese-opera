@@ -36,6 +36,11 @@
         pageSize:10,
       };
     },
+    created(){
+      if(this.isAudio){
+        this.operaTags = ['京剧', '黄梅戏', '川剧','越剧','秦腔', '评剧','晋剧','豫剧','花鼓戏']
+      }
+    },
     methods: {
       navigateToOperaTag(operaTag) {
         this.selectedTag = operaTag;

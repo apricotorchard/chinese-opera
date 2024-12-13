@@ -5,7 +5,8 @@
       </el-header>
       <el-main style="padding:0 60px;margin-top:30px">
           <div class="opera-info">
-            <h1>{{ nameShow }}</h1>
+            <h1 v-if="nameShow">{{ nameShow }}</h1>
+            <h1 v-else>{{ opera.name }}</h1>
             <span>
               {{ opera.tag }}
             </span>
@@ -33,7 +34,7 @@
   import Comment from '@/components/OperaPlay/CommentVue.vue'
   import AsideList from '@/components/OperaPlay/AsideList.vue';
   import Header from '@/components/Home/Header.vue';
-  import {getOperaByCollectionId,getOperaPlayUrl} from '@/api/opera.js'
+  import {getOperaByCollectionId,getOperaPlayUrl,getOperaListByTag} from '@/api/opera.js'
   export default {
     name: 'OperaPlay',
     components: {
@@ -43,6 +44,8 @@
     },
     data() {
       return {
+        pageNum:1,
+        pageSize:10,
         opera:null,
         operaList:[],
         collection:'',
@@ -55,7 +58,11 @@
         // 处理路径
         // this.opera.playUrl = getOperaPlayUrl(this.opera);
         //根据collectionId 从数据库当中查询。
-        this.getOperaListByConditionId(this.opera.collectionId);
+        if(this.opera.collectionId){
+          this.getOperaListByConditionId(this.opera.collectionId);
+        }else{
+          this.getOperasByTag(this.opera.tag);
+        }
     },
     methods: {
       collectOpera() {
@@ -74,6 +81,18 @@
           console.log(res);
         })
       },
+      getOperasByTag(operaTag){
+            const operaParam = {
+                pageNum: this.pageNum,
+                pageSize: this.pageSize,
+                operaTag:operaTag
+            }
+            getOperaListByTag(operaParam).then(res=>{
+                // console.log(res);
+                this.total = res.data.total;
+                this.operaList = res.data.records;
+            })
+        },
       changeCurrentOpera(opera){
         this.opera = opera;
         // this.opera.playUrl = getOperaPlayUrl(opera);

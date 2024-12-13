@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div v-else class="opera-container">
+        <!-- <div v-else class="opera-container">
             <div v-for="(opera,index) in operaList.slice(0,5)" :key="index" class="opera-info">
                 <div class="img-container">
                     <img :src="opera.pictureUrl">
@@ -30,7 +30,7 @@
                     <span>演唱者：{{ opera.singer}}</span>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -58,11 +58,6 @@ export default {
             this.isChoidcedOperaIndex = currentIndex;
             console.log(this.isChoidcedOperaIndex);
             this.$emit("getChoicedOpera",opera);
-            // this.$router.push({
-            //     name: 'operaPlay',
-            //     query: { opera: JSON.stringify(opera) } 
-            // })
-            // window.location.reload();
         },
     }
 }
@@ -102,11 +97,20 @@ export default {
         background-color: white;
         color: #7FCBF8;
     }
-    .opera-container{
-        display: flex;
-        flex-direction: column;
-    }
-
+    // .img-container{
+    //     width: 100%;
+    //     img{
+    //         height:250px;
+    //         width: 150px;
+    //         object-fit: cover;
+    //         border-radius: 12px;
+    //         cursor: pointer;
+    //         &:hover{
+    //             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    //         }
+    //     }
+        
+    // }
     .opera-info{
             flex:1;
             display: flex;
@@ -117,6 +121,7 @@ export default {
                 height: 100px;
                 img{
                     height: 100px;
+                    width: 150px;
                     border-radius: 5px;
                 }
             }
@@ -138,7 +143,7 @@ export default {
                     color:rgb(164, 163, 163)
                 }
             }
-        }
+    }
    
    
 }

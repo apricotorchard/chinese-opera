@@ -1,6 +1,7 @@
 package com.example.springboot.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.Audio;
 import com.example.springboot.domain.Collection;
 import com.example.springboot.domain.Comment;
@@ -12,6 +13,7 @@ import com.example.springboot.service.OperaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,7 +40,7 @@ public class OperaController {
 //    }
     @PreAuthorize("hasAnyAuthority('system:test:list')")
     @GetMapping("/getoperalistbycollectid")
-    public ResponseResult getOperaListByCollectionId(@RequestParam int collectionid){
+    public ResponseResult getOperaListByCollectionId(@RequestParam Integer collectionid){
         return operaService.getOperaListByCollectionId(collectionid);
     }
     @PostMapping("/addopera")

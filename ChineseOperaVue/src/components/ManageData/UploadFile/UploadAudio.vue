@@ -28,7 +28,7 @@
       
     </div>
     <div class="custom-file-list">
-          <el-table :data="fileList" style="width:100%" @selection-change="handleSelectionChange">
+          <el-table :data="fileList" style="width:100%" @selection-change="handleSelectionChange" v-loading="loading">
             <el-table-column type="selection" width="55" />
 
             <el-table-column label="名称" width="250">
@@ -85,10 +85,11 @@
     import { UploadFilled } from '@element-plus/icons-vue'
     import { uploadFile } from "@/api/audio.js";
     import { addAudioBatch} from '@/api/audio.js'
+    const loading = ref(false);
     const upload = ref(null);
     const fileList = ref([]);
     const uploadData = ref({});
-    const operaTags = ['京剧', '黄梅戏', '秦腔', '曲剧', '晋剧', '评剧', '豫剧', '吕剧', '昆曲', '越剧', '潮剧', '川剧', '琼剧', '茂腔', '蒲剧', '越调', '赣剧', '湘剧'];
+    const operaTags = ['京剧', '黄梅戏', '秦腔', '晋剧', '评剧', '豫剧', '越剧', '川剧', '花鼓戏'];
     const selectedFiles = ref([]);
     
     const handleNameChange = (row)=> {
@@ -139,6 +140,7 @@
         return;
       }
       console.log("开始上传文件:", selectedFiles.value);
+      loading.value = true;
       // 这里可以调用 API 进行文件上传
       // 同步上传改为并发上传，🐂
       const uploadPromises = selectedFiles.value.map(file => {
@@ -148,9 +150,12 @@
           .then(response => {
             file.url = response.data; // 更新文件的 URL
             console.log("文件上传成功:", response.data);
+            
+            
           })
           .catch(error => {
             console.error("文件上传失败:", error);
+            alert("文件上传失败");
           });
       });
       await Promise.all(uploadPromises);
@@ -168,7 +173,9 @@
       console.log(audioInfos);
       try{
         await addAudioBatch(audioInfos);
-        console.log("批量插入成功")
+        alert("文件上传成功");
+        loading.value = false;
+        fileList.value = []
       }catch(error){
         console.error("批量插入失败", error);
       }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface OperaService extends IService<Opera> {
     ResponseResult getOpera(int pageNum, int  pageSize);
 
-    ResponseResult getOperaListByCollectionId(int collectionId);
+    ResponseResult getOperaListByCollectionId(Integer collectionId);
 
     Page<Opera> getOperaListByTag(String operaTag, int pageNum, int pageSize);
 

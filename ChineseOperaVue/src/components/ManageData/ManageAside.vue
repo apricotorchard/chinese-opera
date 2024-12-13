@@ -21,18 +21,26 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 // 获取当前用户的权限
 const user = JSON.parse(localStorage.getItem('user'))
 const router = useRouter() 
+const defaultMenuItem = ref('1')
+
+onMounted(() => {
+  // 默认跳转到第一个菜单项对应的页面
+  if (filteredMenuList.value.length > 0) {
+    const defaultRoute = filteredMenuList.value[0].name.toString()
+    router.push({ name: defaultRoute })
+  }
+})
 // console.log(user);
 // 动态获取权限后的菜单项
 const filteredMenuList = computed(() => {
    // 获取路由实例
   const routes = router.getRoutes() // 获取所有路由配置
-  // console.log(routes)  // 打印 routes 检查结构
   const routerList = routes.filter(route=>{
     if (route.path.startsWith('/manage')){
       if(route.meta.permissions){
@@ -41,7 +49,6 @@ const filteredMenuList = computed(() => {
       }
     }
   })
-  // console.log(routerList);
   return routerList;
 })
 
