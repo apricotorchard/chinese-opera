@@ -84,5 +84,10 @@ public class OperaController {
     public ResponseResult addCollection(@RequestBody Collection collection){
         return collectionService.addCollection(collection);
     }
+
+    @GetMapping("/gethotlist")
+    public ResponseResult getHotList(){
+        return operaService.getHotList();
+    }
 }
 

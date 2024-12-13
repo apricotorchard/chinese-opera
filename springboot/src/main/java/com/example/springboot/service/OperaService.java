@@ -20,4 +20,6 @@ public interface OperaService extends IService<Opera> {
 
 
     ResponseResult updateOpera(Opera opera);
+
+    ResponseResult getHotList();
 }

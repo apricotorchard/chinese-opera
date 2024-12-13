@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.springboot.common.constant.Constants;
 import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.Collection;
 import com.example.springboot.domain.Opera;
 import com.example.springboot.mapper.CollectionMapper;
+import com.example.springboot.utils.RedisCache;
 import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.mapper.OperaMapper;
 import com.example.springboot.service.OperaService;
@@ -30,6 +32,9 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
 
     @Autowired
     CollectionMapper collectionMapper;
+
+    @Autowired
+    RedisCache redisCache;
     @Override
     public ResponseResult getOpera(int pageNum,int pageSize) {
         Page<Opera> page= new Page<>(pageNum,pageSize);
@@ -95,6 +100,12 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
         }
         return new ResponseResult<>(HttpStatus.ERROR,"失败");
 
+    }
+
+    @Override
+    public ResponseResult getHotList() {
+        List<Opera> hotLists = redisCache.getCacheObject(Constants.HOT_OPERAS);
+        return new ResponseResult<>(HttpStatus.SUCCESS,"成功",hotLists);
     }
 
 

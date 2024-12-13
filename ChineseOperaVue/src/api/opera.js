@@ -89,6 +89,13 @@ export function addCollection(data){
     })
 }
 
+// 获取排行榜
+export function getHotList(){
+    return request({
+        url:'/opera/gethotlist',
+        method:'get'
+    })
+}
 // 编辑分组信息
 
 
