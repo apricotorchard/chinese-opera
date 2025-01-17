@@ -92,8 +92,16 @@ export default {
                 }
                 else if(this.ischoicedcommentId&&this.ischoicedcommentId!=comment.id){
                     this.ischoicedcommentId=comment.id;
-
                 }
+                this.isShowInput = true; // 确保输入框显示
+
+                // 聚焦到输入框
+                this.$nextTick(() => {
+                    const inputContent = this.$refs['replyInput' + index]?.[0];
+                    if (inputContent) {
+                        inputContent.focus();
+                    }
+                });
             }
         },
         setCommentFromSon(comment,fatherIndex){
@@ -113,6 +121,15 @@ export default {
                 else if(this.ischoicedcommentId&&this.ischoicedcommentId!=comment.id){
                     this.ischoicedcommentId=comment.id;
                 }
+                this.isShowInput = true; // 确保输入框显示
+
+                // 聚焦到输入框
+                this.$nextTick(() => {
+                    const inputContent = this.$refs['replyInput' + fatherIndex]?.[0];
+                    if (inputContent) {
+                        inputContent.focus();
+                    }
+                });
                
             }
         },
@@ -153,14 +170,13 @@ export default {
 <style lang="scss" scoped>
 .comment-block {
   .author-gambits{
-    margin-bottom: 20px;
     .author-info {
-        margin-bottom: 10px;
+        display: flex;
         .header-img {
             border-radius: 50%;
             margin-right: 10px;
-            width:30px;
-            height:30px;
+            width:20px;
+            height:20px;
         }
         .author-name {
             font-weight: bold;
@@ -176,8 +192,7 @@ export default {
        
     }
     .comment-content {
-        margin-left: 50px;
-        margin-bottom: 10px;
+        margin-left: 30px;
         font-size: 14px;
         line-height: 1.6;
     }
@@ -188,10 +203,8 @@ export default {
 }
  .reply-block {
     margin-left: 50px;
-    padding: 10px;
     border-radius: 5px;
     background: #f9f9f9;
-    margin-bottom: 10px;
     .header-img {
       width: 30px; /* 头像宽度 */
       height: 30px; /* 头像高度 */
@@ -210,16 +223,13 @@ export default {
       }
     }
     .reply-content {
-      margin-top: 5px;
       font-size: 14px;
     }
   }
 .reply-comment {
     display: flex;
-    // align-items: flex-start;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
     margin-left: 30px;
     .header-img {
       width: 30px;
@@ -248,37 +258,38 @@ export default {
       margin-right: 100px;
     }
 }
+.comment-block {
+  .author-gambits {
+    font-size: 15px; // 原先评论的字体较大
+    color: #333; // 设置字体颜色
+    font-weight: bold; // 字体加粗
+
+    &.hasfather {
+      font-size: 13px; // 回复的字体较小
+      font-weight: normal; // 正常字体粗细
+    }
+  }
+
+  .comment-content {
+    font-size: 12px; // 设置原评论内容的字体大小
+    line-height: 1.5; // 行高调整
+  }
+
+  .reply-list .comment-content {
+    font-size: 12px; // 设置回复内容的字体大小
+  }
+
+  .reply-input {
+    font-size: 12px; // 回复输入框中的字体大小
+    padding: 5px; // 内边距
+    border-radius: 4px; // 圆角
+  }
+
+  .replying-to {
+    // color: #888; // 设置“回复:”文字的颜色
+    font-style: italic; // 斜体
+  }
+}
 
 </style>
 
-<!-- 回复列表 -->
-<!-- <div v-for="(reply, replyIndex) in comment.reply" :key="replyIndex" class="reply-block" >
-        <div class="author-info">
-            <el-avatar class="header-img" :src="reply.fromHeadImg" style="width:40px;height:40px"></el-avatar>
-            <span class="author-name">{{ reply.from }}</span>
-            <span class="author-time">{{ reply.time }}</span>
-            <span class="reply-people" @click=getPeoPleInfo(index,reply.from)>回复</span>
-        </div>
-        <div class="reply-content">
-            回复 {{ reply.to }}: {{ reply.comment }}
-        </div>
-</div> -->
-
-
-<!-- //如何做到实时的将要添加的数据显示到前端界面上？
-// const insertCommentVue = {
-//     userId:this.userId,
-//     operaId:this.comments[0].operaId,
-//     parentId:this.ischoicedcommentId,
-//     content:this.reply.replyComment,
-//     createdAt: new Date().toISOString(),
-//     children: [] // 新回复默认为无子评论
-// }
-//1.查找当前要回复的评论，并将新评论插入到其children数据当中
-// const targetComment = findCommentById(this.comments,this.ischoicedcommentId);
-// console.log(targetComment);
-//2.如果children 不存在，初始化为空数组再添加。
-// if (targetComment) {
-//     if (!targetComment.children) {targetComment.children = [];}
-//     targetComment.children.push(insertCommentVue);
-// } -->
