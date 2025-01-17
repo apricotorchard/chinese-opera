@@ -28,5 +28,6 @@ public class Constants {
     public static final String LOGIN_USER_KEY = "login:";
 
 
-    public static final String HOT_OPERAS = "hotoperas:";
+    public static final String HOT_OPERAS = "cache:hotoperas:";
+    public static final Long HOT_OPERAS_TTL = 6L;
 }

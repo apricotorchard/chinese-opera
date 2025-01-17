@@ -102,11 +102,14 @@ public class OperaServiceImpl extends ServiceImpl<OperaMapper,Opera> implements 
 
     }
 
-    @Override
-    public ResponseResult getHotList() {
-        List<Opera> hotLists = redisCache.getCacheObject(Constants.HOT_OPERAS);
-        return new ResponseResult<>(HttpStatus.SUCCESS,"成功",hotLists);
-    }
+//    @Override
+//    public ResponseResult getHotList() {
+//        1.首先先查看redis里面存不存在
+//
+//        List<Opera> hotLists = redisCache.getCacheObject(Constants.HOT_OPERAS);
+//
+//        return new ResponseResult<>(HttpStatus.SUCCESS,"成功",hotLists);
+//    }
 
 
 }

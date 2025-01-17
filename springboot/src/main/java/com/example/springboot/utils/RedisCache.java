@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings(value = {"unchecked", "rawtypes"})
+
 @Component
 public class RedisCache {
     @Autowired

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {getCommentsByOperaId,addComment} from '@/api/opera.js'
+import {getCommentsByOperaId,addComment} from '@/api/opera.js';
 import CommentList from '@/components/OperaPlay/CommentList.vue';
 import useUserStore from '@/stores/userStore';
 export default {
@@ -43,7 +43,6 @@ export default {
     methods: {
         getComments() {
             getCommentsByOperaId(this.operaid).then(res => {
-
                 this.comments = res.data.data;
             });
         },
@@ -63,12 +62,12 @@ export default {
             }
             const insertComment = {
                 userId:this.userStore.userId,
-                operaId:this.comments[0].operaId,
+                operaId:this.operaid,
                 content:this.replyComment
             }
             addComment(insertComment).then(res=>{
               document.getElementById("replyInput").innerHTML = ""; //清空
-              // window.location.reload();
+              this.getComments();
             })
             
         },

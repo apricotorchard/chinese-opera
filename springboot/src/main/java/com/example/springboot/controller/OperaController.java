@@ -6,6 +6,7 @@ import com.example.springboot.domain.Audio;
 import com.example.springboot.domain.Collection;
 import com.example.springboot.domain.Comment;
 import com.example.springboot.domain.Opera;
+import com.example.springboot.service.AccessService;
 import com.example.springboot.service.CollectionService;
 import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.service.CommentService;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/opera")
@@ -28,6 +31,9 @@ public class OperaController {
 
     @Autowired
     private CollectionService collectionService;
+
+    @Autowired
+    private AccessService accessService;
 
     @GetMapping
     public ResponseResult getOpera(@RequestParam int pageNum,@RequestParam int  pageSize){
@@ -87,7 +93,8 @@ public class OperaController {
 
     @GetMapping("/gethotlist")
     public ResponseResult getHotList(){
-        return operaService.getHotList();
+        List<Opera> hotListByUserAccess = accessService.getHotListByUserAccess();
+        return new ResponseResult<>(HttpStatus.SUCCESS,hotListByUserAccess);
     }
 }
 

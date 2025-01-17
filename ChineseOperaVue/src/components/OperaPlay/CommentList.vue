@@ -1,6 +1,6 @@
 <template>
     <!-- 评论区 -->
-    <div v-for="(comment, index) in comments" :key="index" class="comment-block">
+    <div v-for="(comment, index) in localComments" :key="index" class="comment-block">
         <div class="author-gambits" :class="{ 'hasfather':father}">
             <div class="author-info">
                 <el-avatar class="header-img" :src="comment.user.avatar"></el-avatar>
@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import {addComment} from '@/api/opera.js';
+import {addComment,getCommentsByOperaId} from '@/api/opera.js';
 import useUserStore from '@/stores/userStore';
 export default {
-    emits: ['commentFromSon'],
+    emits: ['CommentFromSon'],
     props:{
         comments:{
             type:Array
@@ -52,19 +52,23 @@ export default {
     },
     data(){
         return{
-            // userId: 1,
             isShowInput:false,  //用于判断是否展示输入框
             ischoicedcommentId:'', //用于判断是否连续两次点击相同的comment
-            // nickName: '发起者1',
-            // avatar: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
             reply:{
                 replyindex:-1,
                 replyname:'',
                 replyComment:''
             },
+            localComments: [...this.comments]
         }
     },
+    watch: {
+        comments(newComments) {
+            this.localComments = [...newComments]; // 当 props 的 comments 变化时更新 localComments
+        },
+    },
     methods:{
+        
         inputIndex(index){
             return this.reply.replyindex == index&&this.isShowInput;
         },
@@ -118,24 +122,27 @@ export default {
                 return;
             }
             // 执行插入评论数据的操作
-            // console.log(this.ischoicedcommentId);
-            // console.log(this.userId);
-            // console.log(this.reply.replyComment);
+           
             const insertComment = {
                 userId:this.userStore.userId,
                 operaId:this.comments[0].operaId,
                 parentId:this.ischoicedcommentId,
                 content:this.reply.replyComment,
             }
-
+            
             addComment(insertComment).then(res=>{
+                getCommentsByOperaId(this.comments[0].operaId).then(response => {
+
+                    this.localComments = response.data.data; 
+                });
+                
                 console.log("发布成功");
                 // 清空输入框操作。
                 const inputContent = this.$refs['replyInput' + index]?.[0]; // .[0] 取第一个匹配的元素
                 if (inputContent) {
                     inputContent.innerHTML = "";
                 }
-                // window.location.reload();
+                
             })
             
         },
