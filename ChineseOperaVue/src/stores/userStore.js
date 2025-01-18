@@ -49,25 +49,14 @@ export const useUserStore = defineStore('user', {
     return new Promise((resolve,reject)=>{
         getInfo().then(res=>{
             // 这里可以添加一些用户权限的东西
+            console.log(res);
             this.userId = res.data.data.user.id;
             this.userName  = res.data.data.user.userName;
             this.nickName = res.data.data.user.nickName;
             this.avatar = res.data.data.user.avatar;
-            this.roles = res.data.data.user.type==0?'user':'admin';
-            if(this.roles=='user'){
-              this.permissions = ['manage:manageUploadaudiofile', 'manage:manageUploadvideofile','manage:managevideo']
-            }else{
-              this.permissions = [
-                'manage:manageUploadaudiofile', 
-                'manage:manageUploadvideofile', 
-                'manage:managevideo',
-                'manage:managecollection',
-                'manage:manageuser',
-                'manage:managerole',
-                'manage:managemenu',
-                'manage:edit'
-              ]; 
-            }
+            this.roles = res.data.data.user.type==0?'super_admin':'admin';
+            this.permissions = res.data.data.userPermissions;
+           
             resolve(res);
         }).catch(error=>{reject(error)})
     })

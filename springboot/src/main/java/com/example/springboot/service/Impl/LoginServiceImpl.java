@@ -95,6 +95,7 @@ public class LoginServiceImpl implements LoginService {
 
         //Todo 角色集合
         //TODO 权限集合
+        //根据用户id查询用户角色
         //根据userid查询信息返回给前端
         return new ResponseResult<>(HttpStatus.SUCCESS,"返回用户信息",loginUser);
     }

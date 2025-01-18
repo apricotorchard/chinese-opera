@@ -38,6 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //TODO: 查询权限信息封装到LoginUser中
+
         List<String> permissions = menuMapper.selectPermsByUserId(user.getId());
 
 
