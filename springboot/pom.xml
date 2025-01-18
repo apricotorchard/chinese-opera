@@ -150,6 +150,7 @@
 
 	<build>
 		<plugins>
+			<!-- 用于编译 Java 代码 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -161,8 +162,16 @@
 				</configuration>
 			</plugin>
 
+			<!-- 用于打包 Spring Boot 项目 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<mainClass>com.example.springboot.SpringbootApplication</mainClass> <!-- 这里是你的主类 -->
+				</configuration>
+			</plugin>
 		</plugins>
-
 	</build>
 
 </project>
