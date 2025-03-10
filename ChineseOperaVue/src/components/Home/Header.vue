@@ -57,13 +57,13 @@
             </li>
             <!-- 历史记录 -->
             <li class="right-item">
-                <a>
+                <a @click="goToHistory">
                     <span>历史</span>
                 </a>
             </li>
             <li class="right-item">
-                <a>
-                    <span>消息</span>
+                <a @click="goToTest">
+                    <span>弹窗</span>
                 </a>
             </li>
             <li class="right-item">
@@ -74,6 +74,8 @@
             <li class="right-item" @click="navigateToManage">
                     <el-button type="danger" v-hasPermi="['manage:edit']">作品管理</el-button>
             </li>
+
+            
         </ul>
        
     </div>
@@ -120,6 +122,18 @@ export default {
         goToLogin(){
             this.$router.push({
                 name:'Login'
+            })
+        },
+        goToHistory(){
+            console.log("1111");
+            this.$router.push({
+                name:'History'
+            })
+        },
+        goToTest(){
+            // console.log("1111");
+            this.$router.push({
+                name:'Test'
             })
         },
         LoginOut(){//回调应该是一个函数

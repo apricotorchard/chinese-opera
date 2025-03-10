@@ -127,6 +127,13 @@ public class LoginServiceImpl implements LoginService {
         //IP黑名单校验是怎么弄的？
     }
 
+    public static Long getCurrentUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication!=null&&authentication.getPrincipal() instanceof LoginUser){
+            return ((LoginUser) authentication.getPrincipal()).getUser().getId();
+        }
+        throw new RuntimeException("用户未登录");
+    }
 
 }
 

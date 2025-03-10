@@ -12,7 +12,7 @@
             <el-pagination @current-change="handlePageChange" @size-change="handleSizeChange" 
             :hide-on-single-page="total<=pageSize?true:false"  background layout="prev, pager, next"
             :total="total" :current-page="pageNum" :page-size="pageSize"/>
-        </div>
+    </div>
 </template>
 
 <script>

@@ -96,9 +96,21 @@ export function getHotList(){
         method:'get'
     })
 }
-// 编辑分组信息
+// 根据userId来获取戏曲的数据
+export function getOperasFromUserAccess(){
+    return request({
+        url:'/opera/getoperasbyuserid',
+        method:'get'
+    })
+}
 
-
+export function deleteByOperaIds(operaIds){
+    return request({
+        url:'opera/deletebyids',
+        method:'post',
+        data:operaIds,
+    });
+}
 
 //递归地去找  回复的是谁的评论,感觉这样效率太低。
 // export function findCommentById(comments, targetId) {

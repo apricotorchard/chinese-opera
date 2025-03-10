@@ -33,6 +33,16 @@ const constantRoutes = [
     name: 'Audio',
     component: () => import('@/views/Audio.vue')
   },
+  {
+    path: '/history',
+    name: 'History',
+    component: () => import('@/views/History.vue')
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: () => import('@/views/test.vue')
+  },
 ]
 
 // 动态路由，需要根据权限加载
@@ -101,7 +111,7 @@ const router = createRouter({
 })
 
 // 白名单路由，无需权限控制
-const whiteList = ['/','/manage'] // 登录页等公共路由
+const whiteList = ['/','/manage','/history'] // 登录页等公共路由
 
 // 路由守卫，检查权限
 router.beforeEach((to, from, next) => {

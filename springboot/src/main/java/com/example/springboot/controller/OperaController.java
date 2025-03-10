@@ -8,12 +8,15 @@ import com.example.springboot.domain.Comment;
 import com.example.springboot.domain.Opera;
 import com.example.springboot.service.AccessService;
 import com.example.springboot.service.CollectionService;
+import com.example.springboot.service.Impl.LoginServiceImpl;
 import com.example.springboot.utils.ResponseResult;
 import com.example.springboot.service.CommentService;
 import com.example.springboot.service.OperaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,6 +98,23 @@ public class OperaController {
     public ResponseResult getHotList(){
         List<Opera> hotListByUserAccess = accessService.getHotListByUserAccess();
         return new ResponseResult<>(HttpStatus.SUCCESS,hotListByUserAccess);
+    }
+
+    //查询用户的行为信息。
+    @GetMapping("/getoperasbyuserid")
+    public ResponseResult getOperasByUserId(){
+        long userId = LoginServiceImpl.getCurrentUserId();
+        List<Opera> operas = accessService.getOperasByUserId(userId);
+        return new ResponseResult(HttpStatus.SUCCESS,operas);
+    }
+    @PostMapping("/deletebyids")
+    public ResponseResult deleteOperasByIds(@RequestBody List<Integer> ids){
+        long userId = LoginServiceImpl.getCurrentUserId();
+        boolean isSuccess = accessService.deleteOperasByIds(userId,ids);
+        if(isSuccess){
+            return new ResponseResult(HttpStatus.SUCCESS,isSuccess);
+        }
+        return new ResponseResult(HttpStatus.ERROR,isSuccess);
     }
 }
 

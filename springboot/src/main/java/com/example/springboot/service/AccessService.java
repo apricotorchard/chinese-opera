@@ -9,4 +9,8 @@ public interface AccessService {
     List<Opera> getHotListByUserAccess();
     //2.计算排行榜
     List<Opera> calculateRanking();
+
+    List<Opera> getOperasByUserId(long userId);
+
+    boolean deleteOperasByIds(long userId, List<Integer> ids);
 }

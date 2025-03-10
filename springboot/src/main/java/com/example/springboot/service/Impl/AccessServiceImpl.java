@@ -1,5 +1,6 @@
 package com.example.springboot.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.domain.Opera;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.example.springboot.common.constant.Constants.HOT_OPERAS;
 import static com.example.springboot.common.constant.Constants.HOT_OPERAS_TTL;
@@ -30,6 +32,9 @@ public class AccessServiceImpl extends ServiceImpl<UserAccessMapper, UserAccess>
     UserAccessMapper userAccessMapper;
     @Autowired
     OperaMapper operaMapper;
+
+    @Autowired
+    OperaService operaService;
 
     @Autowired
     RankingMapper rankingMapper;
@@ -79,6 +84,30 @@ public class AccessServiceImpl extends ServiceImpl<UserAccessMapper, UserAccess>
             rankingMapper.insert(rank);
         }
         return rankingData;
+    }
+
+    @Override
+    public List<Opera> getOperasByUserId(long userId) {
+        LambdaQueryWrapper<UserAccess> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserAccess::getUserId,userId);
+        List<UserAccess> userAccesses = userAccessMapper.selectList(lambdaQueryWrapper);
+        List<Opera> operaList = userAccesses.stream()
+                .map((userAccess -> operaMapper.selectById(userAccess.getOperaId())))
+                .collect(Collectors.toList());
+        return operaList;
+    }
+
+    @Override
+    public boolean deleteOperasByIds(long userId, List<Integer> ids) {
+        //根据用户id和戏曲ids删除数据。
+        if (ids == null || ids.isEmpty()) {
+            return false; // 参数校验，防止 SQL 语句执行错误
+        }
+        return this.remove(new LambdaQueryWrapper<UserAccess>()
+                .eq(UserAccess::getUserId, userId)
+                .in(UserAccess::getOperaId, ids)
+        );
+//        return false;
     }
 
 }

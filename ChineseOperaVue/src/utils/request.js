@@ -6,7 +6,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 
 const service = axios.create({
-    baseURL:'http://8.130.36.156:8091',
+    baseURL:'http://127.0.0.1:8080',
 })
 
 
