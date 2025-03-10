@@ -13,3 +13,10 @@ export function updateuserinfo(userinfo){
         data:userinfo
     })
 }
+
+export function getroles(){
+    return request({
+        method:'get',
+        url:'/usermanage/getroles'
+    })
+}

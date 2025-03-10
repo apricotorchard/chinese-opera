@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import {getallusers,updateuserinfo} from '@/api/user.js'
+import {getallusers,updateuserinfo,getroles} from '@/api/user.js'
 export default {
   data() {
     return {
@@ -79,6 +79,10 @@ export default {
       getallusers().then(res=>{
         this.users = res.data.data;
         console.log(this.users);
+      }),
+      getroles().then(res=>{
+        this.allRoles = res.data.data,
+        console.log(this.allRoles)
       })
     },
     editUser(user) {

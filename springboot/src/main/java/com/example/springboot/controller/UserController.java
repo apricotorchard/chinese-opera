@@ -2,6 +2,7 @@ package com.example.springboot.controller;
 
 import com.example.springboot.domain.DTO.UpdateUserDTO;
 import com.example.springboot.service.MenuService;
+import com.example.springboot.service.RoleService;
 import com.example.springboot.service.UserService;
 import com.example.springboot.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    MenuService menuService;
+    RoleService roleService;
 
     @GetMapping("/getallusers")
     public ResponseResult getAllUsers(){
@@ -25,12 +26,15 @@ public class UserController {
     public ResponseResult updateUserInfo(@RequestBody UpdateUserDTO userDTO){
         return new ResponseResult<>(200,"success",userService.updateManageUserInfo(userDTO));
     }
-    @GetMapping("/getpermessions")
-    public ResponseResult getPermessions(){
-        return new ResponseResult(200,"success",menuService.list());
-    }
+
+
     @GetMapping("/getroleandpermiss")
     public ResponseResult getRoleAndPermiss(){
         return new ResponseResult(200,"success",null);
+    }
+
+    @GetMapping("/getroles")
+    public ResponseResult getRoles(){
+        return new ResponseResult(200,"success",roleService.list());
     }
 }

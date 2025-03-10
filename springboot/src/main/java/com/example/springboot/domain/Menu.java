@@ -1,6 +1,7 @@
 package com.example.springboot.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -37,7 +38,9 @@ public class Menu implements Serializable {
     /**
      * 显示顺序
      */
-    private Integer order;
+//    @TableField("order")
+    @TableField("`order`")
+    private Integer orderx;
 
     /**
      * 路由地址
@@ -47,7 +50,7 @@ public class Menu implements Serializable {
     /**
      * 组件路径
      */
-    private String component;
+//    private String component;
 
     /**
      * 是否为外链（0是 1否）
@@ -82,29 +85,29 @@ public class Menu implements Serializable {
     /**
      * 创建者
      */
-    private Long createBy;
+//    private Long createBy;
 
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
 
     /**
      * 更新者
      */
-    private Long updateBy;
+//    private Long updateBy;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedAt;
 
     /**
      * 备注
      */
 //    private String remark;
 
-    private String delFlag;
+//    private String delFlag;
 
 
 }
