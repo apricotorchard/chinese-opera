@@ -47,7 +47,7 @@ public class OperaController {
 //    public ResponseResult addOpera(@RequestBody Opera opera){
 //        return operaService.addOpera(opera);
 //    }
-    @PreAuthorize("hasAnyAuthority('system:test:list')")
+//    @PreAuthorize("hasAnyAuthority('system:test:list')")
     @GetMapping("/getoperalistbycollectid")
     public ResponseResult getOperaListByCollectionId(@RequestParam Integer collectionid){
         return operaService.getOperaListByCollectionId(collectionid);

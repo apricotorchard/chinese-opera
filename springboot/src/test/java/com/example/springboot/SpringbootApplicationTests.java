@@ -57,4 +57,11 @@ class SpringbootApplicationTests {
         LOGGER.debug("DEBUG");
         LOGGER.trace("tracd");
     }
+    @Autowired
+    UserMapper userMapper;
+    @Test
+    void test(){
+        List<User> allUser = userMapper.getAllUsersWithRoles();
+        System.out.println();
+    }
 }
