@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- 新增菜单按钮 -->
-    <el-button type="primary" @click="openAddDialog">新增菜单</el-button>
+    <el-button type="primary" @click="openAddDialog">新增权限</el-button>
 
     <el-table :data="menuList" style="width: 100%">
       <el-table-column prop="id" label="ID"></el-table-column>
-      <el-table-column prop="name" label="菜单名称"></el-table-column>
+      <el-table-column prop="name" label="权限名称"></el-table-column>
       <el-table-column prop="perms" label="权限路径"></el-table-column>
 
       <el-table-column label="操作" width="180">
@@ -19,7 +19,7 @@
     <!-- 新增 / 编辑菜单弹窗 -->
     <el-dialog :title="dialogTitle" v-model="dialogVisible" width="400px">
       <el-form :model="editForm">
-        <el-form-item label="菜单名称">
+        <el-form-item label="权限名称">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
         <!-- 只有新增时显示权限路径输入框 -->
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     dialogTitle() {
-      return this.isEdit ? "编辑菜单" : "新增菜单";
+      return this.isEdit ? "编辑权限" : "新增权限";
     }
   },
   created() {

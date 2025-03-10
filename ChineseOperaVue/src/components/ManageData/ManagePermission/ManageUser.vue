@@ -58,9 +58,6 @@ export default {
     return {
       users: [],
       allRoles: [
-        { id: 1, roleName: "管理员" },
-        { id: 2, roleName: "普通角色" },
-        { id: 3, roleName: "超级管理员" }
       ],
       dialogVisible: false,
       editForm: {

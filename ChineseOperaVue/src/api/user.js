@@ -20,3 +20,25 @@ export function getroles(){
         url:'/usermanage/getroles'
     })
 }
+
+export function addrole(newRole){
+    return request({
+        method:'post',
+        url:'/usermanage/addrole',
+        data:newRole
+    })
+}
+export function deleteRoleInfo(id){
+    return request({
+        method:'delete',
+        url:`/usermanage/deleterole/${id}`
+    })
+}
+
+export function updateRole(roles){
+    return request({
+        method:'post',
+        url:'/usermanage/updateroleandmenu',
+        data:roles
+    })
+}

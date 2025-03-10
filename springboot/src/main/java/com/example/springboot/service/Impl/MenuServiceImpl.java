@@ -14,7 +14,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         int permessionId = updatePermissionDTO.getId();
         Menu menu = this.getById(permessionId);
         menu.setName(updatePermissionDTO.getName());
-//        menu.setStatus(updatePermissionDTO.getStatus());
         if (this.updateById(menu)) {
             return true;
         }

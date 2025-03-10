@@ -72,7 +72,7 @@
                 </a>
             </li>
             <li class="right-item" @click="navigateToManage">
-                    <el-button type="danger" v-hasPermi="['manage:edit']">作品管理</el-button>
+                    <el-button type="danger" v-hasPermi="['manage:edit']">管理</el-button>
             </li>
 
             

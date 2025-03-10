@@ -4,6 +4,7 @@ import ch.qos.logback.classic.LoggerContext;
 import com.example.springboot.domain.User;
 import com.example.springboot.mapper.MenuMapper;
 import com.example.springboot.mapper.UserMapper;
+import com.example.springboot.service.RoleService;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
@@ -59,9 +60,11 @@ class SpringbootApplicationTests {
     }
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    RoleService roleService;
     @Test
     void test(){
-        List<User> allUser = userMapper.getAllUsersWithRoles();
-        System.out.println();
+        roleService.getRolesInfo();
     }
 }

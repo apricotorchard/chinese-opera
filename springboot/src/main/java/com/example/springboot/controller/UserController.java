@@ -1,5 +1,6 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.domain.DTO.RoleDTO;
 import com.example.springboot.domain.DTO.UpdateUserDTO;
 import com.example.springboot.service.MenuService;
 import com.example.springboot.service.RoleService;
@@ -35,6 +36,22 @@ public class UserController {
 
     @GetMapping("/getroles")
     public ResponseResult getRoles(){
-        return new ResponseResult(200,"success",roleService.list());
+        return new ResponseResult(200,"success",roleService.getRolesInfo());
+    }
+
+    @DeleteMapping("/deleterole/{id}")
+    public ResponseResult deleteRole(@PathVariable Integer id){
+        return new ResponseResult(200,"success",roleService.removeRoleAndMenuById(id));
+    }
+
+
+    @PostMapping("/addrole")
+    public ResponseResult addRole(@RequestBody RoleDTO role){
+        return new ResponseResult(200,"success",roleService.saveRoleInfo(role));
+    }
+
+    @PostMapping("/updateroleandmenu")
+    public ResponseResult updateRole(@RequestBody RoleDTO role){
+        return new ResponseResult(200,"success",roleService.updateRoleInfo(role));
     }
 }
