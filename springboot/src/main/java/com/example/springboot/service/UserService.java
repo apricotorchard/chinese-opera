@@ -12,4 +12,6 @@ public interface UserService extends IService<User> {
     List<User> getAllUsersWithRoles();
 
     boolean updateManageUserInfo(UpdateUserDTO userDTO);
+
+    boolean updatePersonInfo(User user);
 }

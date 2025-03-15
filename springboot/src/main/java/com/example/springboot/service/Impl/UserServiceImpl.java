@@ -39,4 +39,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         }
         return true;
     }
+
+    @Override
+    public boolean updatePersonInfo(User user) {
+        return userMapper.updateById(user) > 0;
+    }
 }

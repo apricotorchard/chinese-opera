@@ -2,6 +2,7 @@ package com.example.springboot.controller;
 
 import com.example.springboot.domain.DTO.RoleDTO;
 import com.example.springboot.domain.DTO.UpdateUserDTO;
+import com.example.springboot.domain.User;
 import com.example.springboot.service.MenuService;
 import com.example.springboot.service.RoleService;
 import com.example.springboot.service.UserService;
@@ -53,5 +54,11 @@ public class UserController {
     @PostMapping("/updateroleandmenu")
     public ResponseResult updateRole(@RequestBody RoleDTO role){
         return new ResponseResult(200,"success",roleService.updateRoleInfo(role));
+    }
+
+
+    @PostMapping("/updatepersoninfo")
+    public ResponseResult updatePersonInfo(@RequestBody User user){
+        return new ResponseResult(200,"success",userService.updatePersonInfo(user));
     }
 }

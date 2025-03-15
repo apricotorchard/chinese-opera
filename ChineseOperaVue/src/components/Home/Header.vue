@@ -42,7 +42,7 @@
                     <!-- 下拉菜单  -->
                     <div class="profile-dropdown"  v-if="isDropdownVisible">
                         <ul>
-                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#" @click="goTouserInfo">个人信息</a></li>
                             <li><a href="#" @click="goToLogin">登录</a></li>
                             <li><a href="#" @click="LoginOut">注销</a></li>
                         </ul>
@@ -149,6 +149,11 @@ export default {
         navigateToHome(){
             this.$router.push({
                 name:'home'
+            })
+        },
+        goTouserInfo(){
+            this.$router.push({
+                name:'UserInfo'
             })
         }
 

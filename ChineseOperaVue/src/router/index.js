@@ -39,6 +39,11 @@ const constantRoutes = [
     component: () => import('@/views/History.vue')
   },
   {
+    path: '/userinfo',
+    name: 'UserInfo',
+    component: () => import('@/views/UserInfo.vue')
+  },
+  {
     path: '/test',
     name: 'Test',
     component: () => import('@/views/test.vue')

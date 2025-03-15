@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 public class MenuController {
     @Autowired
     MenuService menuService;
+    //查询所有的权限
     @GetMapping("/getpermessions")
     public ResponseResult getPermessions(){
         return new ResponseResult(200,"success",menuService.list());
     }
-
+    //修改权限
     @PostMapping("/updatepermessions")
     public ResponseResult updatePermessions(@RequestBody UpdatePermissionDTO updatePermissionDTO){
         return new ResponseResult(200,"success",menuService.updatePermessions(updatePermissionDTO));
     }
-    //TODO:删除权限的时候，也要把role_perssion里面的权限删除掉
+    //删除权限
     @DeleteMapping("/deletepermession/{id}")
     public ResponseResult deletePermession(@PathVariable Integer id){
         return new ResponseResult(200,"success",menuService.removeById(id));
     }
-
+    //添加权限
     @PostMapping("/addpermession")
-
     public ResponseResult addPermession(@RequestBody Menu menu) {
         return new ResponseResult(200, "success", menuService.save(menu));
     }

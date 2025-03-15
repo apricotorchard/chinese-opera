@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 新增菜单按钮 -->
+    <!-- 新增权限按钮 -->
     <el-button type="primary" @click="openAddDialog">新增权限</el-button>
 
     <el-table :data="menuList" style="width: 100%">
@@ -16,7 +16,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- 新增 / 编辑菜单弹窗 -->
+    <!-- 新增 / 编辑权限弹窗 -->
     <el-dialog :title="dialogTitle" v-model="dialogVisible" width="400px">
       <el-form :model="editForm">
         <el-form-item label="权限名称">

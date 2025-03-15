@@ -42,3 +42,11 @@ export function updateRole(roles){
         data:roles
     })
 }
+
+export function updatePerson(user){
+    return request({
+        method:'post',
+        url:'/usermanage/updatepersoninfo',
+        data:user
+    })
+}
