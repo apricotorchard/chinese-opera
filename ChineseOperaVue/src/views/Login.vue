@@ -128,7 +128,7 @@ export default {
                 
                 this.userStore.getUserInfo().then(res=>{
                     this.$router.push({
-                        name:'home',
+                        name:'ManageData',
                     })
                     console.log("获取用户信息成功");
                 })
@@ -140,7 +140,7 @@ export default {
         },
         register() {
             register(this.registerForm).then(()=>{
-                
+                window.alert("注册成功");
             })
         }, 
         refreshCode(newIdentifyCode){

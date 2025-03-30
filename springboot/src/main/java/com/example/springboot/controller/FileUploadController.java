@@ -21,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/file")
 public class FileUploadController {
-
     //阿里云的一些相关配置
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
@@ -34,9 +33,6 @@ public class FileUploadController {
 
     @Value("${aliyun.oss.bucket-name}")
     private String bucketName;
-
-
-
     //上传的是音频或者是视频
     @PostMapping("/upload")
     public ResponseResult uploadFile(@RequestParam("file")MultipartFile file) {

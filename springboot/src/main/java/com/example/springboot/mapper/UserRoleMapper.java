@@ -12,8 +12,5 @@ import java.util.List;
 public interface UserRoleMapper extends BaseMapper<UserRole> {
     @Delete("DELETE FROM sys_user_role WHERE user_id = #{userId}")
     void deleteByUserId(@Param("userId") long userId);
-
     void insertUserRoles(@Param("userId") long userId, @Param("roleIds") List<Integer> roleIds);
-
-
 }

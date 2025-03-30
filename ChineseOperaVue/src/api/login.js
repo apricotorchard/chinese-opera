@@ -15,8 +15,6 @@ export function login(username,password,code,uuid){
     })
 }
 
-
-
 // 获取验证码
 export function getCodeImg() {
     return request({
@@ -30,7 +28,6 @@ export function getCodeImg() {
 }
 
 // 退出登录的操作
-
 export function logout(){
   return request({
     url:'user/logout',
@@ -39,7 +36,6 @@ export function logout(){
 }
 
 //用户注册的操作
-
 export function register(data){
   return request({
     url:'user/register',
@@ -47,7 +43,7 @@ export function register(data){
     data:data
   })
 }
-
+//获取用户信息
 export function getInfo(){
   return request({
     'url':'user/getuserinfo',

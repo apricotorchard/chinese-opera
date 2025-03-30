@@ -6,8 +6,6 @@
     <el-table :data="menuList" style="width: 100%">
       <el-table-column prop="id" label="ID"></el-table-column>
       <el-table-column prop="name" label="权限名称"></el-table-column>
-      <el-table-column prop="perms" label="权限路径"></el-table-column>
-
       <el-table-column label="操作" width="180">
         <template v-slot="scope">
           <el-button type="primary" size="small" @click="editMenu(scope.row)">编辑</el-button>

@@ -124,7 +124,7 @@ public class LoginServiceImpl implements LoginService {
         if(username.length()<Constants.USERNAME_MIN_LENGTH||username.length()>Constants.USERNAME_MAX_LENGTH){
             throw new RuntimeException("用户名不符合规范");
         }
-        //IP黑名单校验是怎么弄的？
+
     }
 
     public static Long getCurrentUserId(){

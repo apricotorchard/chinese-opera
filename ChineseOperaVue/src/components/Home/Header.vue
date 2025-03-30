@@ -37,7 +37,7 @@
                 <div class="profile-container" @mouseover="showHeaderDropdown" @mouseleave="hideHeaderDropdown">
                     <!-- 头像部分 -->
                     <div class="profile-avatar" >
-                        <img :src=sungif alt="用户头像" class="avatar-img">
+                        <img src="https://img.shetu66.com/2023/04/25/1682391069844152.png" alt="用户头像" class="avatar-img">
                     </div>
                     <!-- 下拉菜单  -->
                     <div class="profile-dropdown"  v-if="isDropdownVisible">

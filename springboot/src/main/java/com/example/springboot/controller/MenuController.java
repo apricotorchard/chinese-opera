@@ -1,7 +1,7 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.domain.DTO.UpdatePermissionDTO;
-import com.example.springboot.domain.Menu;
+import com.example.springboot.domain.Permession;
 import com.example.springboot.service.MenuService;
 import com.example.springboot.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class MenuController {
     }
     //添加权限
     @PostMapping("/addpermession")
-    public ResponseResult addPermession(@RequestBody Menu menu) {
-        return new ResponseResult(200, "success", menuService.save(menu));
+    public ResponseResult addPermession(@RequestBody Permession permession) {
+        return new ResponseResult(200, "success", menuService.save(permession));
     }
 
 }

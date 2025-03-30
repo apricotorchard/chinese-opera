@@ -2,7 +2,7 @@ package com.example.springboot.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.domain.DTO.RoleDTO;
-import com.example.springboot.domain.Menu;
+import com.example.springboot.domain.Permession;
 import com.example.springboot.domain.Role;
 import com.example.springboot.mapper.MenuMapper;
 import com.example.springboot.mapper.RoleMapper;
@@ -25,8 +25,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         for (Role role : roles) {
             List<Long> rolemenu = roleMapper.getRolemenu(role.getId());
             if(!rolemenu.isEmpty()){
-                List<Menu> menus = menuMapper.selectBatchIds(rolemenu);
-                role.setMeuns(menus);
+                List<Permession> permessions = menuMapper.selectBatchIds(rolemenu);
+                role.setMeuns(permessions);
             }
         }
         return roles;

@@ -56,13 +56,10 @@ export const useUserStore = defineStore('user', {
             this.avatar = res.data.data.user.avatar;
             this.roles = res.data.data.user.type==0?'super_admin':'admin';
             this.permissions = res.data.data.userPermissions;
-           
             resolve(res);
         }).catch(error=>{reject(error)})
     })
   },
-
- 
   },
   persist: {
     enabled: true, // 启用持久化

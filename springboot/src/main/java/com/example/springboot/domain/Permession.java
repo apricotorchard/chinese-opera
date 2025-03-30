@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("sys_menu")
-public class Menu implements Serializable {
+public class Permession implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

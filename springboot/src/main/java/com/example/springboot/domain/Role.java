@@ -31,5 +31,5 @@ public class Role {
     private String remark;
 
     @TableField(exist = false)
-    private List<Menu> meuns;
+    private List<Permession> meuns;
 }

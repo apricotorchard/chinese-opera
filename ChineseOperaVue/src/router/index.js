@@ -97,7 +97,7 @@ const dynamicRoutes = [
         path: '/managemenu',
         name: 'ManageMenu',
         component: () => import('@/components/ManageData/ManagePermission/ManageMenu.vue'),
-        meta: { title:'菜单管理',permissions: ['manage:managemenu'] }
+        meta: { title:'权限管理',permissions: ['manage:managemenu'] }
       }
     ]
   },

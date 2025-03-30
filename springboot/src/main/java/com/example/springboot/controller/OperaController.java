@@ -52,10 +52,13 @@ public class OperaController {
     public ResponseResult getOperaListByCollectionId(@RequestParam Integer collectionid){
         return operaService.getOperaListByCollectionId(collectionid);
     }
+
     @PostMapping("/addopera")
     public ResponseResult addOpera(@RequestBody Opera opera){
         return operaService.addOpera(opera);
     }
+
+
     @PostMapping("/updateopera")
     public ResponseResult updateOpera(@RequestBody Opera opera){
         return operaService.updateOpera(opera);
