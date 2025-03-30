@@ -131,14 +131,13 @@
         saveVideoInfo();
     }
     const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
-        console.log(uploadFile, uploadFiles)
+        
     }
 
     const handlePreview: UploadProps['onPreview'] = (file) => {
-        console.log(file)
+       
     }
     const handleFileChange = (file) => {
-      console.log("12131321");
       if (file.raw.type.startsWith('video/')) {
         if(fileInfo.value.name!=''){
           fileInfo.value.name = '';
@@ -152,7 +151,6 @@
       }
     };
     const handlePicChange = (file) =>{
-        console.log("现在上传的是",file);
         if (!file.raw.type.startsWith('image/')) {
             alert('文件必须是图片格式!')
             uploadPic.value!.clearFiles()
@@ -165,10 +163,7 @@
     }
     
     const uploadVideoFile = async () => {
-        
-        console.log(fileInfo);
         if(picFileList.length === 0){
-            console.log(uploadPic.value);
             alert("请选择需要上传的视频封面!")
             return;
         }

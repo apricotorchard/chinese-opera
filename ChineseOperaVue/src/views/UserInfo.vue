@@ -57,8 +57,7 @@
   
   <script>
   import { ElMessage } from "element-plus";
-  import {getInfo,} from '@/api/login'
-  import {updatePerson} from '@/api/user.js'
+  import {updatePerson,getInfo} from '@/api/user.js'
  
   export default {
     data() {
@@ -76,7 +75,6 @@
         getUserInfo(){
             getInfo().then(res=>{
                 this.user = res.data.data.user;
-                console.log(this.user);
             })
         },
       // 点击“修改”按钮时，复制用户数据到 tempUser

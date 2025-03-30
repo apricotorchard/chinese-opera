@@ -45,7 +45,6 @@ export default {
                 operaTag:this.operaTag
             }
             getOperaListByTag(operaParam).then(res=>{
-                // console.log(res);
                 this.total = res.data.total;
                 this.operaInfoList = res.data.records;
             })

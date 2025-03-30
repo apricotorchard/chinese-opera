@@ -21,8 +21,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.example.springboot.common.constant.Constants.OPERA_COMMENT;
-import static com.example.springboot.common.constant.Constants.OPERA_COMMENT_TTL;
+import static com.example.springboot.common.constant.CacheConstants.OPERA_COMMENT;
+import static com.example.springboot.common.constant.CacheConstants.OPERA_COMMENT_TTL;
+
 
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {

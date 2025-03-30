@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {getCommentsByOperaId,addComment} from '@/api/opera.js';
+import {getCommentsByOperaId,addComment} from '@/api/comment.js';
 import CommentList from '@/components/OperaPlay/CommentList.vue';
 import useUserStore from '@/stores/userStore';
 export default {

@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @TableName("ranking")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Rank {
     @TableId(type = IdType.AUTO)
     private Integer operaId;

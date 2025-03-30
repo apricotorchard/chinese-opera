@@ -36,7 +36,6 @@ onMounted(() => {
     router.push({ name: defaultRoute })
   }
 })
-// console.log(user);
 // 动态获取权限后的菜单项
 const filteredMenuList = computed(() => {
    // 获取路由实例
@@ -56,11 +55,11 @@ const filteredMenuList = computed(() => {
 const isCollapse = ref(false)
 
 const handleOpen = (key: string, keyPath: string[]) => {
-  // console.log(key, keyPath)
+
 }
 
 const handleClose = (key: string, keyPath: string[]) => {
-  // console.log(key, keyPath)
+
 }
 
 // 跳转到选中的菜单

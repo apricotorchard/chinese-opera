@@ -130,7 +130,6 @@
       getRanking(){
         getHotList().then(res=>{
           this.HotList = res.data.data;
-          console.log(this.HotList);
         })
       },
       navigateToOperaPlay(opera){

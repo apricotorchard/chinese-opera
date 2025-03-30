@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.example.springboot.common.constant.Constants.HOT_OPERAS;
-import static com.example.springboot.common.constant.Constants.HOT_OPERAS_TTL;
+import static com.example.springboot.common.constant.CacheConstants.HOT_OPERAS;
+import static com.example.springboot.common.constant.CacheConstants.HOT_OPERAS_TTL;
+
 
 @Service
 public class AccessServiceImpl extends ServiceImpl<UserAccessMapper, UserAccess> implements AccessService{

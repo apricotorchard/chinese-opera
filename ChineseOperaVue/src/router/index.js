@@ -44,6 +44,11 @@ const constantRoutes = [
     component: () => import('@/views/UserInfo.vue')
   },
   {
+    path: '/shop',
+    name: 'Shop',
+    component: () => import('@/views/Shop.vue')
+  },
+  {
     path: '/test',
     name: 'Test',
     component: () => import('@/views/test.vue')

@@ -54,40 +54,6 @@ export function getOperaListByTag(params){
         params:params
     })
 }
-// 获取用户评论
-export function getCommentsByOperaId(operaId){
-    return request({
-        url:`/opera/comments/${operaId}`,
-        method:'get'
-    })
-}
-
-// 插入用户的评论
-
-export function addComment(comment){
-    return request({
-        url:'/opera/comments/addcomment',
-        method:'post',
-        data:comment
-    })
-}
-
-//查询合集信息
-export function getCollectionInfo(){
-    return request({
-        url:'/opera/collect/getcollectinfo',
-        method:'get'
-    })
-}
-
-// 新增合集信息
-export function addCollection(data){
-    return request({
-        url:'/opera/collect/addcollect',
-        method:'post',
-        data:data
-    })
-}
 
 // 获取排行榜
 export function getHotList(){

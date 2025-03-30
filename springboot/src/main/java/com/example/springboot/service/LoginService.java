@@ -10,5 +10,5 @@ public interface LoginService {
 
         ResponseResult register(RegisterDto registerDto);
 
-        ResponseResult getUserInfo();
+
 }

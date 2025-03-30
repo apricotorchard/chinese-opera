@@ -149,9 +149,6 @@
         return uploadFile(formData)
           .then(response => {
             file.url = response.data; // 更新文件的 URL
-            console.log("文件上传成功:", response.data);
-            
-            
           })
           .catch(error => {
             console.error("文件上传失败:", error);
@@ -170,7 +167,6 @@
           tag:audio.tag
         }
       })
-      console.log(audioInfos);
       try{
         await addAudioBatch(audioInfos);
         alert("文件上传成功");

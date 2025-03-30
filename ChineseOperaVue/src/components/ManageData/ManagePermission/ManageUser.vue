@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import {getallusers,updateuserinfo,getroles} from '@/api/user.js'
+import {getallusers,updateuserinfo} from '@/api/user.js'
+import {getroles} from '@/api/role.js'
 export default {
   data() {
     return {
@@ -75,11 +76,9 @@ export default {
     getUserInfo(){
       getallusers().then(res=>{
         this.users = res.data.data;
-        console.log(this.users);
       }),
       getroles().then(res=>{
-        this.allRoles = res.data.data,
-        console.log(this.allRoles)
+        this.allRoles = res.data.data;
       })
     },
     editUser(user) {
@@ -92,7 +91,6 @@ export default {
     },
     saveEdit() {
       const index = this.users.findIndex(user => user.id === this.editForm.id);
-      //写回到数据库当中去
       updateuserinfo(this.editForm).then(
         res=>{
           if (index !== -1) {

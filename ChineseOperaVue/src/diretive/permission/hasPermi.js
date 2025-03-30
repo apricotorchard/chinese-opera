@@ -12,7 +12,6 @@ export default{
             const hasPermissions = permissions.some(permission=>{
                 return all_permission === permission||permissionsFlag.includes(permission)
             })
-            console.log(hasPermissions)
             if (!hasPermissions) {
                 el.parentNode && el.parentNode.removeChild(el)
               }

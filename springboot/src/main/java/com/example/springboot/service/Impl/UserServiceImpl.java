@@ -1,12 +1,16 @@
 package com.example.springboot.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.springboot.common.constant.HttpStatus;
 import com.example.springboot.domain.DTO.UpdateUserDTO;
+import com.example.springboot.domain.LoginUser;
 import com.example.springboot.domain.User;
 import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.mapper.UserRoleMapper;
 import com.example.springboot.service.UserService;
+import com.example.springboot.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +47,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Override
     public boolean updatePersonInfo(User user) {
         return userMapper.updateById(user) > 0;
+    }
+
+    @Override
+    public ResponseResult getUserInfo() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseResult<>(HttpStatus.SUCCESS,"返回用户信息",loginUser);
     }
 }

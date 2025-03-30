@@ -50,7 +50,18 @@ public class SecurityConfig {
                 // 设置会话创建策略为无状态
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 配置授权规则   指定/login路径.允许匿名访问(未登录可访问已登陆不能访问). 其他路径需要身份认证
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/user/login","/user/captchaImage","/user/register","/file/upload").anonymous().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/user/login",
+                                "/code",
+                                "/user/register",
+                                "/file/upload",
+                                "/shop/**",
+                                "/voucher/**",
+                                "/shop-type/**",
+                                "/upload/**",
+                                "/blog/hot")
+                        .anonymous().anyRequest().authenticated())
                 //开启跨域访问
                 .cors(withDefaults())
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

@@ -90,7 +90,6 @@ export default {
           );
           if(currentIndex!=-1){
             this.currentTrack = this.track.audioList[currentIndex];
-            console.log(this.currentTrack);
             this.loadTrack(this.currentTrack);
           }
           
@@ -111,8 +110,6 @@ export default {
             if(this.sound){
                 this.sound.unload();
             }
-            // this.currentTrack = track;
-            console.log(track);
             this.url = getAudioPictureUrl(track.tag);
             this.sound = new Howl({
               src:[track.audioUrl],

@@ -51,12 +51,10 @@ export default {
     },
     methods:{
         navigateToOperaPlay(opera){
-            console.log(opera);
             const currentIndex = this.operaList.findIndex(
                 (item)=>item.id === opera.id
             )
             this.isChoidcedOperaIndex = currentIndex;
-            console.log(this.isChoidcedOperaIndex);
             this.$emit("getChoicedOpera",opera);
         },
     }

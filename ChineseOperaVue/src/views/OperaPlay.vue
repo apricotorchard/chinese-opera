@@ -78,7 +78,6 @@
           }else{
             this.nameShow = this.opera.name;
           }
-          console.log(res);
         })
       },
       getOperasByTag(operaTag){
@@ -88,7 +87,6 @@
                 operaTag:operaTag
             }
             getOperaListByTag(operaParam).then(res=>{
-                // console.log(res);
                 this.total = res.data.total;
                 this.operaList = res.data.records;
             })

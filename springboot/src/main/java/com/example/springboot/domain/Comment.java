@@ -13,8 +13,6 @@ import java.util.List;
 
 @Data
 @TableName("comments")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Comment {
     @TableId(type = IdType.AUTO)
     private Long id;

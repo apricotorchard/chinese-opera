@@ -47,9 +47,6 @@
         this.track.setCurrentTag(operaTag);
         this.track.clearAudioList();
         if(this.isAudio){
-            // 输出选中的Tag
-            console.log(this.selectedTag);
-            // 向后端发送请求，更改store里面的值。
             this.getAudioList();
         }
         else{

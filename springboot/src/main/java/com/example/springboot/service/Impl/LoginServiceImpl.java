@@ -1,8 +1,8 @@
 package com.example.springboot.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.example.springboot.common.constant.Constants;
 import com.example.springboot.common.constant.HttpStatus;
+import com.example.springboot.common.constant.SystemConstants;
 import com.example.springboot.domain.DTO.RegisterDto;
 import com.example.springboot.domain.LoginUser;
 import com.example.springboot.utils.ResponseResult;
@@ -20,6 +20,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+
+import static com.example.springboot.common.constant.CacheConstants.*;
+import static com.example.springboot.common.constant.SystemConstants.*;
+
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
@@ -47,10 +51,10 @@ public class LoginServiceImpl implements LoginService {
         //4.认证通过生成token
         String jwt = JwtUtil.createJWT(userId);
         //5.用户信息存入redis
-        redisCache.setCacheObject(Constants.LOGIN_USER_KEY + userId, loginUser);
+        redisCache.setCacheObject(LOGIN_USER_KEY + userId, loginUser);
         //6.把token返回给前端
         HashMap<Object, Object> hashMap = new HashMap<>();
-        hashMap.put(Constants.TOKEN, jwt);
+        hashMap.put(TOKEN, jwt);
         return new ResponseResult(HttpStatus.SUCCESS, "登录成功", hashMap);
     }
     @Override
@@ -58,7 +62,7 @@ public class LoginServiceImpl implements LoginService {
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authenticationToken.getPrincipal();
         Long userid = loginUser.getUser().getId();
-        redisCache.deleteObject(Constants.LOGIN_USER_KEY+userid);
+        redisCache.deleteObject(LOGIN_USER_KEY+userid);
         return new ResponseResult(HttpStatus.SUCCESS,"注销成功");
     }
 
@@ -87,22 +91,11 @@ public class LoginServiceImpl implements LoginService {
         return new ResponseResult(HttpStatus.SUCCESS,"注册成功");
     }
 
-    @Override
-    public ResponseResult getUserInfo() {
 
-
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        //Todo 角色集合
-        //TODO 权限集合
-        //根据用户id查询用户角色
-        //根据userid查询信息返回给前端
-        return new ResponseResult<>(HttpStatus.SUCCESS,"返回用户信息",loginUser);
-    }
 
     public void validateCaptcha(String code,String uuid){
         uuid = (uuid != null) ? uuid : "";
-        String verifyKey = Constants.CAPTCHA_CODE_KEY+uuid;
+        String verifyKey = CAPTCHA_CODE_KEY+uuid;
         String captcha = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
         if(captcha==null){
@@ -118,10 +111,10 @@ public class LoginServiceImpl implements LoginService {
         if(username==null||password==null){
             throw  new RuntimeException("用户名或密码错误");
         }
-        if(password.length()<Constants.PASSWORD_MIN_LENGTH||password.length()>Constants.PASSWORD_MAX_LENGTH){
+        if(password.length()<PASSWORD_MIN_LENGTH||password.length()>PASSWORD_MAX_LENGTH){
             throw new RuntimeException("密码长度需要在5到20之间");
         }
-        if(username.length()<Constants.USERNAME_MIN_LENGTH||username.length()>Constants.USERNAME_MAX_LENGTH){
+        if(username.length()<USERNAME_MIN_LENGTH||username.length()>USERNAME_MAX_LENGTH){
             throw new RuntimeException("用户名不符合规范");
         }
 

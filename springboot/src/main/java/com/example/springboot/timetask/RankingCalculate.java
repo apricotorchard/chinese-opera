@@ -1,7 +1,5 @@
 package com.example.springboot.timetask;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.springboot.common.constant.Constants;
 import com.example.springboot.domain.Opera;
 import com.example.springboot.mapper.RankingMapper;
 import com.example.springboot.service.AccessService;
@@ -16,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.springboot.common.constant.Constants.HOT_OPERAS;
-import static com.example.springboot.common.constant.Constants.HOT_OPERAS_TTL;
+import static com.example.springboot.common.constant.CacheConstants.HOT_OPERAS;
+import static com.example.springboot.common.constant.CacheConstants.HOT_OPERAS_TTL;
+
 
 @Component
 @Slf4j

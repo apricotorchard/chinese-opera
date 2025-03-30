@@ -33,7 +33,7 @@ public class FileUploadController {
 
     @Value("${aliyun.oss.bucket-name}")
     private String bucketName;
-    //上传的是音频或者是视频
+
     @PostMapping("/upload")
     public ResponseResult uploadFile(@RequestParam("file")MultipartFile file) {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);

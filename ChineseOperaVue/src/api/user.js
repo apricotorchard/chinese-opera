@@ -2,51 +2,30 @@ import request from '@/utils/request.js'
 export function getallusers(){
     return request({
         method:'get',
-        url:'/usermanage/getallusers'
+        url:'/user/list'
     })   
 }
-
+//TODO:重写这个更新个人信息界面
 export function updateuserinfo(userinfo){
     return request({
-        method:'post',
-        url:'/usermanage/updateuserinfo',
+        method:'put',
+        url:'/user/manage-update',
         data:userinfo
-    })
-}
-
-export function getroles(){
-    return request({
-        method:'get',
-        url:'/usermanage/getroles'
-    })
-}
-
-export function addrole(newRole){
-    return request({
-        method:'post',
-        url:'/usermanage/addrole',
-        data:newRole
-    })
-}
-export function deleteRoleInfo(id){
-    return request({
-        method:'delete',
-        url:`/usermanage/deleterole/${id}`
-    })
-}
-
-export function updateRole(roles){
-    return request({
-        method:'post',
-        url:'/usermanage/updateroleandmenu',
-        data:roles
     })
 }
 
 export function updatePerson(user){
     return request({
         method:'post',
-        url:'/usermanage/updatepersoninfo',
+        url:'/user/update',
         data:user
     })
 }
+
+//获取用户信息
+export function getInfo(){
+    return request({
+      'url':'/user',
+      'method':'get'
+    })
+  }

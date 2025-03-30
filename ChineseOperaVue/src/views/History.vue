@@ -56,7 +56,6 @@ export default {
         getOperasByUserId(){
             getOperasFromUserAccess().then(res=>{
                 this.operaList = res.data.data;
-                console.log(this.operaList);
             })
         },
         toggleBatchMode() {
@@ -77,7 +76,6 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning",
             }).then(() => {
-                console.log(this.selectedOperas);
                 deleteByOperaIds(this.selectedOperas).then(()=>{
                     this.getOperasByUserId();
                     ElMessage.success("删除成功");

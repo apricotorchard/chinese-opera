@@ -5,7 +5,7 @@ export function login(username,password,code,uuid){
         username,password,code,uuid
     }
     return request({
-        url:'user/login',
+        url:'/user/login',
         headers:{
             isToken:false,
             repeatSubmit:false
@@ -18,7 +18,7 @@ export function login(username,password,code,uuid){
 // 获取验证码
 export function getCodeImg() {
     return request({
-      url: 'user/captchaImage',
+      url: '/code',
       headers: {
         isToken: false
       },
@@ -30,7 +30,7 @@ export function getCodeImg() {
 // 退出登录的操作
 export function logout(){
   return request({
-    url:'user/logout',
+    url:'/user/logout',
     method:'post',
   })
 }
@@ -38,15 +38,8 @@ export function logout(){
 //用户注册的操作
 export function register(data){
   return request({
-    url:'user/register',
+    url:'/user/register',
     method:'post',
     data:data
-  })
-}
-//获取用户信息
-export function getInfo(){
-  return request({
-    'url':'user/getuserinfo',
-    'method':'get'
   })
 }

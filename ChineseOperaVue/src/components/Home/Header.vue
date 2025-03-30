@@ -5,18 +5,18 @@
        
         <ul class="left-entry">
             <li class="left-item" @click="navigateToHome">
-                <a href="#">
+                <a href="#" @click="goToHome">
                     <span>首页</span>
                 </a>
             </li>
-            <li class="left-item">
+            <li class="left-item"  @click="goToShop">
                 <a href="#">
-                    <span>戏曲</span>
+                    <span>商城</span>
                 </a>
             </li>
             <li class="left-item">
                 <a href="#">
-                    <span>热榜</span>
+                    <span>戏小圈</span>
                 </a>
             </li>
         </ul>
@@ -125,18 +125,26 @@ export default {
             })
         },
         goToHistory(){
-            console.log("1111");
             this.$router.push({
                 name:'History'
             })
         },
         goToTest(){
-            // console.log("1111");
             this.$router.push({
                 name:'Test'
             })
         },
-        LoginOut(){//回调应该是一个函数
+        goToHome(){
+            this.$router.push({
+                name:'home'
+            })
+        },
+        goToShop(){
+            this.$router.push({
+                name:'Shop'
+            })
+        },
+        LoginOut(){
             this.userStore.logOut().then(()=>{
                 this.$router.push({name:'Login'})
             })

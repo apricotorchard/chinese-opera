@@ -112,17 +112,8 @@
             }
             try{
               const res = await getAudioListByTag(params); 
-              console.log(res);
               const audioList = res.data.records;
-              // .map(item=>{
-              //   item.audioUrl = getAudioPlayUrl(item)
-              //   // item.audioUrl = "https://chineseopera.oss-cn-wulanchabu.aliyuncs.com/1731685659842-audio1.mp3"
-              //   return item;
-              // })
-              console.log(audioList)
               this.total = res.data.total;
-              // console.log(audioList);
-              console.log("333");
               this.track.addAudioList(audioList);
             }
             catch (error) {

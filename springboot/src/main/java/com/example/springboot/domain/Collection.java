@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @TableName("opera_collections")
 public class Collection {
     @TableId(type = IdType.AUTO)

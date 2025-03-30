@@ -13,8 +13,6 @@ import java.util.List;
 
 @TableName("sys_role")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Role {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

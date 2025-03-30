@@ -133,7 +133,8 @@
 </template>
 
 <script>
-import {getAlloperaInfo,getCollectionInfo,updateOpera,addCollection} from '@/api/opera.js'
+import {getAlloperaInfo,updateOpera,} from '@/api/opera.js'
+import {getCollectionInfo,addCollection} from '@/api/collection.js'
 export default {
   data(){
     return{
@@ -172,14 +173,12 @@ export default {
         pageSize:this.pageSize
       }
       const res = await getAlloperaInfo(params);
-      console.log(res);
       this.operaList = res.data.data.records;
       this.total = res.data.data.total
     },
     async loadCollectionInfo(){
       const res = await getCollectionInfo();
       this.collectList = res.data.data;
-      console.log(this.collectList);
     },
     handleCurrentChange(newPage){
       this.pageNum = newPage;
@@ -187,7 +186,6 @@ export default {
       // 获取
     },
     handleEditClick(row){
-      console.log("row",row)
       this.opera = row;
       this.dialogVisible = true;
     },
@@ -196,7 +194,6 @@ export default {
     },
     async updateOperaInfo(){
       const res = await updateOpera(this.opera);
-      console.log(res);
       if(res.data.code==200){
         alert("更新数据成功");
         this.dialogVisible = false;
@@ -208,10 +205,7 @@ export default {
     async saveCollectionInfo(){
       this.collection.createdAt = new Date().toISOString();
       const res = await addCollection(this.collection);
-      console.log(res);
-      console.log("1111111111");
       if(res.data.code==200){
-        console.log("2222222222");
         this.collectionDialog = false;
         return;
       }

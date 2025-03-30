@@ -1,6 +1,7 @@
 // src/stores/userStore.js
 import { defineStore } from 'pinia';
-import {login,logout,getInfo} from '@/api/login'
+import {login,logout} from '@/api/login'
+import {getInfo} from '@/api/user.js'
 import {getToken,setToken,removeToken} from '@/utils/auth'
 
 // pinia中的数据 在页面刷新的时候会丢失，状态会被重置，所以需要被持久化在本地。
@@ -49,7 +50,6 @@ export const useUserStore = defineStore('user', {
     return new Promise((resolve,reject)=>{
         getInfo().then(res=>{
             // 这里可以添加一些用户权限的东西
-            console.log(res);
             this.userId = res.data.data.user.id;
             this.userName  = res.data.data.user.userName;
             this.nickName = res.data.data.user.nickName;

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { getroles,deleteRoleInfo,addrole,updateRole} from "@/api/user.js";
+import { getroles,deleteRoleInfo,addrole,updateRole} from "@/api/role.js";
 import { getpermission } from "@/api/menu.js";
 
 export default {
@@ -140,7 +140,6 @@ export default {
         id: this.editRoleForm.id,
         menus: this.editRoleForm.permissions 
       };
-      console.log(payload);
       // 调用后端 API 更新角色信息
       updateRole(payload).then((res) => {
         this.getRolesInfo(); // 重新拉取角色数据

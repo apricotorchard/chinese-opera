@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import {addComment,getCommentsByOperaId} from '@/api/opera.js';
+import {addComment,getCommentsByOperaId} from '@/api/comment.js';
+
 import useUserStore from '@/stores/userStore';
 export default {
     emits: ['CommentFromSon'],
@@ -152,8 +153,6 @@ export default {
 
                     this.localComments = response.data.data; 
                 });
-                
-                console.log("发布成功");
                 // 清空输入框操作。
                 const inputContent = this.$refs['replyInput' + index]?.[0]; // .[0] 取第一个匹配的元素
                 if (inputContent) {

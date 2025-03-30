@@ -22,7 +22,6 @@ export function deletemenuById(id) {
     });
 }
 export function addMenu(menu){
-    console.log(menu);
     return request({
         method:'post',
         url:'/menu/addpermession',

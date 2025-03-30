@@ -26,7 +26,6 @@ export const useTrackStore = defineStore('track',{
         addAudioList(audioList) {
             this.audioList = [...this.audioList, ...audioList];
             this.isfinishGetData = true;
-            console.log("数据执行完成");
         }
     }
 })
