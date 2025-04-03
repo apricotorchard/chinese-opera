@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {getOperasFromUserAccess,deleteByOperaIds} from '@/api/opera.js';
+import {getOperasFromUserAccess,deleteByOperaIds} from '@/api/access.js';
 import SingleOpera from '@/components/Home/SingleOpera.vue';
 import Header from '@/components/Home/Header.vue';
 import { ElMessage, ElMessageBox } from "element-plus";

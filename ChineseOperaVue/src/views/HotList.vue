@@ -24,7 +24,7 @@
   
   
   <script>
-  import {getHotList} from '@/api/opera.js'
+  import {getHotList} from '@/api/access.js'
   export default {
     data() {
       return {

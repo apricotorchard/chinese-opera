@@ -56,8 +56,6 @@ public class SecurityConfig {
                                 "/code",
                                 "/user/register",
                                 "/file/upload",
-                                "/shop/**",
-                                "/voucher/**",
                                 "/shop-type/**",
                                 "/upload/**",
                                 "/blog/hot")

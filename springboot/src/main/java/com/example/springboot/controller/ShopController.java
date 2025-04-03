@@ -55,18 +55,18 @@ public class ShopController {
      * @param current 页码
      * @return 商铺列表
      */
-    @GetMapping("/of/type")
-    public ResponseResult queryShopByType(
-            @RequestParam("typeId") Integer typeId,
-            @RequestParam(value = "current", defaultValue = "1") Integer current)
-    {
-        // 根据类型分页查询
-        Page<Shop> page = shopService.query()
-                .eq("type_id", typeId)
-                .page(new Page<>(current, SystemConstants.DEFAULT_PAGE_SIZE));
-        // 返回数据
-        return new ResponseResult(HttpStatus.SUCCESS,page.getRecords());
-    }
+//    @GetMapping("/of/type")
+//    public ResponseResult queryShopByType(
+//            @RequestParam("typeId") Integer typeId,
+//            @RequestParam(value = "current", defaultValue = "1") Integer current)
+//    {
+//        // 根据类型分页查询
+//        Page<Shop> page = shopService.query()
+//                .eq("type_id", typeId)
+//                .page(new Page<>(current, SystemConstants.DEFAULT_PAGE_SIZE));
+//        // 返回数据
+//        return new ResponseResult(HttpStatus.SUCCESS,page.getRecords());
+//    }
 
     /**
      * 根据商铺名称关键字分页查询商铺信息
@@ -84,6 +84,6 @@ public class ShopController {
                 .like(StrUtil.isNotBlank(name), "name", name)
                 .page(new Page<>(current, SystemConstants.MAX_PAGE_SIZE));
         // 返回数据
-        return new ResponseResult(HttpStatus.SUCCESS,page.getRecords());
+        return new ResponseResult(HttpStatus.SUCCESS,page);
     }
 }

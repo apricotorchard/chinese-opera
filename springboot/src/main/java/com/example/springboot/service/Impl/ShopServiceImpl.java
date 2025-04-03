@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IShopService {
     @Override
     public ResponseResult queryById(Long id) {
+        //TODO:开始搞redis
         return null;
     }
 }

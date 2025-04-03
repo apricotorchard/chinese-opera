@@ -49,6 +49,11 @@ const constantRoutes = [
     component: () => import('@/views/Shop.vue')
   },
   {
+    path:'/shop-detail',
+    name:'ShopDetail',
+    component:() => import('@/views/ShopDetail.vue')
+  },
+  {
     path: '/test',
     name: 'Test',
     component: () => import('@/views/test.vue')
@@ -121,7 +126,7 @@ const router = createRouter({
 })
 
 // 白名单路由，无需权限控制
-const whiteList = ['/','/manage','/history'] // 登录页等公共路由
+const whiteList = ['/','/manage'] // 登录页等公共路由
 
 // 路由守卫，检查权限
 router.beforeEach((to, from, next) => {
