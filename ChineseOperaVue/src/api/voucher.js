@@ -9,3 +9,11 @@ export function getVoucherList(shopId){
         method:'get',
     })
 }
+
+//抢购优惠卷
+export function seckillVoucher(voucherId){
+    return request({
+        url:`/voucher-order/seckill/${voucherId}`,
+        method:'post'
+    })
+}

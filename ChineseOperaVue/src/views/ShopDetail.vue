@@ -84,7 +84,7 @@
 <script>
 import { Location, Clock } from "@element-plus/icons-vue";
 import {getShopDetailById} from '@/api/shop';
-import {getVoucherList} from '@/api/voucher';
+import {getVoucherList,seckillVoucher} from '@/api/voucher';
 export default {
   name: "ShopDetail",
   components: {
@@ -116,9 +116,10 @@ export default {
         this.coupons = res.data.data;
       })
     },
-    
     buyCoupon(coupon) {
-      this.$message.success(`已抢购：${coupon.title}`);
+      seckillVoucher(coupon.id).then(res=>{
+        this.$message.success(`已抢购：${coupon.title}`);
+      })
     },
   },
 };
