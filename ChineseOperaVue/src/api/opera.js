@@ -40,7 +40,7 @@ export function updateOpera(data){
 
 export function getOperaByCollectionId(collectionId){
     return request({
-        url:`/opera/collect?collectionid=${collectionId}`,
+        url:`/opera/${collectionId}`,
         method:'get'
     })
 }

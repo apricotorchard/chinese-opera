@@ -13,14 +13,13 @@ public class OperaController {
     @Autowired
     private OperaService operaService;
 
-
     @GetMapping("/list")
     public ResponseResult getOpera(@RequestParam int pageNum,@RequestParam int  pageSize){
         return operaService.getOpera(pageNum,pageSize);
     }
-    @GetMapping("/collect/{id}")
-    public ResponseResult getOperaListByCollectionId(@PathVariable("id")Integer collectionid){
-        return operaService.getOperaListByCollectionId(collectionid);
+    @GetMapping("/{collectId}")
+    public ResponseResult getOperaListByCollectionId(@PathVariable("collectId")Integer collectId){
+        return operaService.getOperaListByCollectionId(collectId);
     }
     @GetMapping("/tag")
     public Page<Opera> getOperaListByTag(@RequestParam String operaTag,
