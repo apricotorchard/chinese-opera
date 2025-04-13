@@ -49,7 +49,8 @@ public class RankingCalculate implements ApplicationRunner {
 //        System.out.println("开始执行啦！");
 //        generateRecommendations(); // 或者直接 runPythonScript();
 //    }
-
+    //TODO：推荐算法目前是使用json的形式，后续可以采用redis优化的方式
+    //TODO：python的接口已经写好了，可以从前端根据用户的行为进行点击
     private void runPythonScript() {
         log.info("开始执行推荐列表定时更新任务");
         try {
